@@ -198,3 +198,7 @@ import the main state machine or a scoped one and that's it.
 
 you shouldn't memoize your selectors and they should return a stricly equal value for identical input.
 To create complex selectors use `combineSelector` or `mergeSelectors`.
+
+## Links
+
+[Reference](https://ezylean.github.io/makina)
