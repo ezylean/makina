@@ -1,6 +1,7 @@
 /**
  * create a single function from a reversed array of middleware and an implementtion
  * @note this function use partial evaluation.
+ * @ignore
  */
 export function createObjectFactory(
   keys: string[]

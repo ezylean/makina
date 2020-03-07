@@ -1,5 +1,6 @@
 /**
- * recursively apply a function to a specific object property
+ * recursively apply a function to a specific object property.
+ * @ignore
  */
 export function mapObjectPropRecursive<I, O>(
   source,
