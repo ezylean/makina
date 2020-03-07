@@ -95,9 +95,7 @@
 								<li class="tsd-kind-function tsd-has-type-parameter"><a href="globals.html#combineselectors" class="tsd-kind-icon">combine<wbr>Selectors</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter"><a href="globals.html#create" class="tsd-kind-icon">create</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter"><a href="globals.html#createbare" class="tsd-kind-icon">create<wbr>Bare</a></li>
-								<li class="tsd-kind-function"><a href="globals.html#createobjectfactory" class="tsd-kind-icon">create<wbr>Object<wbr>Factory</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter"><a href="globals.html#extendselector" class="tsd-kind-icon">extend<wbr>Selector</a></li>
-								<li class="tsd-kind-function tsd-has-type-parameter"><a href="globals.html#mapobjectproprecursive" class="tsd-kind-icon">map<wbr>Object<wbr>Prop<wbr>Recursive</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter"><a href="globals.html#mergereducers" class="tsd-kind-icon">merge<wbr>Reducers</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter"><a href="globals.html#mergeselectors" class="tsd-kind-icon">merge<wbr>Selectors</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter"><a href="globals.html#onactiontypes" class="tsd-kind-icon">on<wbr>Action<wbr>Types</a></li>
@@ -610,62 +608,6 @@ stateMachine.getState()
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function">
-					<a name="createobjectfactory" class="tsd-anchor"></a>
-					<h3>create<wbr>Object<wbr>Factory</h3>
-					<ul class="tsd-signatures tsd-kind-function">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Object<wbr>Factory<span class="tsd-signature-symbol">(</span>keys<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>values<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-symbol">{}</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/352d257/src/lib/internal/createObjectFactory.ts#L5">lib/internal/createObjectFactory.ts:5</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>create a single function from a reversed array of middleware and an implementtion</p>
-								</div>
-								<dl class="tsd-comment-tags">
-									<dt>note</dt>
-									<dd><p>this function use partial evaluation.</p>
-									</dd>
-								</dl>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>keys: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">(</span>values<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-symbol">{}</span></h4>
-							<ul class="tsd-parameters">
-								<li class="tsd-parameter-siganture">
-									<ul class="tsd-signatures tsd-kind-type-literal">
-										<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>values<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span></li>
-									</ul>
-									<ul class="tsd-descriptions">
-										<li class="tsd-description">
-											<h4 class="tsd-parameters-title">Parameters</h4>
-											<ul class="tsd-parameters">
-												<li>
-													<h5>values: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
-												</li>
-											</ul>
-											<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{}</span></h4>
-											<ul class="tsd-parameters">
-												<li class="tsd-parameter-index-signature">
-													<h5><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">any</span></h5>
-												</li>
-											</ul>
-										</li>
-									</ul>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter">
 					<a name="extendselector" class="tsd-anchor"></a>
 					<h3>extend<wbr>Selector</h3>
@@ -732,67 +674,6 @@ stateMachine.getState()
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">D</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">SUB</span></h4>
 							<p>a copy of the parent selector with it&#39;s childs attached</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter">
-					<a name="mapobjectproprecursive" class="tsd-anchor"></a>
-					<h3>map<wbr>Object<wbr>Prop<wbr>Recursive</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">map<wbr>Object<wbr>Prop<wbr>Recursive&lt;I, O&gt;<span class="tsd-signature-symbol">(</span>source<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, prop<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, fn<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">I</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">O</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/352d257/src/lib/internal/mapObjectPropRecursive.ts#L4">lib/internal/mapObjectPropRecursive.ts:4</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>recursively apply a function to a specific object property</p>
-								</div>
-							</div>
-							<h4 class="tsd-type-parameters-title">Type parameters</h4>
-							<ul class="tsd-type-parameters">
-								<li>
-									<h4>I</h4>
-								</li>
-								<li>
-									<h4>O</h4>
-								</li>
-							</ul>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>source: <span class="tsd-signature-type">any</span></h5>
-								</li>
-								<li>
-									<h5>prop: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
-									<h5>fn: <span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">I</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">O</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">I</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">O</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5>obj: <span class="tsd-signature-type">I</span></h5>
-														</li>
-													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">O</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1769,14 +1650,8 @@ factory.use(onActionTypes([<span class="hljs-string">'INCREMENT'</span>], logAct
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#createbare" class="tsd-kind-icon">create<wbr>Bare</a>
 					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#createobjectfactory" class="tsd-kind-icon">create<wbr>Object<wbr>Factory</a>
-					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#extendselector" class="tsd-kind-icon">extend<wbr>Selector</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="globals.html#mapobjectproprecursive" class="tsd-kind-icon">map<wbr>Object<wbr>Prop<wbr>Recursive</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#mergereducers" class="tsd-kind-icon">merge<wbr>Reducers</a>
