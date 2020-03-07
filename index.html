@@ -1,0 +1,372 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>@ezy/makina</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">@ezy/makina</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1>@ezy/makina</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<h1 align="center">
+					<img src="https://raw.githubusercontent.com/ezylean/makina/master/logo.png" alt="Makina" width="200px" style="margin: 50px;"/>
+				</h1>
+				<p align="center">create a backend in your frontend</p>
+				<a href="#why" id="why" style="color: inherit; text-decoration: none;">
+					<h2>Why</h2>
+				</a>
+				<p>Writing frontend application is a mess.</p>
+				<p>Redux help a lot but has adopted a modular and unopinionated approach which give flexibility at the cost
+				of having to manage a lot of related code everywhere.</p>
+				<p>While keeping the same principles at his core Makina take the opposite approach to create a all-in-one express-like backend for your frontend.</p>
+				<p>Think of it as a fusion of express and redux.</p>
+				<a href="#mental-model" id="mental-model" style="color: inherit; text-decoration: none;">
+					<h2>Mental model</h2>
+				</a>
+				<p>In Makina you should think of your frontend application as a complete stack, with your UI (React, Vue, Angular, etc...) as the frontend part and a StateMachine as a backend.</p>
+				<p>the whole application logic, I/O and state management of your application will be managed in the StateMachine while the UI will be responsible for presentational logic, displaying the current state and dispatch actions.</p>
+				<a href="#getting-started" id="getting-started" style="color: inherit; text-decoration: none;">
+					<h2>Getting Started</h2>
+				</a>
+				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+					<h3>Installation</h3>
+				</a>
+				<pre><code class="language-shell">  npm i @ezy/makina</code></pre>
+				<a href="#counter-example" id="counter-example" style="color: inherit; text-decoration: none;">
+					<h3>Counter example</h3>
+				</a>
+				<p>index.js</p>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { create } <span class="hljs-keyword">from</span> <span class="hljs-string">'@ezy/makina'</span>;
+
+<span class="hljs-keyword">const</span> INCREMENT = <span class="hljs-string">'INCREMENT'</span>; <span class="hljs-comment">// as 'INCREMENT'</span>
+<span class="hljs-keyword">const</span> DECREMENT = <span class="hljs-string">'DECREMENT'</span>; <span class="hljs-comment">// as 'DECREMENT'</span>
+
+<span class="hljs-keyword">const</span> factory = create(
+  {
+    <span class="hljs-attr">actionCreators</span>: {
+      <span class="hljs-attr">increment</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> ({ <span class="hljs-attr">type</span>: INCREMENT }),
+      <span class="hljs-attr">decrement</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> ({ <span class="hljs-attr">type</span>: DECREMENT })
+    },
+    <span class="hljs-attr">reducer</span>: <span class="hljs-function">(<span class="hljs-params">state = <span class="hljs-number">0</span>, action</span>) =&gt;</span> {
+      <span class="hljs-keyword">switch</span> (action.type) {
+        <span class="hljs-keyword">case</span> INCREMENT:
+          <span class="hljs-keyword">return</span> state + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">case</span> DECREMENT:
+          <span class="hljs-keyword">return</span> state - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">default</span>:
+          <span class="hljs-keyword">return</span> state;
+      }
+    }
+  },
+  {
+    <span class="hljs-attr">log</span>: <span class="hljs-built_in">console</span>.log
+  }
+);
+
+<span class="hljs-comment">// use a middleware</span>
+factory.use(<span class="hljs-function"><span class="hljs-params">io</span> =&gt;</span> <span class="hljs-function">(<span class="hljs-params">action, next</span>) =&gt;</span> {
+  io.log(action.type);
+  <span class="hljs-keyword">return</span> next();
+});
+
+<span class="hljs-keyword">const</span> stateMachine = factory.create();
+
+<span class="hljs-comment">// UI bindings</span>
+<span class="hljs-built_in">document</span>
+  .getElementById(<span class="hljs-string">'increment'</span>)
+  .addEventListener(<span class="hljs-string">'click'</span>, stateMachine.dispatch.increment);
+<span class="hljs-built_in">document</span>
+  .getElementById(<span class="hljs-string">'decrement'</span>)
+  .addEventListener(<span class="hljs-string">'click'</span>, stateMachine.dispatch.decrement);
+
+<span class="hljs-keyword">const</span> render = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'result'</span>).textContent = stateMachine.getState();
+};
+
+stateMachine.subscribe(render);
+render();</code></pre>
+				<p>index.html</p>
+				<pre><code class="language-html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"UTF-8"</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"viewport"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"width=device-width, initial-scale=1.0"</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Counter<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"app"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"result"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"increment"</span>&gt;</span>+<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"decrement"</span>&gt;</span>-<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"index.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre>
+				<a href="#building-complex-app" id="building-complex-app" style="color: inherit; text-decoration: none;">
+					<h2>Building complex app</h2>
+				</a>
+				<p>The create function exposed by the library have the following signature:</p>
+				<pre><code class="language-js">create(<span class="hljs-built_in">module</span>, defaultIO, selectors) =&gt; StateMachineFactory</code></pre>
+				<a href="#module" id="module" style="color: inherit; text-decoration: none;">
+					<h3>module</h3>
+				</a>
+				<p>a module is a plain javascript object with 2 properties <code>actionCreators</code> and <code>reducer</code>.</p>
+				<p>the <code>actionCreators</code> property contains your action creators and those will be used to create
+				specialized dispatchers as shown in the counter example.</p>
+				<p>The <code>reducer</code> property contain a function with the following signature:</p>
+				<pre><code class="language-js">(state = defaultState, action) =&gt; state;</code></pre>
+				<p>in order to build complex application you can combine multiples simple module together to create more complex ones.
+				Combining multiples module is done by merging their <code>actionCreators</code> and merging or combining their <code>reducer</code> using <code>mergeReducers</code> or <code>combineReducers</code> accordingly.</p>
+				<a href="#example" id="example" style="color: inherit; text-decoration: none;">
+					<h4>example</h4>
+				</a>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { combineReducers } <span class="hljs-keyword">from</span> <span class="hljs-string">'@ezy/makina'</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> module1 <span class="hljs-keyword">from</span> <span class="hljs-string">'./module1'</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> module2 <span class="hljs-keyword">from</span> <span class="hljs-string">'./module2'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> actionCreators = {
+  ...module1.actionCreators,
+  ...module2.actionCreators
+};
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> reducer = combineReducers({
+  <span class="hljs-attr">module1</span>: module1.reducer,
+  <span class="hljs-attr">module2</span>: module2.reducer
+});</code></pre>
+				<p>@note actionCreators are optional, the dispatch object is also function that dispatch action directly.</p>
+				<a href="#defaultio-optional" id="defaultio-optional" style="color: inherit; text-decoration: none;">
+					<h3>defaultIO (optional)</h3>
+				</a>
+				<p>The defaultIO argument is an object containing functions to aceess the outside world.
+					When building complex applications I/O can make the testing process a real pain.
+					Makina provide you a way to deal with that by taking an <code>overrideIO</code> argument on the create function
+				of your state machine factory making a breeze to test scenarios.</p>
+				<p>note: the <code>dispatch</code> and <code>getState</code> functions of your state machine is considered as I/O and will be added</p>
+				<a href="#example-1" id="example-1" style="color: inherit; text-decoration: none;">
+					<h4>example</h4>
+				</a>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> test <span class="hljs-keyword">from</span> <span class="hljs-string">'ava'</span>;
+<span class="hljs-keyword">import</span> { factory } <span class="hljs-keyword">from</span> <span class="hljs-string">'./'</span>;
+
+test(<span class="hljs-string">'user try to login but network fail - ensure notification is created'</span>, <span class="hljs-keyword">async</span> t =&gt; {
+  <span class="hljs-keyword">const</span> stateMachine = factory.create({
+    <span class="hljs-comment">// we change the callApi I/O for this test case</span>
+    <span class="hljs-attr">callApi</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-built_in">Promise</span>.reject(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'ECONNABORTED'</span>))
+  });
+
+  <span class="hljs-keyword">await</span> stateMachine.dipatch.userLogin(<span class="hljs-string">'bob'</span>, <span class="hljs-string">'secretPassword'</span>);
+
+  t.is(stateMachine.scopeds.currentUser.getState(), <span class="hljs-literal">undefined</span>);
+
+  t.deepEqual(stateMachine.scopeds.notifications.getState(), [
+    {
+      <span class="hljs-attr">message</span>: <span class="hljs-string">'authentification failed, you seem to be offline'</span>
+    }
+  ]);
+});</code></pre>
+				<a href="#selectors-optional" id="selectors-optional" style="color: inherit; text-decoration: none;">
+					<h3>selectors (optional)</h3>
+				</a>
+				<p>the third and last argument <code>selectors</code> is a plain object containing selectors.
+					those selectors will be used to create scoped state machines.
+				they will be available under the <code>scopeds</code> property of your state machine.</p>
+				<p>to create a scoped state machine in a scoped state machine use <code>extendSelector</code>.</p>
+				<p>Ideally if you use a component based UI library every component of your UI should just
+				import the main state machine or a scoped one and that&#39;s it.</p>
+				<a href="#important" id="important" style="color: inherit; text-decoration: none;">
+					<h4>IMPORTANT</h4>
+				</a>
+				<p>you shouldn&#39;t memoize your selectors and they should return a stricly equal value for identical input.
+				To create complex selectors use <code>combineSelector</code> or <code>mergeSelectors</code>.</p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/barestatemachine.html" class="tsd-kind-icon">Bare<wbr>State<wbr>Machine</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/barestatemachinefactory.html" class="tsd-kind-icon">Bare<wbr>State<wbr>Machine<wbr>Factory</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/statemachine.html" class="tsd-kind-icon">State<wbr>Machine</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/statemachinefactory.html" class="tsd-kind-icon">State<wbr>Machine<wbr>Factory</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#middleware" class="tsd-kind-icon">Middleware</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#config" class="tsd-kind-icon">config</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#combinereducers" class="tsd-kind-icon">combine<wbr>Reducers</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#combineselectors" class="tsd-kind-icon">combine<wbr>Selectors</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#create" class="tsd-kind-icon">create</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#createbare" class="tsd-kind-icon">create<wbr>Bare</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#createobjectfactory" class="tsd-kind-icon">create<wbr>Object<wbr>Factory</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#extendselector" class="tsd-kind-icon">extend<wbr>Selector</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#mapobjectproprecursive" class="tsd-kind-icon">map<wbr>Object<wbr>Prop<wbr>Recursive</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#mergereducers" class="tsd-kind-icon">merge<wbr>Reducers</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#mergeselectors" class="tsd-kind-icon">merge<wbr>Selectors</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#onactiontypes" class="tsd-kind-icon">on<wbr>Action<wbr>Types</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#partializereducer" class="tsd-kind-icon">partialize<wbr>Reducer</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>
