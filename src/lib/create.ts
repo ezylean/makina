@@ -85,7 +85,7 @@ export function create<
   // store middlewares in reverse order.
   // @see: internal/compileCallChain.ts
   const middlewares: Array<(
-    io: { [K in keyof FULLIO<IO, R>]: FULLIO<IO, R>[K] }
+    io: { [K in keyof FULLIO<IO, R, C>]: FULLIO<IO, R, C>[K] }
   ) => (
     action: ReducerAction<R>,
     next: () => Promise<boolean>
@@ -99,7 +99,7 @@ export function create<
   ) {
     const bareStateMachine = bareStateMachineFactory.create(initialState);
 
-    const io: { [K in keyof FULLIO<IO, R>]: FULLIO<IO, R>[K] } = {
+    const io: { [K in keyof FULLIO<IO, R, C>]: FULLIO<IO, R, C>[K] } = {
       ...defaultIO,
       ...(overrideIO || {}),
       dispatch,
@@ -156,7 +156,7 @@ export function create<
     create: createStateMachine,
     use: (
       middleware: (
-        io: { [K in keyof FULLIO<IO, R>]: FULLIO<IO, R>[K] }
+        io: { [K in keyof FULLIO<IO, R, C>]: FULLIO<IO, R, C>[K] }
       ) => (
         action: ReducerAction<R>,
         next: () => Promise<boolean>

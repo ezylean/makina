@@ -80,8 +80,9 @@ export type UnionToIntersection<U> = (U extends any
 /**
  * @ignore
  */
-export type FULLIO<IO, R> = IO & {
-  dispatch: (action: ReducerAction<R>) => Promise<boolean>;
+export type FULLIO<IO, R, C> = IO & {
+  dispatch: ((action: ReducerAction<R>) => Promise<boolean>) &
+    { [K in keyof C]: (...a: ArgumentTypes<C[K]>) => Promise<boolean> };
   getState: () => ReducerState<R>;
 };
 
@@ -107,8 +108,8 @@ export type SelectorResult<SEL> = SEL extends (state: any) => infer S
 /**
  * a generic Middleware type for generic middlewares
  */
-export type Middleware<IO = { [key: string]: any }> = (
-  io: FULLIO<IO, Reducer>
+export type Middleware<IO = { [key: string]: any }, C = {}> = (
+  io: FULLIO<IO, Reducer, C>
 ) => (
   action: { type: string; [key: string]: any },
   next: () => Promise<boolean>
@@ -145,7 +146,7 @@ export interface StateMachineFactory<
    */
   use: (
     middleware: (
-      io: { [K in keyof FULLIO<IO, R>]: FULLIO<IO, R>[K] }
+      io: { [K in keyof FULLIO<IO, R, C>]: FULLIO<IO, R, C>[K] }
     ) => (
       action: ReducerAction<R>,
       next: () => Promise<boolean>
