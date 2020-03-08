@@ -1,6 +1,12 @@
-<h1 align="center">
-  <img src="https://raw.githubusercontent.com/ezylean/makina/master/logo.png" alt="Makina" width="200px" style="margin: 50px;"/>
-</h1>
+<p align="center">
+  <h1>
+    <br/>
+    <br/>
+    <img src="https://raw.githubusercontent.com/ezylean/makina/master/logo.png" alt="Makina" width="200px"/>
+    <br/>
+    <br/>
+  </h1>
+</p>
 
 <p align="center">create a backend in your frontend</p>
 
