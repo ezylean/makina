@@ -206,3 +206,5 @@ To create complex selectors use `combineSelector` or `mergeSelectors`.
 ## Links
 
 [Reference](https://ezylean.github.io/makina)
+
+[Vue Bindings](https://www.npmjs.com/package/@ezy/vue-makina)
