@@ -90,5 +90,6 @@
     "exclude": [
       "**/*.spec.js"
     ]
-  }
+  },
+  "sideEffects": false
 }
