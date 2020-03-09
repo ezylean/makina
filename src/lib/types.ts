@@ -106,6 +106,17 @@ export type SelectorResult<SEL> = SEL extends (state: any) => infer S
   : never;
 
 /**
+ * infer specific actions based on list of action types
+ * @see onActionTypes
+ *
+ * @ignore
+ */
+export type InferredAction<
+  T,
+  A extends { type: string; [key: string]: any }
+> = A extends { type: T; [key: string]: any } ? A : never;
+
+/**
  * a generic Middleware type for generic middlewares
  */
 export type Middleware<IO = { [key: string]: any }, C = {}> = (

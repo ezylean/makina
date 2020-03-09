@@ -160,11 +160,8 @@ test('use middleware modifier', t => {
   });
 
   factory.use(
-    onActionTypes(['INCREMENT'], ({ getState }) => (action, next) => {
-      if (
-        (action.type === 'INCREMENT' && getState() >= 2) ||
-        (action.type === 'DECREMENT' && getState() <= -2)
-      ) {
+    onActionTypes(['INCREMENT'], ({ getState }) => (_, next) => {
+      if (getState() >= 2) {
         return Promise.resolve(false);
       } else {
         return next();
