@@ -120,7 +120,7 @@ create(module, defaultIO, selectors) => StateMachineFactory
 
 ### module
 
-a module is a plain javascript object with 2 properties `actionCreators` and `reducer`.
+a module is a plain javascript object with 3 properties `actionCreators`, `reducer` and `middlewares`.
 
 the `actionCreators` property contains your action creators and those will be used to create
 specialized dispatchers as shown in the counter example.
@@ -131,8 +131,10 @@ The `reducer` property contain a function with the following signature:
 (state = defaultState, action) => state;
 ```
 
-in order to build complex application you can combine multiples simple module together to create more complex ones.
-Combining multiples module is done by merging their `actionCreators` and merging or combining their `reducer` using `mergeReducers` or `combineReducers` accordingly.
+The `middlewares` property contain an array of middleware, those will be run between your action creators and your reducers.
+
+In order to build complex application you can combine multiples simple module together to create more complex ones.
+Combining multiples module is done by merging their `actionCreators`, their `middlewares` and merging or combining their `reducer` using `mergeReducers` or `combineReducers` accordingly.
 
 #### example
 
@@ -150,13 +152,16 @@ export const reducer = combineReducers({
   module1: module1.reducer,
   module2: module2.reducer
 });
+
+export const middlewares = [...module1.middlewares, ...module2.middlewares];
 ```
 
 @note actionCreators are optional, the dispatch object is also function that dispatch action directly.
+@note2 middlewares are also optional.
 
 ### defaultIO (optional)
 
-The defaultIO argument is an object containing functions to aceess the outside world.
+The defaultIO argument is an object containing functions to access the outside world.
 When building complex applications I/O can make the testing process a real pain.
 Makina provide you a way to deal with that by taking an `overrideIO` argument on the create function
 of your state machine factory making a breeze to test scenarios.

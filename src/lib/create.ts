@@ -76,6 +76,14 @@ export function create<
   module: {
     actionCreators?: C;
     reducer: R;
+    middlewares?: Array<
+      (
+        io: { [K in keyof FULLIO<IO, R, C>]: FULLIO<IO, R, C>[K] }
+      ) => (
+        action: ReducerAction<R>,
+        next: () => Promise<boolean>
+      ) => Promise<boolean>
+    >;
   },
   defaultIO: IO = {} as any,
   selectors: SEL & {
@@ -89,7 +97,9 @@ export function create<
   ) => (
     action: ReducerAction<R>,
     next: () => Promise<boolean>
-  ) => Promise<boolean>> = [];
+  ) => Promise<boolean>> = module.middlewares
+    ? module.middlewares.reverse()
+    : [];
 
   const bareStateMachineFactory = createBare(module, selectors);
 

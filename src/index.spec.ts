@@ -1,4 +1,4 @@
-// tslint:disable:no-expression-statement
+// tslint:disable:no-expression-statement object-literal-sort-keys
 import test from 'ava';
 import {
   combineSelectors,
@@ -784,4 +784,61 @@ test('invalid selector', t => {
       consider using 'mergeSelectors' or 'combineSelectors'.
     `
   );
+});
+
+test('use middleware in module', t => {
+  const factory = create({
+    actionCreators: {
+      decrement: () => ({ type: 'DECREMENT' as 'DECREMENT' }),
+      increment: () => ({ type: 'INCREMENT' as 'INCREMENT' })
+    },
+    reducer: (
+      state: number = 0,
+      action: { type: 'INCREMENT' | 'DECREMENT' }
+    ) => {
+      switch (action.type) {
+        case 'INCREMENT':
+          return state + 1;
+        case 'DECREMENT':
+          return state - 1;
+        default:
+          return state;
+      }
+    },
+    middlewares: [
+      ({ getState }) => (action, next) => {
+        if (
+          (action.type === 'INCREMENT' && getState() >= 2) ||
+          (action.type === 'DECREMENT' && getState() <= -2)
+        ) {
+          return Promise.resolve(false);
+        } else {
+          return next();
+        }
+      }
+    ]
+  });
+
+  const { dispatch, subscribe } = factory.create();
+
+  const expected = [1, 2, 1, 0, -1, -2];
+  const result = [];
+
+  subscribe(state => {
+    result.push(state);
+  });
+
+  dispatch({ type: 'INCREMENT' });
+  dispatch({ type: 'INCREMENT' });
+  dispatch({ type: 'INCREMENT' });
+  dispatch({ type: 'INCREMENT' });
+  dispatch({ type: 'INCREMENT' });
+
+  dispatch({ type: 'DECREMENT' });
+  dispatch({ type: 'DECREMENT' });
+  dispatch({ type: 'DECREMENT' });
+  dispatch({ type: 'DECREMENT' });
+  dispatch({ type: 'DECREMENT' });
+
+  t.deepEqual(result, expected);
 });
