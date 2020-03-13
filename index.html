@@ -170,13 +170,14 @@ render();</code></pre>
 				<a href="#module" id="module" style="color: inherit; text-decoration: none;">
 					<h3>module</h3>
 				</a>
-				<p>a module is a plain javascript object with 2 properties <code>actionCreators</code> and <code>reducer</code>.</p>
+				<p>a module is a plain javascript object with 3 properties <code>actionCreators</code>, <code>reducer</code> and <code>middlewares</code>.</p>
 				<p>the <code>actionCreators</code> property contains your action creators and those will be used to create
 				specialized dispatchers as shown in the counter example.</p>
 				<p>The <code>reducer</code> property contain a function with the following signature:</p>
 				<pre><code class="language-js">(state = defaultState, action) =&gt; state;</code></pre>
-				<p>in order to build complex application you can combine multiples simple module together to create more complex ones.
-				Combining multiples module is done by merging their <code>actionCreators</code> and merging or combining their <code>reducer</code> using <code>mergeReducers</code> or <code>combineReducers</code> accordingly.</p>
+				<p>The <code>middlewares</code> property contain an array of middleware, those will be run between your action creators and your reducers.</p>
+				<p>In order to build complex application you can combine multiples simple module together to create more complex ones.
+				Combining multiples module is done by merging their <code>actionCreators</code>, their <code>middlewares</code> and merging or combining their <code>reducer</code> using <code>mergeReducers</code> or <code>combineReducers</code> accordingly.</p>
 				<a href="#example" id="example" style="color: inherit; text-decoration: none;">
 					<h4>example</h4>
 				</a>
@@ -192,12 +193,15 @@ render();</code></pre>
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> reducer = combineReducers({
   <span class="hljs-attr">module1</span>: module1.reducer,
   <span class="hljs-attr">module2</span>: module2.reducer
-});</code></pre>
-				<p>@note actionCreators are optional, the dispatch object is also function that dispatch action directly.</p>
+});
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> middlewares = [...module1.middlewares, ...module2.middlewares];</code></pre>
+				<p>@note actionCreators are optional, the dispatch object is also function that dispatch action directly.
+				@note2 middlewares are also optional.</p>
 				<a href="#defaultio-optional" id="defaultio-optional" style="color: inherit; text-decoration: none;">
 					<h3>defaultIO (optional)</h3>
 				</a>
-				<p>The defaultIO argument is an object containing functions to aceess the outside world.
+				<p>The defaultIO argument is an object containing functions to access the outside world.
 					When building complex applications I/O can make the testing process a real pain.
 					Makina provide you a way to deal with that by taking an <code>overrideIO</code> argument on the create function
 				of your state machine factory making a breeze to test scenarios.</p>
@@ -236,8 +240,26 @@ test(<span class="hljs-string">'user try to login but network fail - ensure noti
 				<a href="#important" id="important" style="color: inherit; text-decoration: none;">
 					<h4>IMPORTANT</h4>
 				</a>
-				<p>you shouldn&#39;t memoize your selectors and they should return a stricly equal value for identical input.
+				<p>you shouldn&#39;t memoize your selectors and they should return a strictly equal value for identical input.
 				To create complex selectors use <code>combineSelector</code> or <code>mergeSelectors</code>.</p>
+				<a href="#hot-module-replacement" id="hot-module-replacement" style="color: inherit; text-decoration: none;">
+					<h2>Hot module replacement</h2>
+				</a>
+				<p>The StateMachineFactory object expose a <code>replaceModule</code> function to replace the current module in the StateMachineFactory and in every StateMachine created without changing the current state.
+				This function is intented to be used for <a href="https://webpack.js.org/guides/hot-module-replacement/">hot module replacement</a>.</p>
+				<a href="#example-2" id="example-2" style="color: inherit; text-decoration: none;">
+					<h3>example</h3>
+				</a>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { create } <span class="hljs-keyword">from</span> <span class="hljs-string">'@ezy/makina'</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> root <span class="hljs-keyword">from</span> <span class="hljs-string">'./modules/index'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> factory = create(root);
+
+<span class="hljs-keyword">if</span> (<span class="hljs-built_in">module</span>.hot) {
+  <span class="hljs-built_in">module</span>.hot.accept(<span class="hljs-string">'./modules/index'</span>, () =&gt;
+    factory.replaceModule(<span class="hljs-built_in">require</span>(<span class="hljs-string">'./modules/index'</span>))
+  );
+}</code></pre>
 				<a href="#links" id="links" style="color: inherit; text-decoration: none;">
 					<h2>Links</h2>
 				</a>

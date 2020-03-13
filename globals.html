@@ -113,7 +113,7 @@
 					<div class="tsd-signature tsd-kind-icon">Middleware&lt;IO, C&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>io<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">FULLIO</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IO</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Reducer</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-symbol">(</span>action<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span>, next<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/7d0a0a7/src/lib/types.ts#L122">lib/types.ts:122</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/types.ts#L122">lib/types.ts:122</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -202,7 +202,7 @@
 					<div class="tsd-signature tsd-kind-icon">config<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>freeze<span class="tsd-signature-symbol">?: </span>&lt;S&gt;<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/7d0a0a7/src/lib/config.ts#L5">lib/config.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/config.ts#L5">lib/config.ts:5</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -268,7 +268,7 @@ config.freeze = process.env.NODE_ENV !== <span class="hljs-string">'production'<
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/7d0a0a7/src/lib/utils/combineReducers.ts#L32">lib/utils/combineReducers.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/combineReducers.ts#L32">lib/utils/combineReducers.ts:32</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -350,7 +350,7 @@ const combined = combineReducers({
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/7d0a0a7/src/lib/utils/combineSelectors.ts#L35">lib/utils/combineSelectors.ts:35</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/combineSelectors.ts#L35">lib/utils/combineSelectors.ts:35</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -428,13 +428,13 @@ const combined = combineReducers({
 					<a name="create" class="tsd-anchor"></a>
 					<h3>create</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">create&lt;C, R, IO, SEL&gt;<span class="tsd-signature-symbol">(</span>module<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>actionCreators<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">; </span>reducer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol"> }</span>, defaultIO<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IO</span>, selectors<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">SEL</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/statemachinefactory.html" class="tsd-signature-type">StateMachineFactory</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">IO</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">SEL</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">create&lt;C, R, IO, SEL&gt;<span class="tsd-signature-symbol">(</span>mod<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>actionCreators<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">; </span>middlewares<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">(</span>io<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-symbol">(</span>action<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ReducerAction</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span>, next<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span>reducer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol"> }</span>, defaultIO<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">IO</span>, selectors<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">SEL</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/statemachinefactory.html" class="tsd-signature-type">StateMachineFactory</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">IO</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">SEL</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/7d0a0a7/src/lib/create.ts#L70">lib/create.ts:70</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/create.ts#L72">lib/create.ts:72</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -505,10 +505,16 @@ stateMachine.getState()
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>module: <span class="tsd-signature-symbol">{ </span>actionCreators<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">; </span>reducer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol"> }</span></h5>
+									<h5>mod: <span class="tsd-signature-symbol">{ </span>actionCreators<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">; </span>middlewares<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">(</span>io<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-symbol">(</span>action<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ReducerAction</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span>, next<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span>reducer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol"> }</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>an object with 3 properties actionCreators, reducer and middlewares</p>
+									</div>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter">
 											<h5><span class="tsd-flag ts-flagOptional">Optional</span> action<wbr>Creators<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">C</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> middlewares<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">(</span>io<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-symbol">(</span>action<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ReducerAction</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span>, next<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h5>
 										</li>
 										<li class="tsd-parameter">
 											<h5>reducer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span></h5>
@@ -537,13 +543,13 @@ stateMachine.getState()
 					<a name="createbare" class="tsd-anchor"></a>
 					<h3>create<wbr>Bare</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Bare&lt;C, R, SEL&gt;<span class="tsd-signature-symbol">(</span>module<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>actionCreators<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">; </span>reducer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol"> }</span>, selectors<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">SEL</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/barestatemachinefactory.html" class="tsd-signature-type">BareStateMachineFactory</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">SEL</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Bare&lt;C, R, SEL&gt;<span class="tsd-signature-symbol">(</span>mod<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>actionCreators<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">; </span>reducer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol"> }</span>, selectors<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">SEL</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/barestatemachinefactory.html" class="tsd-signature-type">BareStateMachineFactory</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">SEL</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/7d0a0a7/src/lib/createBare.ts#L45">lib/createBare.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/createBare.ts#L46">lib/createBare.ts:46</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -589,7 +595,10 @@ stateMachine.getState()
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>module: <span class="tsd-signature-symbol">{ </span>actionCreators<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">; </span>reducer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol"> }</span></h5>
+									<h5>mod: <span class="tsd-signature-symbol">{ </span>actionCreators<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">; </span>reducer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol"> }</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>an object with 3 properties actionCreators, reducer and middlewares</p>
+									</div>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter">
 											<h5><span class="tsd-flag ts-flagOptional">Optional</span> action<wbr>Creators<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">C</span></h5>
@@ -621,7 +630,7 @@ stateMachine.getState()
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/7d0a0a7/src/lib/utils/extendSelector.ts#L10">lib/utils/extendSelector.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/extendSelector.ts#L10">lib/utils/extendSelector.ts:10</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -690,7 +699,7 @@ stateMachine.getState()
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/7d0a0a7/src/lib/utils/mergeReducers.ts#L32">lib/utils/mergeReducers.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/mergeReducers.ts#L32">lib/utils/mergeReducers.ts:32</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -784,7 +793,7 @@ const merged = mergeReducers(
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/7d0a0a7/src/lib/utils/mergeSelectors.ts#L38">lib/utils/mergeSelectors.ts:38</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/mergeSelectors.ts#L38">lib/utils/mergeSelectors.ts:38</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -886,7 +895,7 @@ const merged = mergeReducers(
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/7d0a0a7/src/lib/utils/mergeSelectors.ts#L43">lib/utils/mergeSelectors.ts:43</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/mergeSelectors.ts#L43">lib/utils/mergeSelectors.ts:43</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -948,7 +957,7 @@ const merged = mergeReducers(
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/7d0a0a7/src/lib/utils/mergeSelectors.ts#L54">lib/utils/mergeSelectors.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/mergeSelectors.ts#L54">lib/utils/mergeSelectors.ts:54</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1010,7 +1019,7 @@ const merged = mergeReducers(
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/7d0a0a7/src/lib/utils/mergeSelectors.ts#L69">lib/utils/mergeSelectors.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/mergeSelectors.ts#L69">lib/utils/mergeSelectors.ts:69</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1072,7 +1081,7 @@ const merged = mergeReducers(
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/7d0a0a7/src/lib/utils/mergeSelectors.ts#L85">lib/utils/mergeSelectors.ts:85</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/mergeSelectors.ts#L85">lib/utils/mergeSelectors.ts:85</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1134,7 +1143,7 @@ const merged = mergeReducers(
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/7d0a0a7/src/lib/utils/mergeSelectors.ts#L102">lib/utils/mergeSelectors.ts:102</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/mergeSelectors.ts#L102">lib/utils/mergeSelectors.ts:102</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1196,7 +1205,7 @@ const merged = mergeReducers(
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/7d0a0a7/src/lib/utils/mergeSelectors.ts#L128">lib/utils/mergeSelectors.ts:128</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/mergeSelectors.ts#L128">lib/utils/mergeSelectors.ts:128</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1258,7 +1267,7 @@ const merged = mergeReducers(
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/7d0a0a7/src/lib/utils/mergeSelectors.ts#L156">lib/utils/mergeSelectors.ts:156</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/mergeSelectors.ts#L156">lib/utils/mergeSelectors.ts:156</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1320,7 +1329,7 @@ const merged = mergeReducers(
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/7d0a0a7/src/lib/utils/mergeSelectors.ts#L186">lib/utils/mergeSelectors.ts:186</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/mergeSelectors.ts#L186">lib/utils/mergeSelectors.ts:186</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1382,7 +1391,7 @@ const merged = mergeReducers(
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/7d0a0a7/src/lib/utils/mergeSelectors.ts#L218">lib/utils/mergeSelectors.ts:218</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/mergeSelectors.ts#L218">lib/utils/mergeSelectors.ts:218</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1453,7 +1462,7 @@ const merged = mergeReducers(
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/7d0a0a7/src/lib/utils/onActionTypes.ts#L22">lib/utils/onActionTypes.ts:22</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/onActionTypes.ts#L22">lib/utils/onActionTypes.ts:22</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1565,7 +1574,7 @@ factory.use(onActionTypes([<span class="hljs-string">'INCREMENT'</span>], logAct
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/7d0a0a7/src/lib/utils/partializeReducer.ts#L15">lib/utils/partializeReducer.ts:15</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/partializeReducer.ts#L15">lib/utils/partializeReducer.ts:15</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
