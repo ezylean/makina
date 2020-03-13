@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/ezylean/makina/compare/v1.0.7...v1.1.0) (2020-03-13)
+
+
+### Features
+
+* **replacemodule:** add replaceModule to StateMachineFactory to allow hot module replacement ([cecf0d2](https://github.com/ezylean/makina/commit/cecf0d2))
+
+
+
 ### [1.0.7](https://github.com/ezylean/makina/compare/v1.0.6...v1.0.7) (2020-03-09)
 
 
