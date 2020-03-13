@@ -863,10 +863,10 @@ test('replace module', t => {
       }
     },
     middlewares: [
-      ({ getState }) => (action, next) => {
+      io => (action, next) => {
         if (
-          (action.type === 'INCREMENT' && getState() >= 2) ||
-          (action.type === 'DECREMENT' && getState() <= -2)
+          (action.type === 'INCREMENT' && io.getState() >= 2) ||
+          (action.type === 'DECREMENT' && io.getState() <= -2)
         ) {
           return Promise.resolve(false);
         } else {
@@ -926,9 +926,9 @@ test('replace module', t => {
     ]
   });
 
-  //@ts-ignore
+  // @ts-ignore
   t.is(typeof dispatch.plus, 'function');
-  //@ts-ignore
+  // @ts-ignore
   dispatch.plus(10);
   t.is(getState(), -2 + 10 * 2);
 
@@ -943,9 +943,9 @@ test('replace module', t => {
     }
   });
 
-  //@ts-ignore
+  // @ts-ignore
   t.is(typeof dispatch.plus, 'undefined');
-  //@ts-ignore
+  // @ts-ignore
   dispatch({ type: 'PLUS', value: 10 });
   t.is(getState(), 18 + 10);
 });

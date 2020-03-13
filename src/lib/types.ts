@@ -130,20 +130,20 @@ export type Middleware<IO = { [key: string]: any }, C = {}> = (
  * a generic Module type for module replacement
  * @ignore
  */
-export type Module = {
+export interface Module {
   actionCreators?: { [key: string]: ActionCreator };
   reducer: Reducer;
-  middlewares?: Array<Middleware>;
-};
+  middlewares?: Middleware[];
+}
 
 /**
  * a generic BareModule type for module replacement
  * @ignore
  */
-export type BareModule = {
+export interface BareModule {
   actionCreators?: { [key: string]: ActionCreator };
   reducer: Reducer;
-};
+}
 
 /**
  * @ignore
