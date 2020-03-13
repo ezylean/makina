@@ -1,5 +1,7 @@
 import { createBare } from './createBare';
 import { compileCallChain } from './internal/compileCallChain';
+import { createSpecializedDispatchers } from './internal/createSpecializedDispatchers';
+import { CustomSignal } from './internal/CustomSignal';
 import { mapObjectPropRecursive } from './internal/mapObjectPropRecursive';
 
 import {
@@ -62,7 +64,7 @@ import {
  * // => 11
  * ```
  *
- * @param reducer     a reducer
+ * @param mod         an object with 3 properties actionCreators, reducer and middlewares
  * @param defaultIO   an object with function for accessing the outside world
  * @param selectors   an object with selector functions
  * @returns           a StateMachineFactory
@@ -73,7 +75,7 @@ export function create<
   IO = {},
   SEL extends { [key: string]: (state: Readonly<ReducerState<R>>) => any } = {}
 >(
-  module: {
+  mod: {
     actionCreators?: C;
     reducer: R;
     middlewares?: Array<
@@ -90,18 +92,19 @@ export function create<
     [key: string]: (state: Readonly<ReducerState<R>>) => any;
   } = {} as any
 ): StateMachineFactory<C, R, IO, SEL> {
-  // store middlewares in reverse order.
+  // for hot reloading
+  const modReplaced = new CustomSignal<typeof mod, void>();
+
+  // store global middlewares in reverse order.
   // @see: internal/compileCallChain.ts
   const middlewares: Array<(
     io: { [K in keyof FULLIO<IO, R, C>]: FULLIO<IO, R, C>[K] }
   ) => (
     action: ReducerAction<R>,
     next: () => Promise<boolean>
-  ) => Promise<boolean>> = module.middlewares
-    ? module.middlewares.reverse()
-    : [];
+  ) => Promise<boolean>> = [];
 
-  const bareStateMachineFactory = createBare(module, selectors);
+  const bareStateMachineFactory = createBare(mod, selectors);
 
   function createStateMachine(
     overrideIO?: Partial<IO>,
@@ -117,8 +120,13 @@ export function create<
     } as any;
 
     // "compile" the middleware chain and the implementation function
-    const callChain = compileCallChain<ReducerAction<R>, boolean>(
-      middlewares.map(middleware => middleware(io)),
+    let callChain = compileCallChain<ReducerAction<R>, boolean>(
+      (mod.middlewares || [])
+        // we clone the middleware list here to avoid mutate the original when reverse
+        .slice()
+        .reverse()
+        .concat(middlewares)
+        .map(middleware => middleware(io)),
       bareStateMachine.dispatch
     );
 
@@ -130,17 +138,35 @@ export function create<
       }
     }
 
-    if (module.actionCreators) {
+    Object.assign(
+      dispatch,
+      createSpecializedDispatchers(dispatch, mod.actionCreators || {})
+    );
+
+    // when we recieve a modReplaced event we replace the middleware callChain and recreate the specialized dispatchers
+    modReplaced.subscribe(function replaceMod(newMod) {
+      // replace middleware callChain
+      callChain = compileCallChain<ReducerAction<R>, boolean>(
+        (newMod.middlewares || [])
+          // we clone the middleware list here to avoid mutate the original when reverse
+          .slice()
+          .reverse()
+          .concat(middlewares)
+          .map(middleware => middleware(io)),
+        bareStateMachine.dispatch
+      );
+
+      // replace specialized dispatchers
       Object.assign(
         dispatch,
-        // create dispatchers from actionCreators
-        Object.keys(module.actionCreators).reduce((result, name) => {
-          const actionCreator = module.actionCreators[name];
-          result[name] = (...args) => dispatch(actionCreator(...args) as any);
+        // remove the old specialized dispatchers before write the new ones
+        Object.keys(dispatch).reduce((result, name) => {
+          result[name] = undefined;
           return result;
-        }, {} as any)
+        }, {}),
+        createSpecializedDispatchers(dispatch, newMod.actionCreators || {})
       );
-    }
+    });
 
     // replace the dispatch function for every scoped to include the right dispatch
     const scopeds = mapObjectPropRecursive(
@@ -162,8 +188,14 @@ export function create<
     };
   }
 
+  function replaceModule(newMod: typeof mod) {
+    bareStateMachineFactory.replaceModule(newMod);
+    modReplaced.dispatch(newMod);
+  }
+
   const stateMachineFactory = {
     create: createStateMachine,
+    replaceModule,
     use: (
       middleware: (
         io: { [K in keyof FULLIO<IO, R, C>]: FULLIO<IO, R, C>[K] }

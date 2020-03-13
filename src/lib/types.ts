@@ -127,6 +127,25 @@ export type Middleware<IO = { [key: string]: any }, C = {}> = (
 ) => Promise<boolean>;
 
 /**
+ * a generic Module type for module replacement
+ * @ignore
+ */
+export type Module = {
+  actionCreators?: { [key: string]: ActionCreator };
+  reducer: Reducer;
+  middlewares?: Array<Middleware>;
+};
+
+/**
+ * a generic BareModule type for module replacement
+ * @ignore
+ */
+export type BareModule = {
+  actionCreators?: { [key: string]: ActionCreator };
+  reducer: Reducer;
+};
+
+/**
  * @ignore
  */
 type ArgumentTypes<T> = T extends (...args: infer U) => any ? U : never;
@@ -163,6 +182,13 @@ export interface StateMachineFactory<
       next: () => Promise<boolean>
     ) => Promise<boolean>
   ) => StateMachineFactory<C, R, IO>;
+  /**
+   * replace the current module in the StateMachineFactory and in every StateMachine created
+   *
+   * @param newMod        an object with 3 properties: actionCreators, reducer and middlewares
+   * @returns             void
+   */
+  replaceModule: (newMod: Module) => void;
 }
 
 /**
@@ -228,6 +254,13 @@ export interface BareStateMachineFactory<
   create: (
     initialState?: InputReducerState<R>
   ) => BareStateMachine<C, ReducerState<R>, ReducerAction<R>, SEL>;
+  /**
+   * replace the current module in the BareStateMachineFactory and in every BareStateMachine created
+   *
+   * @param newMod        an object with 2 properties: actionCreators and reducer
+   * @returns             void
+   */
+  replaceModule: (newMod: BareModule) => void;
 }
 
 /**

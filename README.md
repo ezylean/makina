@@ -205,8 +205,28 @@ import the main state machine or a scoped one and that's it.
 
 #### IMPORTANT
 
-you shouldn't memoize your selectors and they should return a stricly equal value for identical input.
+you shouldn't memoize your selectors and they should return a strictly equal value for identical input.
 To create complex selectors use `combineSelector` or `mergeSelectors`.
+
+## Hot module replacement
+
+The StateMachineFactory object expose a `replaceModule` function to replace the current module in the StateMachineFactory and in every StateMachine created without changing the current state.
+This function is intented to be used for [hot module replacement](https://webpack.js.org/guides/hot-module-replacement/).
+
+### example
+
+```js
+import { create } from '@ezy/makina';
+import * as root from './modules/index';
+
+export const factory = create(root);
+
+if (module.hot) {
+  module.hot.accept('./modules/index', () =>
+    factory.replaceModule(require('./modules/index'))
+  );
+}
+```
 
 ## Links
 

@@ -842,3 +842,110 @@ test('use middleware in module', t => {
 
   t.deepEqual(result, expected);
 });
+
+test('replace module', t => {
+  const factory = create({
+    actionCreators: {
+      decrement: () => ({ type: 'DECREMENT' as 'DECREMENT' }),
+      increment: () => ({ type: 'INCREMENT' as 'INCREMENT' })
+    },
+    reducer: (
+      state: number = 0,
+      action: { type: 'INCREMENT' | 'DECREMENT' }
+    ) => {
+      switch (action.type) {
+        case 'INCREMENT':
+          return state + 1;
+        case 'DECREMENT':
+          return state - 1;
+        default:
+          return state;
+      }
+    },
+    middlewares: [
+      ({ getState }) => (action, next) => {
+        if (
+          (action.type === 'INCREMENT' && getState() >= 2) ||
+          (action.type === 'DECREMENT' && getState() <= -2)
+        ) {
+          return Promise.resolve(false);
+        } else {
+          return next();
+        }
+      }
+    ]
+  });
+
+  const { dispatch, subscribe, getState } = factory.create();
+
+  const expected = [1, 2, 1, 0, -1, -2];
+  const result = [];
+
+  const unsubscribe = subscribe(state => {
+    result.push(state);
+  });
+
+  dispatch({ type: 'INCREMENT' });
+  dispatch({ type: 'INCREMENT' });
+  dispatch({ type: 'INCREMENT' });
+  dispatch({ type: 'INCREMENT' });
+  dispatch({ type: 'INCREMENT' });
+
+  dispatch({ type: 'DECREMENT' });
+  dispatch({ type: 'DECREMENT' });
+  dispatch({ type: 'DECREMENT' });
+  dispatch({ type: 'DECREMENT' });
+  dispatch({ type: 'DECREMENT' });
+
+  t.deepEqual(result, expected);
+
+  unsubscribe();
+
+  factory.replaceModule({
+    actionCreators: {
+      plus: (value: number) => ({
+        type: 'PLUS' as 'PLUS',
+        value
+      })
+    },
+    reducer: (state: number = 0, action: { type: 'PLUS'; value: number }) => {
+      switch (action.type) {
+        case 'PLUS':
+          return state + action.value;
+        default:
+          return state;
+      }
+    },
+    middlewares: [
+      () => (action, next) => {
+        if (action.type === 'PLUS') {
+          action.value *= 2;
+        }
+        return next();
+      }
+    ]
+  });
+
+  //@ts-ignore
+  t.is(typeof dispatch.plus, 'function');
+  //@ts-ignore
+  dispatch.plus(10);
+  t.is(getState(), -2 + 10 * 2);
+
+  factory.replaceModule({
+    reducer: (state: number = 0, action: { type: 'PLUS'; value: number }) => {
+      switch (action.type) {
+        case 'PLUS':
+          return state + action.value;
+        default:
+          return state;
+      }
+    }
+  });
+
+  //@ts-ignore
+  t.is(typeof dispatch.plus, 'undefined');
+  //@ts-ignore
+  dispatch({ type: 'PLUS', value: 10 });
+  t.is(getState(), 18 + 10);
+});
