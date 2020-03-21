@@ -32,6 +32,15 @@ export function onActionTypes<
     next: () => Promise<boolean>
   ) => Promise<boolean>
 ) {
+  if (actionTypes.length === 1) {
+    const actionType = actionTypes[0];
+    return (io: IO) => {
+      const run = middleware(io);
+      return (action: InferredAction<T, A>, next: () => Promise<boolean>) => {
+        return action.type === actionType ? run(action, next) : next();
+      };
+    };
+  }
   return (io: IO) => {
     const run = middleware(io);
     return (action: InferredAction<T, A>, next: () => Promise<boolean>) => {
