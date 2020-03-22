@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>BareStateMachineFactory | @ezy/makina</title>
+	<title>CombinedModule | @ezy/makina</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="barestatemachinefactory.html">BareStateMachineFactory</a>
+					<a href="combinedmodule.html">CombinedModule</a>
 				</li>
 			</ul>
-			<h1>Interface BareStateMachineFactory&lt;C, R, SEL&gt;</h1>
+			<h1>Interface CombinedModule&lt;IO, S&gt;</h1>
 		</div>
 	</div>
 </header>
@@ -69,21 +69,23 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A BareStateMachineFactory define how the BareStateMachines he create behave.</p>
+						<p>combined module</p>
 					</div>
+					<dl class="tsd-comment-tags">
+						<dt>see</dt>
+						<dd><p><a href="../globals.html#createmodule">createModule</a></p>
+						</dd>
+					</dl>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-type-parameters">
 				<h3>Type parameters</h3>
 				<ul class="tsd-type-parameters">
 					<li>
-						<h4>C<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span></h4>
+						<h4>IO</h4>
 					</li>
 					<li>
-						<h4>R<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Reducer</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ActionTypeOf</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
-					</li>
-					<li>
-						<h4>SEL<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span></h4>
+						<h4>S<span class="tsd-signature-symbol">: </span><a href="combinedspec.html" class="tsd-signature-type">CombinedSpec</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IO</span><span class="tsd-signature-symbol">&gt;</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -91,7 +93,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">BareStateMachineFactory</span>
+						<span class="target">CombinedModule</span>
 					</li>
 				</ul>
 			</section>
@@ -102,8 +104,10 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="barestatemachinefactory.html#create" class="tsd-kind-icon">create</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="barestatemachinefactory.html#replacemodule" class="tsd-kind-icon">replace<wbr>Module</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="combinedmodule.html#actioncreators" class="tsd-kind-icon">action<wbr>Creators</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="combinedmodule.html#actiontypes" class="tsd-kind-icon">action<wbr>Types</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="combinedmodule.html#middlewares" class="tsd-kind-icon">middlewares</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="combinedmodule.html#reducer" class="tsd-kind-icon">reducer</a></li>
 							</ul>
 						</section>
 					</div>
@@ -112,92 +116,44 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="create" class="tsd-anchor"></a>
-					<h3>create</h3>
-					<div class="tsd-signature tsd-kind-icon">create<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>initialState<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">InputReducerState</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="barestatemachine.html" class="tsd-signature-type">BareStateMachine</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReducerState</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReducerAction</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">SEL</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<a name="actioncreators" class="tsd-anchor"></a>
+					<h3>action<wbr>Creators</h3>
+					<div class="tsd-signature tsd-kind-icon">action<wbr>Creators<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">UnionToIntersection</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"modules"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"modules"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"actionCreators"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/types.ts#L261">lib/types.ts:261</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/utils/createCombinedModule.ts#L47">lib/utils/createCombinedModule.ts:47</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>create a new BareStateMachine</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>param</dt>
-							<dd><p>an initialState (useful for testing or to restart from a saved state)</p>
-							</dd>
-							<dt>returns</dt>
-							<dd><p>the BareStateMachine created</p>
-							</dd>
-						</dl>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-siganture">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>initialState<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">InputReducerState</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="barestatemachine.html" class="tsd-signature-type">BareStateMachine</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReducerState</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReducerAction</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">SEL</span><span class="tsd-signature-symbol">&gt;</span></li>
-								</ul>
-								<ul class="tsd-descriptions">
-									<li class="tsd-description">
-										<h4 class="tsd-parameters-title">Parameters</h4>
-										<ul class="tsd-parameters">
-											<li>
-												<h5><span class="tsd-flag ts-flagOptional">Optional</span> initialState: <span class="tsd-signature-type">InputReducerState</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span></h5>
-											</li>
-										</ul>
-										<h4 class="tsd-returns-title">Returns <a href="barestatemachine.html" class="tsd-signature-type">BareStateMachine</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReducerState</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ReducerAction</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">SEL</span><span class="tsd-signature-symbol">&gt;</span></h4>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="replacemodule" class="tsd-anchor"></a>
-					<h3>replace<wbr>Module</h3>
-					<div class="tsd-signature tsd-kind-icon">replace<wbr>Module<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>newMod<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BareModule</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></div>
+					<a name="actiontypes" class="tsd-anchor"></a>
+					<h3>action<wbr>Types</h3>
+					<div class="tsd-signature tsd-kind-icon">action<wbr>Types<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"modules"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"modules"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"actionTypes"</span><span class="tsd-signature-symbol">]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/types.ts#L270">lib/types.ts:270</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/utils/createCombinedModule.ts#L50">lib/utils/createCombinedModule.ts:50</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>replace the current module in the BareStateMachineFactory and in every BareStateMachine created</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>param</dt>
-							<dd><p>an object with 2 properties: actionCreators and reducer</p>
-							</dd>
-							<dt>returns</dt>
-							<dd><p>void</p>
-							</dd>
-						</dl>
-					</div>
-					<div class="tsd-type-declaration">
-						<h4>Type declaration</h4>
-						<ul class="tsd-parameters">
-							<li class="tsd-parameter-siganture">
-								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>newMod<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BareModule</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-								</ul>
-								<ul class="tsd-descriptions">
-									<li class="tsd-description">
-										<h4 class="tsd-parameters-title">Parameters</h4>
-										<ul class="tsd-parameters">
-											<li>
-												<h5>newMod: <span class="tsd-signature-type">BareModule</span></h5>
-											</li>
-										</ul>
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-									</li>
-								</ul>
-							</li>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="middlewares" class="tsd-anchor"></a>
+					<h3>middlewares</h3>
+					<div class="tsd-signature tsd-kind-icon">middlewares<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../globals.html#middleware" class="tsd-signature-type">Middleware</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IO</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/utils/createCombinedModule.ts#L56">lib/utils/createCombinedModule.ts:56</a></li>
 						</ul>
-					</div>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="reducer" class="tsd-anchor"></a>
+					<h3>reducer</h3>
+					<div class="tsd-signature tsd-kind-icon">reducer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Combinedreducer</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/utils/createCombinedModule.ts#L51">lib/utils/createCombinedModule.ts:51</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 		</div>
@@ -214,24 +170,30 @@
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="barestatemachine.html" class="tsd-kind-icon">Bare<wbr>State<wbr>Machine</a>
 					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="barestatemachinefactory.html" class="tsd-kind-icon">Bare<wbr>State<wbr>Machine<wbr>Factory</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-has-type-parameter">
-						<a href="barestatemachinefactory.html" class="tsd-kind-icon">Bare<wbr>State<wbr>Machine<wbr>Factory</a>
+						<a href="combinedmodule.html" class="tsd-kind-icon">Combined<wbr>Module</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="barestatemachinefactory.html#create" class="tsd-kind-icon">create</a>
+								<a href="combinedmodule.html#actioncreators" class="tsd-kind-icon">action<wbr>Creators</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="barestatemachinefactory.html#replacemodule" class="tsd-kind-icon">replace<wbr>Module</a>
+								<a href="combinedmodule.html#actiontypes" class="tsd-kind-icon">action<wbr>Types</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="combinedmodule.html#middlewares" class="tsd-kind-icon">middlewares</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="combinedmodule.html#reducer" class="tsd-kind-icon">reducer</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="combinedmodule.html" class="tsd-kind-icon">Combined<wbr>Module</a>
-					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="combinedspec.html" class="tsd-kind-icon">Combined<wbr>Spec</a>
 					</li>

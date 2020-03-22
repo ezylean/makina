@@ -162,6 +162,19 @@ render();</code></pre>
     <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"index.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre>
+				<a href="#immutable-state-guarantee" id="immutable-state-guarantee" style="color: inherit; text-decoration: none;">
+					<h2>immutable state guarantee</h2>
+				</a>
+				<p>Makina provide a way to ensure your application state is never mutated.
+					set in the config object a freeze function to deep freeze your state when a new state is created.
+				Deep freezing objects can be costly from a performance standpoint, it&#39;s recommended to disable it in production.</p>
+				<a href="#example" id="example" style="color: inherit; text-decoration: none;">
+					<h3>Example</h3>
+				</a>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { config } <span class="hljs-keyword">from</span> <span class="hljs-string">'@ezy/makina'</span>;
+<span class="hljs-comment">// immutable state in all environnments except production</span>
+config.freeze =
+  process.env.NODE_ENV !== <span class="hljs-string">'production'</span> ? <span class="hljs-built_in">require</span>(<span class="hljs-string">'deep-freeze-strict'</span>) : <span class="hljs-literal">null</span>;</code></pre>
 				<a href="#building-complex-app" id="building-complex-app" style="color: inherit; text-decoration: none;">
 					<h2>Building complex app</h2>
 				</a>
@@ -178,7 +191,7 @@ render();</code></pre>
 				<p>The <code>middlewares</code> property contain an array of middleware, those will be run between your action creators and your reducers.</p>
 				<p>In order to build complex application you can combine multiples simple module together to create more complex ones.
 				Combining multiples module is done by merging their <code>actionCreators</code>, their <code>middlewares</code> and merging or combining their <code>reducer</code> using <code>mergeReducers</code> or <code>combineReducers</code> accordingly.</p>
-				<a href="#example" id="example" style="color: inherit; text-decoration: none;">
+				<a href="#example-1" id="example-1" style="color: inherit; text-decoration: none;">
 					<h4>example</h4>
 				</a>
 				<pre><code class="language-js"><span class="hljs-keyword">import</span> { combineReducers } <span class="hljs-keyword">from</span> <span class="hljs-string">'@ezy/makina'</span>;
@@ -198,6 +211,17 @@ render();</code></pre>
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> middlewares = [...module1.middlewares, ...module2.middlewares];</code></pre>
 				<p>@note actionCreators are optional, the dispatch object is also function that dispatch action directly.
 				@note2 middlewares are also optional.</p>
+				<p>or using the <code>createModule</code> helper function:</p>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { createModule } <span class="hljs-keyword">from</span> <span class="hljs-string">'@ezy/makina'</span>;
+<span class="hljs-keyword">import</span> module1 <span class="hljs-keyword">from</span> <span class="hljs-string">'./module1'</span>;
+<span class="hljs-keyword">import</span> module2 <span class="hljs-keyword">from</span> <span class="hljs-string">'./module2'</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> createModule({
+  <span class="hljs-attr">modules</span>: {
+    module1,
+    module2
+  }
+});</code></pre>
 				<a href="#defaultio-optional" id="defaultio-optional" style="color: inherit; text-decoration: none;">
 					<h3>defaultIO (optional)</h3>
 				</a>
@@ -206,7 +230,7 @@ render();</code></pre>
 					Makina provide you a way to deal with that by taking an <code>overrideIO</code> argument on the create function
 				of your state machine factory making a breeze to test scenarios.</p>
 				<p>note: the <code>dispatch</code> and <code>getState</code> functions of your state machine is considered as I/O and will be added</p>
-				<a href="#example-1" id="example-1" style="color: inherit; text-decoration: none;">
+				<a href="#example-2" id="example-2" style="color: inherit; text-decoration: none;">
 					<h4>example</h4>
 				</a>
 				<pre><code class="language-js"><span class="hljs-keyword">import</span> test <span class="hljs-keyword">from</span> <span class="hljs-string">'ava'</span>;
@@ -241,13 +265,13 @@ test(<span class="hljs-string">'user try to login but network fail - ensure noti
 					<h4>IMPORTANT</h4>
 				</a>
 				<p>you shouldn&#39;t memoize your selectors and they should return a strictly equal value for identical input.
-				To create complex selectors use <code>combineSelector</code> or <code>mergeSelectors</code>.</p>
+				To create complex selectors use <code>combineSelectors</code> or <code>mergeSelectors</code>.</p>
 				<a href="#hot-module-replacement" id="hot-module-replacement" style="color: inherit; text-decoration: none;">
 					<h2>Hot module replacement</h2>
 				</a>
 				<p>The StateMachineFactory object expose a <code>replaceModule</code> function to replace the current module in the StateMachineFactory and in every StateMachine created without changing the current state.
 				This function is intented to be used for <a href="https://webpack.js.org/guides/hot-module-replacement/">hot module replacement</a>.</p>
-				<a href="#example-2" id="example-2" style="color: inherit; text-decoration: none;">
+				<a href="#example-3" id="example-3" style="color: inherit; text-decoration: none;">
 					<h3>example</h3>
 				</a>
 				<pre><code class="language-js"><span class="hljs-keyword">import</span> { create } <span class="hljs-keyword">from</span> <span class="hljs-string">'@ezy/makina'</span>;
@@ -284,10 +308,28 @@ test(<span class="hljs-string">'user try to login but network fail - ensure noti
 						<a href="interfaces/barestatemachinefactory.html" class="tsd-kind-icon">Bare<wbr>State<wbr>Machine<wbr>Factory</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/combinedmodule.html" class="tsd-kind-icon">Combined<wbr>Module</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/combinedspec.html" class="tsd-kind-icon">Combined<wbr>Spec</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/makinamodule.html" class="tsd-kind-icon">Makina<wbr>Module</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/simplemodule.html" class="tsd-kind-icon">Simple<wbr>Module</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/simplespec.html" class="tsd-kind-icon">Simple<wbr>Spec</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/statemachine.html" class="tsd-kind-icon">State<wbr>Machine</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/statemachinefactory.html" class="tsd-kind-icon">State<wbr>Machine<wbr>Factory</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#makinaspec" class="tsd-kind-icon">Makina<wbr>Spec</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="globals.html#middleware" class="tsd-kind-icon">Middleware</a>
@@ -306,6 +348,9 @@ test(<span class="hljs-string">'user try to login but network fail - ensure noti
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#createbare" class="tsd-kind-icon">create<wbr>Bare</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#createmodule" class="tsd-kind-icon">create<wbr>Module</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#extendselector" class="tsd-kind-icon">extend<wbr>Selector</a>

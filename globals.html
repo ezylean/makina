@@ -72,6 +72,11 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-interface tsd-has-type-parameter"><a href="interfaces/barestatemachine.html" class="tsd-kind-icon">Bare<wbr>State<wbr>Machine</a></li>
 								<li class="tsd-kind-interface tsd-has-type-parameter"><a href="interfaces/barestatemachinefactory.html" class="tsd-kind-icon">Bare<wbr>State<wbr>Machine<wbr>Factory</a></li>
+								<li class="tsd-kind-interface tsd-has-type-parameter"><a href="interfaces/combinedmodule.html" class="tsd-kind-icon">Combined<wbr>Module</a></li>
+								<li class="tsd-kind-interface tsd-has-type-parameter"><a href="interfaces/combinedspec.html" class="tsd-kind-icon">Combined<wbr>Spec</a></li>
+								<li class="tsd-kind-interface tsd-has-type-parameter"><a href="interfaces/makinamodule.html" class="tsd-kind-icon">Makina<wbr>Module</a></li>
+								<li class="tsd-kind-interface tsd-has-type-parameter"><a href="interfaces/simplemodule.html" class="tsd-kind-icon">Simple<wbr>Module</a></li>
+								<li class="tsd-kind-interface tsd-has-type-parameter"><a href="interfaces/simplespec.html" class="tsd-kind-icon">Simple<wbr>Spec</a></li>
 								<li class="tsd-kind-interface tsd-has-type-parameter"><a href="interfaces/statemachine.html" class="tsd-kind-icon">State<wbr>Machine</a></li>
 								<li class="tsd-kind-interface tsd-has-type-parameter"><a href="interfaces/statemachinefactory.html" class="tsd-kind-icon">State<wbr>Machine<wbr>Factory</a></li>
 							</ul>
@@ -79,6 +84,7 @@
 						<section class="tsd-index-section ">
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="globals.html#makinaspec" class="tsd-kind-icon">Makina<wbr>Spec</a></li>
 								<li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="globals.html#middleware" class="tsd-kind-icon">Middleware</a></li>
 							</ul>
 						</section>
@@ -95,6 +101,7 @@
 								<li class="tsd-kind-function tsd-has-type-parameter"><a href="globals.html#combineselectors" class="tsd-kind-icon">combine<wbr>Selectors</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter"><a href="globals.html#create" class="tsd-kind-icon">create</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter"><a href="globals.html#createbare" class="tsd-kind-icon">create<wbr>Bare</a></li>
+								<li class="tsd-kind-function tsd-has-type-parameter"><a href="globals.html#createmodule" class="tsd-kind-icon">create<wbr>Module</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter"><a href="globals.html#extendselector" class="tsd-kind-icon">extend<wbr>Selector</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter"><a href="globals.html#mergereducers" class="tsd-kind-icon">merge<wbr>Reducers</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter"><a href="globals.html#mergeselectors" class="tsd-kind-icon">merge<wbr>Selectors</a></li>
@@ -108,12 +115,34 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Type aliases</h2>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-has-type-parameter">
-					<a name="middleware" class="tsd-anchor"></a>
-					<h3>Middleware</h3>
-					<div class="tsd-signature tsd-kind-icon">Middleware&lt;IO, C&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>io<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">FULLIO</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IO</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Reducer</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-symbol">(</span>action<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span>, next<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<a name="makinaspec" class="tsd-anchor"></a>
+					<h3>Makina<wbr>Spec</h3>
+					<div class="tsd-signature tsd-kind-icon">Makina<wbr>Spec&lt;IO&gt;<span class="tsd-signature-symbol">:</span> <a href="interfaces/simplespec.html" class="tsd-signature-type">SimpleSpec</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IO</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><a href="interfaces/combinedspec.html" class="tsd-signature-type">CombinedSpec</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IO</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/types.ts#L122">lib/types.ts:122</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/utils/createModule.ts#L26">lib/utils/createModule.ts:26</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p><a href="interfaces/simplespec.html">SimpleSpec</a> and <a href="interfaces/combinedspec.html">CombinedSpec</a> combined</p>
+						</div>
+						<p> note: middlewares of this module will be triggered before it&#39;s submodules middlewares</p>
+					</div>
+					<h4 class="tsd-type-parameters-title">Type parameters</h4>
+					<ul class="tsd-type-parameters">
+						<li>
+							<h4>IO</h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-has-type-parameter">
+					<a name="middleware" class="tsd-anchor"></a>
+					<h3>Middleware</h3>
+					<div class="tsd-signature tsd-kind-icon">Middleware&lt;IO, C&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>io<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">FULLIO</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IO</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Reducer</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-symbol">(</span>action<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span>, next<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/types.ts#L129">lib/types.ts:129</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -135,7 +164,7 @@
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter-siganture">
 								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-alias">
-									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>io<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">FULLIO</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IO</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Reducer</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>action<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span>, next<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>io<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">FULLIO</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IO</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Reducer</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>action<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span>, next<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
 								</ul>
 								<ul class="tsd-descriptions">
 									<li class="tsd-description">
@@ -145,24 +174,24 @@
 												<h5>io: <span class="tsd-signature-type">FULLIO</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IO</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Reducer</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h5>
 											</li>
 										</ul>
-										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">(</span>action<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span>, next<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">(</span>action<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span>, next<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
 										<ul class="tsd-parameters">
 											<li class="tsd-parameter-siganture">
 												<ul class="tsd-signatures tsd-kind-type-literal">
-													<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>action<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span>, next<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
+													<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>action<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span>, next<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
 												</ul>
 												<ul class="tsd-descriptions">
 													<li class="tsd-description">
 														<h4 class="tsd-parameters-title">Parameters</h4>
 														<ul class="tsd-parameters">
 															<li>
-																<h5>action: <span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
+																<h5>action: <span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span></h5>
 																<ul class="tsd-parameters">
 																	<li class="tsd-parameter-index-signature">
 																		<h5><span class="tsd-signature-symbol">[</span>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">any</span></h5>
 																	</li>
 																	<li class="tsd-parameter">
-																		<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+																		<h5>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
 																	</li>
 																</ul>
 															</li>
@@ -202,7 +231,7 @@
 					<div class="tsd-signature tsd-kind-icon">config<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>freeze<span class="tsd-signature-symbol">?: </span>&lt;S&gt;<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/config.ts#L5">lib/config.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/config.ts#L5">lib/config.ts:5</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -268,7 +297,7 @@ config.freeze = process.env.NODE_ENV !== <span class="hljs-string">'production'<
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/combineReducers.ts#L32">lib/utils/combineReducers.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/utils/combineReducers.ts#L32">lib/utils/combineReducers.ts:32</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -350,7 +379,7 @@ const combined = combineReducers({
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/combineSelectors.ts#L35">lib/utils/combineSelectors.ts:35</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/utils/combineSelectors.ts#L35">lib/utils/combineSelectors.ts:35</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -434,7 +463,7 @@ const combined = combineReducers({
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/create.ts#L72">lib/create.ts:72</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/create.ts#L72">lib/create.ts:72</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -549,7 +578,7 @@ stateMachine.getState()
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/createBare.ts#L46">lib/createBare.ts:46</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/createBare.ts#L46">lib/createBare.ts:46</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -621,6 +650,108 @@ stateMachine.getState()
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter">
+					<a name="createmodule" class="tsd-anchor"></a>
+					<h3>create<wbr>Module</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Module&lt;IO, S&gt;<span class="tsd-signature-symbol">(</span>spec<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/makinamodule.html" class="tsd-signature-type">MakinaModule</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IO</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Module&lt;IO, S&gt;<span class="tsd-signature-symbol">(</span>spec<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/simplemodule.html" class="tsd-signature-type">SimpleModule</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IO</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Module&lt;IO, S&gt;<span class="tsd-signature-symbol">(</span>spec<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/combinedmodule.html" class="tsd-signature-type">CombinedModule</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IO</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/utils/createModule.ts#L77">lib/utils/createModule.ts:77</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>helper to create modules with automatic action creators module level middlewares and action level middlewares.
+									example:</p>
+								</div>
+								<pre><code class="language-js">createModule({
+ <span class="hljs-attr">actions</span>: {
+   <span class="hljs-attr">decrement</span>: { <span class="hljs-attr">type</span>: DECREMENT },
+   <span class="hljs-attr">increment</span>: { <span class="hljs-attr">type</span>: INCREMENT }
+ },
+ <span class="hljs-attr">reducer</span>: <span class="hljs-function">(<span class="hljs-params">state: number = <span class="hljs-number">0</span>, action</span>) =&gt;</span> {
+   <span class="hljs-keyword">switch</span> (action.type) {
+     <span class="hljs-keyword">case</span> <span class="hljs-string">'INCREMENT'</span>:
+       <span class="hljs-keyword">return</span> state + <span class="hljs-number">1</span>;
+     <span class="hljs-keyword">case</span> <span class="hljs-string">'DECREMENT'</span>:
+       <span class="hljs-keyword">return</span> state - <span class="hljs-number">1</span>;
+     <span class="hljs-keyword">default</span>:
+       <span class="hljs-keyword">return</span> state;
+   }
+ }
+})</code></pre>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>IO<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span></h4>
+								</li>
+								<li>
+									<h4>S<span class="tsd-signature-symbol">: </span><a href="globals.html#makinaspec" class="tsd-signature-type">MakinaSpec</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IO</span><span class="tsd-signature-symbol">&gt;</span></h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>spec: <span class="tsd-signature-type">S</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/makinamodule.html" class="tsd-signature-type">MakinaModule</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IO</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/utils/createModule.ts#L80">lib/utils/createModule.ts:80</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>IO<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span></h4>
+								</li>
+								<li>
+									<h4>S<span class="tsd-signature-symbol">: </span><a href="interfaces/simplespec.html" class="tsd-signature-type">SimpleSpec</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IO</span><span class="tsd-signature-symbol">&gt;</span></h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>spec: <span class="tsd-signature-type">S</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/simplemodule.html" class="tsd-signature-type">SimpleModule</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IO</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/utils/createModule.ts#L83">lib/utils/createModule.ts:83</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>IO<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span></h4>
+								</li>
+								<li>
+									<h4>S<span class="tsd-signature-symbol">: </span><a href="interfaces/combinedspec.html" class="tsd-signature-type">CombinedSpec</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IO</span><span class="tsd-signature-symbol">&gt;</span></h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>spec: <span class="tsd-signature-type">S</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/combinedmodule.html" class="tsd-signature-type">CombinedModule</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IO</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter">
 					<a name="extendselector" class="tsd-anchor"></a>
 					<h3>extend<wbr>Selector</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter">
@@ -630,7 +761,7 @@ stateMachine.getState()
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/extendSelector.ts#L10">lib/utils/extendSelector.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/utils/extendSelector.ts#L10">lib/utils/extendSelector.ts:10</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -699,7 +830,7 @@ stateMachine.getState()
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/mergeReducers.ts#L32">lib/utils/mergeReducers.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/utils/mergeReducers.ts#L32">lib/utils/mergeReducers.ts:32</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -793,7 +924,7 @@ const merged = mergeReducers(
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/mergeSelectors.ts#L38">lib/utils/mergeSelectors.ts:38</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/utils/mergeSelectors.ts#L38">lib/utils/mergeSelectors.ts:38</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -895,7 +1026,7 @@ const merged = mergeReducers(
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/mergeSelectors.ts#L43">lib/utils/mergeSelectors.ts:43</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/utils/mergeSelectors.ts#L43">lib/utils/mergeSelectors.ts:43</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -957,7 +1088,7 @@ const merged = mergeReducers(
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/mergeSelectors.ts#L54">lib/utils/mergeSelectors.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/utils/mergeSelectors.ts#L54">lib/utils/mergeSelectors.ts:54</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1019,7 +1150,7 @@ const merged = mergeReducers(
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/mergeSelectors.ts#L69">lib/utils/mergeSelectors.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/utils/mergeSelectors.ts#L69">lib/utils/mergeSelectors.ts:69</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1081,7 +1212,7 @@ const merged = mergeReducers(
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/mergeSelectors.ts#L85">lib/utils/mergeSelectors.ts:85</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/utils/mergeSelectors.ts#L85">lib/utils/mergeSelectors.ts:85</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1143,7 +1274,7 @@ const merged = mergeReducers(
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/mergeSelectors.ts#L102">lib/utils/mergeSelectors.ts:102</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/utils/mergeSelectors.ts#L102">lib/utils/mergeSelectors.ts:102</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1205,7 +1336,7 @@ const merged = mergeReducers(
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/mergeSelectors.ts#L128">lib/utils/mergeSelectors.ts:128</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/utils/mergeSelectors.ts#L128">lib/utils/mergeSelectors.ts:128</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1267,7 +1398,7 @@ const merged = mergeReducers(
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/mergeSelectors.ts#L156">lib/utils/mergeSelectors.ts:156</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/utils/mergeSelectors.ts#L156">lib/utils/mergeSelectors.ts:156</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1329,7 +1460,7 @@ const merged = mergeReducers(
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/mergeSelectors.ts#L186">lib/utils/mergeSelectors.ts:186</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/utils/mergeSelectors.ts#L186">lib/utils/mergeSelectors.ts:186</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1391,7 +1522,7 @@ const merged = mergeReducers(
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/mergeSelectors.ts#L218">lib/utils/mergeSelectors.ts:218</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/utils/mergeSelectors.ts#L218">lib/utils/mergeSelectors.ts:218</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1462,7 +1593,7 @@ const merged = mergeReducers(
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/onActionTypes.ts#L22">lib/utils/onActionTypes.ts:22</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/utils/onActionTypes.ts#L22">lib/utils/onActionTypes.ts:22</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1574,7 +1705,7 @@ factory.use(onActionTypes([<span class="hljs-string">'INCREMENT'</span>], logAct
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/aa23074/src/lib/utils/partializeReducer.ts#L15">lib/utils/partializeReducer.ts:15</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/eef5c32/src/lib/utils/partializeReducer.ts#L15">lib/utils/partializeReducer.ts:15</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1642,10 +1773,28 @@ factory.use(onActionTypes([<span class="hljs-string">'INCREMENT'</span>], logAct
 						<a href="interfaces/barestatemachinefactory.html" class="tsd-kind-icon">Bare<wbr>State<wbr>Machine<wbr>Factory</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/combinedmodule.html" class="tsd-kind-icon">Combined<wbr>Module</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/combinedspec.html" class="tsd-kind-icon">Combined<wbr>Spec</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/makinamodule.html" class="tsd-kind-icon">Makina<wbr>Module</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/simplemodule.html" class="tsd-kind-icon">Simple<wbr>Module</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/simplespec.html" class="tsd-kind-icon">Simple<wbr>Spec</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/statemachine.html" class="tsd-kind-icon">State<wbr>Machine</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/statemachinefactory.html" class="tsd-kind-icon">State<wbr>Machine<wbr>Factory</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#makinaspec" class="tsd-kind-icon">Makina<wbr>Spec</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="globals.html#middleware" class="tsd-kind-icon">Middleware</a>
@@ -1664,6 +1813,9 @@ factory.use(onActionTypes([<span class="hljs-string">'INCREMENT'</span>], logAct
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#createbare" class="tsd-kind-icon">create<wbr>Bare</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#createmodule" class="tsd-kind-icon">create<wbr>Module</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#extendselector" class="tsd-kind-icon">extend<wbr>Selector</a>
