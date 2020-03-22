@@ -30,14 +30,18 @@ type Combinedreducer<M extends ReducersMapping> = (
 ) => { readonly [K in keyof M]: ReducerState<M[K]> };
 
 /**
- * @todo: doc
+ * combined module spec to create [[CombinedModule]]
+ * expect only one key `modules` with a mapping of modules.
+ * their`actionCreators`, `middlewares` and `actionTypes` will be merged
+ * and their `reducer` will be combined using `combineReducers`
  */
 export interface CombinedSpec<IO> {
   modules: Mapping<Module<IO>>;
 }
 
 /**
- * @todo: doc
+ * combined module
+ * @see [[createModule]]
  */
 export interface CombinedModule<IO, S extends CombinedSpec<IO>> {
   actionCreators: UnionToIntersection<
@@ -53,7 +57,6 @@ export interface CombinedModule<IO, S extends CombinedSpec<IO>> {
 }
 
 /**
- * @todo: doc
  * @ignore
  */
 export function createCombinedModule<IO extends {}, S extends CombinedSpec<IO>>(

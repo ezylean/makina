@@ -19,12 +19,15 @@ import { mergeReducers } from './mergeReducers';
 export { SimpleModule, CombinedModule, SimpleSpec, CombinedSpec };
 
 /**
- * @todo: doc
+ * [[SimpleSpec]] and [[CombinedSpec]] combined
+ *
+ *  note: middlewares of this module will be triggered before it's submodules middlewares
  */
 export type MakinaSpec<IO> = SimpleSpec<IO> & CombinedSpec<IO>;
 
 /**
- * @todo: doc
+ *  module
+ * @see [[createModule]]
  */
 export interface MakinaModule<IO, S extends MakinaSpec<IO>> {
   actionCreators: SimpleModule<IO, S>['actionCreators'] &
@@ -49,7 +52,27 @@ export interface MakinaModule<IO, S extends MakinaSpec<IO>> {
 }
 
 /**
- * @todo: doc
+ * helper to create modules with automatic action creators module level middlewares and action level middlewares.
+ * example:
+ *
+ * ```js
+ * createModule({
+ *  actions: {
+ *    decrement: { type: DECREMENT },
+ *    increment: { type: INCREMENT }
+ *  },
+ *  reducer: (state: number = 0, action) => {
+ *    switch (action.type) {
+ *      case 'INCREMENT':
+ *        return state + 1;
+ *      case 'DECREMENT':
+ *        return state - 1;
+ *      default:
+ *        return state;
+ *    }
+ *  }
+ *})
+ *```
  */
 export function createModule<IO extends {}, S extends MakinaSpec<IO>>(
   spec: S

@@ -44,7 +44,18 @@ type ActionsToActionCreators<M extends Mapping<ActionSpec<any>>> = {
 };
 
 /**
- * @todo: doc
+ * simple module spec to create [[SimpleModule]]
+ * expect an `actions` property with a mapping of actions, a `reducer`, and (optional) module level `middlewares`.
+ * actions be as simple as:
+ *
+ * ```js
+ * {
+ *  increment: { type: 'INCREMENT' },
+ *  decrement: { type: 'DECREMENT' }
+ * }
+ * ```
+ *  simple action creators will be created for you.
+ * You can also add a custom creator using `creator`, or add action specific middlewares.
  */
 export interface SimpleSpec<IO> {
   actions: Mapping<ActionSpec<IO>>;
@@ -53,7 +64,8 @@ export interface SimpleSpec<IO> {
 }
 
 /**
- * @todo: doc
+ * simple module
+ * @see [[createModule]]
  */
 export interface SimpleModule<IO, S extends SimpleSpec<IO>> {
   actionTypes: Array<S['actions'][keyof S['actions']]['type']>;
@@ -72,7 +84,6 @@ export interface SimpleModule<IO, S extends SimpleSpec<IO>> {
 }
 
 /**
- * @todo: doc
  * @ignore
  */
 export function createSimpleModule<IO extends {}, S extends SimpleSpec<IO>>(
