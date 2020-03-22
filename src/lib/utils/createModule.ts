@@ -5,15 +5,15 @@ import {
   ReducerState
 } from '../types';
 import {
+  CombinedModule,
+  CombinedSpec,
+  createCombinedModule
+} from './createCombinedModule';
+import {
   createSimpleModule,
   SimpleModule,
   SimpleSpec
 } from './createSimpleModule';
-import {
-  createCombinedModule,
-  CombinedModule,
-  CombinedSpec
-} from './createCombinedModule';
 import { mergeReducers } from './mergeReducers';
 
 export { SimpleModule, CombinedModule, SimpleSpec, CombinedSpec };
@@ -29,6 +29,9 @@ export type MakinaSpec<IO> = SimpleSpec<IO> & CombinedSpec<IO>;
 export interface MakinaModule<IO, S extends MakinaSpec<IO>> {
   actionCreators: SimpleModule<IO, S>['actionCreators'] &
     CombinedModule<IO, S>['actionCreators'];
+  actionTypes:
+    | SimpleModule<IO, S>['actionTypes']
+    | CombinedModule<IO, S>['actionTypes'];
   reducer: (
     state: InputReducerState<SimpleModule<IO, S>['reducer']> &
       InputReducerState<CombinedModule<IO, S>['reducer']>,
@@ -59,31 +62,21 @@ export function createModule<IO extends {}, S extends CombinedSpec<IO>>(
 ): CombinedModule<IO, S>;
 export function createModule(spec) {
   if (spec.reducer) {
-    const subModulesActionTypes = spec.modules
-      ? Object.keys(spec.modules).reduce((result, modName) => {
-          const actionCreators = spec.modules[modName].actionCreators;
-
-          return result.concat(
-            Object.keys(actionCreators).map(name => actionCreators[name]().type)
-          );
-        }, [])
-      : undefined;
-
-    const simpleMod = createSimpleModule(spec, subModulesActionTypes);
     if (spec.modules) {
       const combinedMod = createCombinedModule(spec);
+      const simpleMod = createSimpleModule(spec, combinedMod.actionTypes);
 
       return {
         actionCreators: {
           ...simpleMod.actionCreators,
           ...combinedMod.actionCreators
         },
+        actionTypes: [...simpleMod.actionTypes, ...combinedMod.actionTypes],
         middlewares: [...simpleMod.middlewares, ...combinedMod.middlewares],
         reducer: mergeReducers(simpleMod.reducer, combinedMod.reducer)
       };
     }
-    return simpleMod;
+    return createSimpleModule(spec);
   }
-
   return createCombinedModule(spec);
 }

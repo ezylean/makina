@@ -1,4 +1,4 @@
-// tslint:disable:no-expression-statement
+// tslint:disable:no-expression-statement object-literal-sort-keys
 import test from 'ava';
 import { createModule } from './createModule';
 
@@ -30,6 +30,8 @@ test('simple', t => {
 
   t.deepEqual(mod.actionCreators.increment(5), { type: INCREMENT, val: 5 });
   t.deepEqual(mod.actionCreators.decrement(), { type: DECREMENT });
+
+  t.deepEqual(mod.actionTypes, [DECREMENT, INCREMENT]);
 
   t.is(mod.reducer(5, { type: DECREMENT }), 4);
 
@@ -83,6 +85,8 @@ test('simple with middlewares', t => {
 
   t.deepEqual(mod.actionCreators.increment(), { type: INCREMENT });
   t.deepEqual(mod.actionCreators.decrement(), { type: DECREMENT });
+
+  t.deepEqual(mod.actionTypes, [DECREMENT, INCREMENT]);
 
   t.is(mod.reducer(5, { type: INCREMENT }), 6);
 
@@ -371,8 +375,8 @@ test('full with middlewares', t => {
   const mod = createModule({
     actions: {
       changeName: {
-        type: CHANGE_NAME,
-        creator: (name: string) => ({ type: CHANGE_NAME, name })
+        creator: (name: string) => ({ type: CHANGE_NAME, name }),
+        type: CHANGE_NAME
       }
     },
     reducer: (state: { name?: string } = {}, action) => {

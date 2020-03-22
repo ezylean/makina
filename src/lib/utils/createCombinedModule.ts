@@ -16,6 +16,7 @@ import { combineReducers } from './combineReducers';
  */
 interface Module<IO> {
   actionCreators: Mapping<ActionCreator>;
+  actionTypes: string[];
   middlewares: Array<Middleware<IO>>;
   reducer: Reducer;
 }
@@ -42,6 +43,7 @@ export interface CombinedModule<IO, S extends CombinedSpec<IO>> {
   actionCreators: UnionToIntersection<
     S['modules'][keyof S['modules']]['actionCreators']
   >;
+  actionTypes: S['modules'][keyof S['modules']]['actionTypes'];
   reducer: Combinedreducer<
     {
       [K in keyof S['modules']]: S['modules'][K]['reducer'];
@@ -58,6 +60,7 @@ export function createCombinedModule<IO extends {}, S extends CombinedSpec<IO>>(
   spec: S
 ): CombinedModule<IO, S> {
   let actionCreators: any = {};
+  let actionTypes: string[] = [];
   let middlewares: Array<Middleware<IO>> = [];
 
   const reducer: any = combineReducers(
@@ -67,6 +70,8 @@ export function createCombinedModule<IO extends {}, S extends CombinedSpec<IO>>(
         ...actionCreators,
         ...spec.modules[name].actionCreators
       };
+
+      actionTypes = [...actionTypes, ...spec.modules[name].actionTypes];
 
       middlewares = [
         ...middlewares,
@@ -85,6 +90,7 @@ export function createCombinedModule<IO extends {}, S extends CombinedSpec<IO>>(
 
   return {
     actionCreators,
+    actionTypes,
     middlewares,
     reducer
   };

@@ -56,6 +56,7 @@ export interface SimpleSpec<IO> {
  * @todo: doc
  */
 export interface SimpleModule<IO, S extends SimpleSpec<IO>> {
+  actionTypes: Array<S['actions'][keyof S['actions']]['type']>;
   actionCreators: {
     [K in keyof S['actions']]: ActionSpecToActionCreator<S['actions'][K]>;
   };
@@ -81,19 +82,21 @@ export function createSimpleModule<IO extends {}, S extends SimpleSpec<IO>>(
   const actionCreators: any = {};
   let middlewares: Array<Middleware<IO>> = [];
 
+  const actionTypes = Object.keys(spec.actions).map(
+    name => spec.actions[name].type
+  );
+
   // middlewares are executed in a global to specific order
   // so we add module level middlewares first
   if (spec.middlewares) {
-    const actionTypes = Object.keys(spec.actions)
-      .map(name => spec.actions[name].type)
-      // module level middlewares also wrap sub modules
-      // so we also add their action types
-      .concat(subModulesActionTypes);
+    // module level middlewares also wrap sub modules
+    // so we also add their action types
+    const allActionTypes = actionTypes.concat(subModulesActionTypes);
 
     middlewares = [
       ...middlewares,
       ...spec.middlewares.map(middleware =>
-        onActionTypes(actionTypes, middleware)
+        onActionTypes(allActionTypes, middleware)
       )
     ];
   }
@@ -112,6 +115,7 @@ export function createSimpleModule<IO extends {}, S extends SimpleSpec<IO>>(
 
   return {
     actionCreators,
+    actionTypes,
     middlewares,
     reducer: spec.reducer
   };
