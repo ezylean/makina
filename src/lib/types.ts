@@ -1,7 +1,7 @@
 /**
  * @ignore
  */
-export type Reducer<S = any, A = { type: string; [key: string]: any }> = (
+export type Reducer<S = any, A = { type: any; [key: string]: any }> = (
   state: S | void,
   action: A
 ) => S;
@@ -19,7 +19,7 @@ export interface Mapping<T> {
 export interface ReducersMapping {
   [key: string]: (
     state: any | void,
-    action: { type: string; [key: string]: any }
+    action: { type: any; [key: string]: any }
   ) => any;
 }
 
@@ -28,7 +28,7 @@ export interface ReducersMapping {
  */
 export type ReducerState<R> = R extends (
   state: any | void,
-  action: { type: string; [key: string]: any }
+  action: { type: any; [key: string]: any }
 ) => infer S
   ? S
   : never;
@@ -38,7 +38,7 @@ export type ReducerState<R> = R extends (
  */
 export type InputReducerState<R> = R extends (
   state: infer S,
-  action: { type: string; [key: string]: any }
+  action: { type: any; [key: string]: any }
 ) => any
   ? S
   : never;
@@ -61,7 +61,7 @@ export type ActionTypeOf<C> = C extends (...args) => infer A ? A : never;
 /**
  * @ignore
  */
-export type ActionCreator = (...args) => { type: string; [key: string]: any };
+export type ActionCreator = (...args) => { type: any; [key: string]: any };
 
 /**
  * @ignore
@@ -120,7 +120,7 @@ export type SelectorResult<SEL> = SEL extends (state: any) => infer S
  */
 export type InferredAction<
   T,
-  A extends { type: string; [key: string]: any }
+  A extends { type: any; [key: string]: any }
 > = A extends { type: T; [key: string]: any } ? A : never;
 
 /**
@@ -129,7 +129,7 @@ export type InferredAction<
 export type Middleware<IO = { [key: string]: any }, C = {}> = (
   io: FULLIO<IO, Reducer, C>
 ) => (
-  action: { type: string; [key: string]: any },
+  action: { type: any; [key: string]: any },
   next: () => Promise<boolean>
 ) => Promise<boolean>;
 
