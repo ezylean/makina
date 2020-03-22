@@ -9,6 +9,13 @@ export type Reducer<S = any, A = { type: string; [key: string]: any }> = (
 /**
  * @ignore
  */
+export interface Mapping<T> {
+  [key: string]: T;
+}
+
+/**
+ * @ignore
+ */
 export interface ReducersMapping {
   [key: string]: (
     state: any | void,
