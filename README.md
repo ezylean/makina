@@ -171,6 +171,9 @@ export const reducer = combineReducers({
 export const middlewares = [...module1.middlewares, ...module2.middlewares];
 ```
 
+@note actionCreators are optional, the dispatch object is also function that dispatch action directly.
+@note2 middlewares are also optional.
+
 or using the `createModule` helper function:
 
 ```js
@@ -185,9 +188,6 @@ export default createModule({
   }
 });
 ```
-
-@note actionCreators are optional, the dispatch object is also function that dispatch action directly.
-@note2 middlewares are also optional.
 
 ### defaultIO (optional)
 
@@ -236,7 +236,7 @@ import the main state machine or a scoped one and that's it.
 #### IMPORTANT
 
 you shouldn't memoize your selectors and they should return a strictly equal value for identical input.
-To create complex selectors use `combineSelector` or `mergeSelectors`.
+To create complex selectors use `combineSelectors` or `mergeSelectors`.
 
 ## Hot module replacement
 
