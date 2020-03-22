@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/ezylean/makina/compare/v1.1.0...v1.2.0) (2020-03-22)
+
+
+### Bug Fixes
+
+* **type inference:** fix type inference on literal string action type ([a57b0de](https://github.com/ezylean/makina/commit/a57b0de))
+
+
+### Features
+
+* **createmodule:** add createModule helper function ([d81b51f](https://github.com/ezylean/makina/commit/d81b51f))
+
+
+
 ## [1.1.0](https://github.com/ezylean/makina/compare/v1.0.7...v1.1.0) (2020-03-13)
 
 
