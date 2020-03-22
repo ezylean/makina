@@ -110,6 +110,21 @@ index.html
 </html>
 ```
 
+## immutable state guarantee
+
+Makina provide a way to ensure your application state is never mutated.
+set in the config object a freeze function to deep freeze your state when a new state is created.
+Deep freezing objects can be costly from a performance standpoint, it's recommended to disable it in production.
+
+### Example
+
+```js
+import { config } from '@ezy/makina';
+// immutable state in all environnments except production
+config.freeze =
+  process.env.NODE_ENV !== 'production' ? require('deep-freeze-strict') : null;
+```
+
 ## Building complex app
 
 The create function exposed by the library have the following signature:
@@ -154,6 +169,21 @@ export const reducer = combineReducers({
 });
 
 export const middlewares = [...module1.middlewares, ...module2.middlewares];
+```
+
+or using the `createModule` helper function:
+
+```js
+import { createModule } from '@ezy/makina';
+import module1 from './module1';
+import module2 from './module2';
+
+export default createModule({
+  modules: {
+    module1,
+    module2
+  }
+});
 ```
 
 @note actionCreators are optional, the dispatch object is also function that dispatch action directly.
