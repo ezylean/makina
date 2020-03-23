@@ -74,13 +74,13 @@ export interface MakinaModule<IO, S extends MakinaSpec<IO>> {
  *})
  *```
  */
-export function createModule<IO extends {}, S extends MakinaSpec<IO>>(
+export function createModule<IO extends any, S extends MakinaSpec<IO>>(
   spec: S
 ): MakinaModule<IO, S>;
-export function createModule<IO extends {}, S extends SimpleSpec<IO>>(
+export function createModule<IO extends any, S extends SimpleSpec<IO>>(
   spec: S
 ): SimpleModule<IO, S>;
-export function createModule<IO extends {}, S extends CombinedSpec<IO>>(
+export function createModule<IO extends any, S extends CombinedSpec<IO>>(
   spec: S
 ): CombinedModule<IO, S>;
 export function createModule(spec) {

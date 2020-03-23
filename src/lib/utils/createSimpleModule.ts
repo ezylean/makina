@@ -86,7 +86,7 @@ export interface SimpleModule<IO, S extends SimpleSpec<IO>> {
 /**
  * @ignore
  */
-export function createSimpleModule<IO extends {}, S extends SimpleSpec<IO>>(
+export function createSimpleModule<IO extends any, S extends SimpleSpec<IO>>(
   spec: S,
   subModulesActionTypes: string[] = []
 ): SimpleModule<IO, S> {

@@ -59,9 +59,10 @@ export interface CombinedModule<IO, S extends CombinedSpec<IO>> {
 /**
  * @ignore
  */
-export function createCombinedModule<IO extends {}, S extends CombinedSpec<IO>>(
-  spec: S
-): CombinedModule<IO, S> {
+export function createCombinedModule<
+  IO extends any,
+  S extends CombinedSpec<IO>
+>(spec: S): CombinedModule<IO, S> {
   let actionCreators: any = {};
   let actionTypes: string[] = [];
   let middlewares: Array<Middleware<IO>> = [];
