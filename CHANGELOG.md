@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.1](https://github.com/ezylean/makina/compare/v1.2.0...v1.2.1) (2020-03-23)
+
+
+### Bug Fixes
+
+* **typings:** fix IO mismatch when IO is typed in a submodule of a combined module ([5a0a10e](https://github.com/ezylean/makina/commit/5a0a10e))
+
+
+
 ## [1.2.0](https://github.com/ezylean/makina/compare/v1.1.0...v1.2.0) (2020-03-22)
 
 
