@@ -10,12 +10,12 @@
 
 ## Why
 
-Writing frontend application is a mess.
+Writing frontend applications is a mess.
 
-Redux help a lot but has adopted a modular and unopinionated approach which give flexibility at the cost
+Redux helps a lot but has adopted a modular and unopinionated approach which gives flexibility at the cost
 of having to manage a lot of related code everywhere.
 
-While keeping the same principles at his core Makina take the opposite approach to create a all-in-one express-like backend for your frontend.
+While keeping the same principles at its core, Makina takes the opposite approach to create an all-in-one express-like backend for your frontend.
 
 Think of it as a fusion of express and redux.
 
@@ -23,7 +23,7 @@ Think of it as a fusion of express and redux.
 
 In Makina you should think of your frontend application as a complete stack, with your UI (React, Vue, Angular, etc...) as the frontend part and a StateMachine as a backend.
 
-the whole application logic, I/O and state management of your application will be managed in the StateMachine while the UI will be responsible for presentational logic, displaying the current state and dispatch actions.
+The whole application logic, I/O and state management of your application will be managed in the StateMachine while the UI will be responsible for presentational logic, displaying the current state and dispatch actions.
 
 ## Getting Started
 
@@ -110,7 +110,7 @@ index.html
 </html>
 ```
 
-## immutable state guarantee
+## Immutable state guarantee
 
 Makina provide a way to ensure your application state is never mutated.
 set in the config object a freeze function to deep freeze your state when a new state is created.
@@ -125,7 +125,7 @@ config.freeze =
   process.env.NODE_ENV !== 'production' ? require('deep-freeze-strict') : null;
 ```
 
-## Building complex app
+## Building a complex app
 
 The create function exposed by the library have the following signature:
 
@@ -133,11 +133,11 @@ The create function exposed by the library have the following signature:
 create(module, defaultIO, selectors) => StateMachineFactory
 ```
 
-### module
+### Module
 
-a module is a plain javascript object with 3 properties `actionCreators`, `reducer` and `middlewares`.
+A module is a plain JavaScript object with 3 properties `actionCreators`, `reducer` and `middlewares`.
 
-the `actionCreators` property contains your action creators and those will be used to create
+The `actionCreators` property contains your action creators and those will be used to create
 specialized dispatchers as shown in the counter example.
 
 The `reducer` property contain a function with the following signature:
@@ -146,12 +146,12 @@ The `reducer` property contain a function with the following signature:
 (state = defaultState, action) => state;
 ```
 
-The `middlewares` property contain an array of middleware, those will be run between your action creators and your reducers.
+The `middlewares` property contains an array of middleware, those will be run between your action creators and your reducers.
 
-In order to build complex application you can combine multiples simple module together to create more complex ones.
-Combining multiples module is done by merging their `actionCreators`, their `middlewares` and merging or combining their `reducer` using `mergeReducers` or `combineReducers` accordingly.
+In order to build complex applications, you can combine multiple simple modules together to create more complex ones.
+Combining multiple modules is done by merging their `actionCreators`, their `middlewares` and merging or combining their `reducer` using `mergeReducers` or `combineReducers` accordingly.
 
-#### example
+#### Example
 
 ```js
 import { combineReducers } from '@ezy/makina';
@@ -174,7 +174,7 @@ export const middlewares = [...module1.middlewares, ...module2.middlewares];
 @note actionCreators are optional, the dispatch object is also function that dispatch action directly.
 @note2 middlewares are also optional.
 
-or using the `createModule` helper function:
+Or using the `createModule` helper function:
 
 ```js
 import { createModule } from '@ezy/makina';
@@ -196,9 +196,9 @@ When building complex applications I/O can make the testing process a real pain.
 Makina provide you a way to deal with that by taking an `overrideIO` argument on the create function
 of your state machine factory making a breeze to test scenarios.
 
-note: the `dispatch` and `getState` functions of your state machine is considered as I/O and will be added
+note: the `dispatch` and `getState` functions of your state machine is considered as I/O and will be added.
 
-#### example
+#### Example
 
 ```js
 import test from 'ava';
@@ -224,18 +224,18 @@ test('user try to login but network fail - ensure notification is created', asyn
 
 ### selectors (optional)
 
-the third and last argument `selectors` is a plain object containing selectors.
-those selectors will be used to create scoped state machines.
+The third and last argument `selectors` is a plain object containing selectors.
+Those selectors will be used to create scoped state machines.
 they will be available under the `scopeds` property of your state machine.
 
-to create a scoped state machine in a scoped state machine use `extendSelector`.
+To create a scoped state machine in a scoped state machine, use `extendSelector`.
 
-Ideally if you use a component based UI library every component of your UI should just
+Ideally, if you use a component based UI library, every component of your UI should just
 import the main state machine or a scoped one and that's it.
 
 #### IMPORTANT
 
-you shouldn't memoize your selectors and they should return a strictly equal value for identical input.
+You shouldn't memoize your selectors and they should return a strictly equal value for identical input.
 To create complex selectors use `combineSelectors` or `mergeSelectors`.
 
 ## Hot module replacement
@@ -243,7 +243,7 @@ To create complex selectors use `combineSelectors` or `mergeSelectors`.
 The StateMachineFactory object expose a `replaceModule` function to replace the current module in the StateMachineFactory and in every StateMachine created without changing the current state.
 This function is intented to be used for [hot module replacement](https://webpack.js.org/guides/hot-module-replacement/).
 
-### example
+### Example
 
 ```js
 import { create } from '@ezy/makina';
