@@ -76,15 +76,12 @@
 					<h2>Why</h2>
 				</a>
 				<p>Writing frontend applications is a mess.</p>
-				<p>Redux helps a lot but has adopted a modular and unopinionated approach which gives flexibility at the cost
-				of having to manage a lot of related code everywhere.</p>
-				<p>While keeping the same principles at its core, Makina takes the opposite approach to create an all-in-one express-like backend for your frontend.</p>
-				<p>Think of it as a fusion of express and redux.</p>
+				<p>Makina may help you create an all-in-one backend for your frontend.</p>
 				<a href="#mental-model" id="mental-model" style="color: inherit; text-decoration: none;">
 					<h2>Mental model</h2>
 				</a>
 				<p>In Makina you should think of your frontend application as a complete stack, with your UI (React, Vue, Angular, etc...) as the frontend part and a StateMachine as a backend.</p>
-				<p>The whole application logic, I/O and state management of your application will be managed in the StateMachine while the UI will be responsible for presentational logic, displaying the current state and dispatch actions.</p>
+				<p>Application logic, I/O and state management of your application will be managed in the StateMachine while the UI will be responsible for presentational logic, displaying the current state and dispatch actions.</p>
 				<a href="#getting-started" id="getting-started" style="color: inherit; text-decoration: none;">
 					<h2>Getting Started</h2>
 				</a>
@@ -92,58 +89,98 @@
 					<h3>Installation</h3>
 				</a>
 				<pre><code class="language-shell">  npm i @ezy/makina</code></pre>
-				<a href="#counter-example" id="counter-example" style="color: inherit; text-decoration: none;">
-					<h3>Counter example</h3>
+				<a href="#main-concepts" id="main-concepts" style="color: inherit; text-decoration: none;">
+					<h3>Main Concepts</h3>
+				</a>
+				<ul>
+					<li>the class factory <code>createBase</code> to create and combine modules.</li>
+					<li><code>filters</code>, to orchestrate them.</li>
+				</ul>
+				<a href="#example" id="example" style="color: inherit; text-decoration: none;">
+					<h3>Example</h3>
 				</a>
 				<p>index.js</p>
-				<pre><code class="language-js"><span class="hljs-keyword">import</span> { create } <span class="hljs-keyword">from</span> <span class="hljs-string">'@ezy/makina'</span>;
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { createBase } <span class="hljs-keyword">from</span> <span class="hljs-string">'@ezy/makina'</span>;
 
-<span class="hljs-keyword">const</span> INCREMENT = <span class="hljs-string">'INCREMENT'</span>; <span class="hljs-comment">// as 'INCREMENT'</span>
-<span class="hljs-keyword">const</span> DECREMENT = <span class="hljs-string">'DECREMENT'</span>; <span class="hljs-comment">// as 'DECREMENT'</span>
+<span class="hljs-comment">// create a Notifications module</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Notifications</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">createBase</span>() </span>{
+  add(notification) {
+    <span class="hljs-keyword">this</span>.commit(<span class="hljs-string">'notificationAdded'</span>, {
+      <span class="hljs-attr">list</span>: [...this.state.list, notification]
+    });
+  }
+}
 
-<span class="hljs-keyword">const</span> factory = create(
+<span class="hljs-comment">// create a Messages module</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Messages</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">createBase</span>() </span>{
+  public refresh() {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.IO.fetchMessages().then(<span class="hljs-function"><span class="hljs-params">messages</span> =&gt;</span> {
+      <span class="hljs-keyword">this</span>.commit(<span class="hljs-string">'refreshed'</span>, { <span class="hljs-attr">list</span>: messages });
+    });
+  }
+}
+
+<span class="hljs-comment">// define our app</span>
+<span class="hljs-keyword">const</span> BaseApp = createBase({
+  <span class="hljs-attr">messages</span>: Messages,
+  <span class="hljs-attr">notifications</span>: Notifications
+});
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">BaseApp</span> </span>{
+
+  protected init() {
+    <span class="hljs-comment">// add a filter to the Messages module refresh function</span>
+    <span class="hljs-comment">// our filter will be triggered when the refresh function is called</span>
+    <span class="hljs-comment">// to automatically create notification in our Notification module if neccessary</span>
+    <span class="hljs-keyword">this</span>.messages.refresh.applyFilter(<span class="hljs-function"><span class="hljs-params">next</span> =&gt;</span> {
+      <span class="hljs-comment">// previous nb of messages</span>
+      <span class="hljs-keyword">const</span> nbMsg = <span class="hljs-keyword">this</span>.messages.state.list.length;
+
+      <span class="hljs-keyword">return</span> next().then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+        <span class="hljs-comment">// total new messages</span>
+        <span class="hljs-keyword">const</span> newMsg = <span class="hljs-keyword">this</span>.messages.state.list.length - nbMsg;
+
+        <span class="hljs-keyword">if</span> (newMsg &gt; <span class="hljs-number">0</span>) {
+          <span class="hljs-keyword">this</span>.notifications.add({
+            <span class="hljs-attr">id</span>: <span class="hljs-number">0</span>,
+            <span class="hljs-attr">text</span>: <span class="hljs-string">`<span class="hljs-subst">${newMsg}</span> new messages`</span>
+          });
+        }
+      });
+    });
+  }
+
+}
+
+<span class="hljs-comment">// create an instance of our App with initial state and IOs</span>
+<span class="hljs-keyword">const</span> app = <span class="hljs-keyword">new</span> App(
   {
-    <span class="hljs-attr">actionCreators</span>: {
-      <span class="hljs-attr">increment</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> ({ <span class="hljs-attr">type</span>: INCREMENT }),
-      <span class="hljs-attr">decrement</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> ({ <span class="hljs-attr">type</span>: DECREMENT })
+    <span class="hljs-attr">messages</span>: {
+      <span class="hljs-attr">list</span>: []
     },
-    <span class="hljs-attr">reducer</span>: <span class="hljs-function">(<span class="hljs-params">state = <span class="hljs-number">0</span>, action</span>) =&gt;</span> {
-      <span class="hljs-keyword">switch</span> (action.type) {
-        <span class="hljs-keyword">case</span> INCREMENT:
-          <span class="hljs-keyword">return</span> state + <span class="hljs-number">1</span>;
-        <span class="hljs-keyword">case</span> DECREMENT:
-          <span class="hljs-keyword">return</span> state - <span class="hljs-number">1</span>;
-        <span class="hljs-keyword">default</span>:
-          <span class="hljs-keyword">return</span> state;
-      }
+    <span class="hljs-attr">notifications</span>: {
+      <span class="hljs-attr">list</span>: []
     }
   },
   {
-    <span class="hljs-attr">log</span>: <span class="hljs-built_in">console</span>.log
+    <span class="hljs-attr">messages</span>: {
+      <span class="hljs-attr">fetchMessages</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-built_in">Promise</span>.resolve([{ <span class="hljs-attr">id</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">text</span>: <span class="hljs-string">'message'</span> }])
+    },
+    <span class="hljs-attr">notifications</span>: {}
   }
 );
 
-<span class="hljs-comment">// use a middleware</span>
-factory.use(<span class="hljs-function"><span class="hljs-params">io</span> =&gt;</span> <span class="hljs-function">(<span class="hljs-params">action, next</span>) =&gt;</span> {
-  io.log(action.type);
-  <span class="hljs-keyword">return</span> next();
-});
-
-<span class="hljs-keyword">const</span> stateMachine = factory.create();
-
 <span class="hljs-comment">// UI bindings</span>
 <span class="hljs-built_in">document</span>
-  .getElementById(<span class="hljs-string">'increment'</span>)
-  .addEventListener(<span class="hljs-string">'click'</span>, stateMachine.dispatch.increment);
-<span class="hljs-built_in">document</span>
-  .getElementById(<span class="hljs-string">'decrement'</span>)
-  .addEventListener(<span class="hljs-string">'click'</span>, stateMachine.dispatch.decrement);
+  .getElementById(<span class="hljs-string">'refresh'</span>)
+  .addEventListener(<span class="hljs-string">'click'</span>, app.messages.refresh);
 
 <span class="hljs-keyword">const</span> render = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
-  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'result'</span>).textContent = stateMachine.getState();
+  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'messages'</span>).innerHTML = <span class="hljs-string">`&lt;ul&gt;<span class="hljs-subst">${app.messages.state.list.map(msg =&gt; <span class="hljs-string">`&lt;li&gt;<span class="hljs-subst">${msg.text}</span>&lt;/li&gt;`</span>)}</span>&lt;/ul&gt;`</span>;
+  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'notifications'</span>).innerHTML = <span class="hljs-string">`&lt;ul&gt;<span class="hljs-subst">${app.notifications.state.list.map(msg =&gt; <span class="hljs-string">`&lt;li&gt;<span class="hljs-subst">${msg.text}</span>&lt;/li&gt;`</span>)}</span>&lt;/ul&gt;`</span>;
 };
 
-stateMachine.subscribe(render);
+app.onStateChange(render);
 render();</code></pre>
 				<p>index.html</p>
 				<pre><code class="language-html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span>
@@ -156,8 +193,9 @@ render();</code></pre>
   <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"app"</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"result"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"increment"</span>&gt;</span>+<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"decrement"</span>&gt;</span>-<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"refresh"</span>&gt;</span>refresh<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"notifications"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"messages"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"index.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
@@ -168,122 +206,13 @@ render();</code></pre>
 				<p>Makina provide a way to ensure your application state is never mutated.
 					set in the config object a freeze function to deep freeze your state when a new state is created.
 				Deep freezing objects can be costly from a performance standpoint, it&#39;s recommended to disable it in production.</p>
-				<a href="#example" id="example" style="color: inherit; text-decoration: none;">
+				<a href="#example-1" id="example-1" style="color: inherit; text-decoration: none;">
 					<h3>Example</h3>
 				</a>
 				<pre><code class="language-js"><span class="hljs-keyword">import</span> { config } <span class="hljs-keyword">from</span> <span class="hljs-string">'@ezy/makina'</span>;
 <span class="hljs-comment">// immutable state in all environnments except production</span>
 config.freeze =
   process.env.NODE_ENV !== <span class="hljs-string">'production'</span> ? <span class="hljs-built_in">require</span>(<span class="hljs-string">'deep-freeze-strict'</span>) : <span class="hljs-literal">null</span>;</code></pre>
-				<a href="#building-a-complex-app" id="building-a-complex-app" style="color: inherit; text-decoration: none;">
-					<h2>Building a complex app</h2>
-				</a>
-				<p>The create function exposed by the library have the following signature:</p>
-				<pre><code class="language-js">create(<span class="hljs-built_in">module</span>, defaultIO, selectors) =&gt; StateMachineFactory</code></pre>
-				<a href="#module" id="module" style="color: inherit; text-decoration: none;">
-					<h3>Module</h3>
-				</a>
-				<p>A module is a plain JavaScript object with 3 properties <code>actionCreators</code>, <code>reducer</code> and <code>middlewares</code>.</p>
-				<p>The <code>actionCreators</code> property contains your action creators and those will be used to create
-				specialized dispatchers as shown in the counter example.</p>
-				<p>The <code>reducer</code> property contain a function with the following signature:</p>
-				<pre><code class="language-js">(state = defaultState, action) =&gt; state;</code></pre>
-				<p>The <code>middlewares</code> property contains an array of middleware, those will be run between your action creators and your reducers.</p>
-				<p>In order to build complex applications, you can combine multiple simple modules together to create more complex ones.
-				Combining multiple modules is done by merging their <code>actionCreators</code>, their <code>middlewares</code> and merging or combining their <code>reducer</code> using <code>mergeReducers</code> or <code>combineReducers</code> accordingly.</p>
-				<a href="#example-1" id="example-1" style="color: inherit; text-decoration: none;">
-					<h4>Example</h4>
-				</a>
-				<pre><code class="language-js"><span class="hljs-keyword">import</span> { combineReducers } <span class="hljs-keyword">from</span> <span class="hljs-string">'@ezy/makina'</span>;
-<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> module1 <span class="hljs-keyword">from</span> <span class="hljs-string">'./module1'</span>;
-<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> module2 <span class="hljs-keyword">from</span> <span class="hljs-string">'./module2'</span>;
-
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> actionCreators = {
-  ...module1.actionCreators,
-  ...module2.actionCreators
-};
-
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> reducer = combineReducers({
-  <span class="hljs-attr">module1</span>: module1.reducer,
-  <span class="hljs-attr">module2</span>: module2.reducer
-});
-
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> middlewares = [...module1.middlewares, ...module2.middlewares];</code></pre>
-				<p>@note actionCreators are optional, the dispatch object is also function that dispatch action directly.
-				@note2 middlewares are also optional.</p>
-				<p>Or using the <code>createModule</code> helper function:</p>
-				<pre><code class="language-js"><span class="hljs-keyword">import</span> { createModule } <span class="hljs-keyword">from</span> <span class="hljs-string">'@ezy/makina'</span>;
-<span class="hljs-keyword">import</span> module1 <span class="hljs-keyword">from</span> <span class="hljs-string">'./module1'</span>;
-<span class="hljs-keyword">import</span> module2 <span class="hljs-keyword">from</span> <span class="hljs-string">'./module2'</span>;
-
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> createModule({
-  <span class="hljs-attr">modules</span>: {
-    module1,
-    module2
-  }
-});</code></pre>
-				<a href="#defaultio-optional" id="defaultio-optional" style="color: inherit; text-decoration: none;">
-					<h3>defaultIO (optional)</h3>
-				</a>
-				<p>The defaultIO argument is an object containing functions to access the outside world.
-					When building complex applications I/O can make the testing process a real pain.
-					Makina provide you a way to deal with that by taking an <code>overrideIO</code> argument on the create function
-				of your state machine factory making a breeze to test scenarios.</p>
-				<p>note: the <code>dispatch</code> and <code>getState</code> functions of your state machine is considered as I/O and will be added.</p>
-				<a href="#example-2" id="example-2" style="color: inherit; text-decoration: none;">
-					<h4>Example</h4>
-				</a>
-				<pre><code class="language-js"><span class="hljs-keyword">import</span> test <span class="hljs-keyword">from</span> <span class="hljs-string">'ava'</span>;
-<span class="hljs-keyword">import</span> { factory } <span class="hljs-keyword">from</span> <span class="hljs-string">'./'</span>;
-
-test(<span class="hljs-string">'user try to login but network fail - ensure notification is created'</span>, <span class="hljs-keyword">async</span> t =&gt; {
-  <span class="hljs-keyword">const</span> stateMachine = factory.create({
-    <span class="hljs-comment">// we change the callApi I/O for this test case</span>
-    <span class="hljs-attr">callApi</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-built_in">Promise</span>.reject(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'ECONNABORTED'</span>))
-  });
-
-  <span class="hljs-keyword">await</span> stateMachine.dipatch.userLogin(<span class="hljs-string">'bob'</span>, <span class="hljs-string">'secretPassword'</span>);
-
-  t.is(stateMachine.scopeds.currentUser.getState(), <span class="hljs-literal">undefined</span>);
-
-  t.deepEqual(stateMachine.scopeds.notifications.getState(), [
-    {
-      <span class="hljs-attr">message</span>: <span class="hljs-string">'authentification failed, you seem to be offline'</span>
-    }
-  ]);
-});</code></pre>
-				<a href="#selectors-optional" id="selectors-optional" style="color: inherit; text-decoration: none;">
-					<h3>selectors (optional)</h3>
-				</a>
-				<p>The third and last argument <code>selectors</code> is a plain object containing selectors.
-					Those selectors will be used to create scoped state machines.
-				they will be available under the <code>scopeds</code> property of your state machine.</p>
-				<p>To create a scoped state machine in a scoped state machine, use <code>extendSelector</code>.</p>
-				<p>Ideally, if you use a component based UI library, every component of your UI should just
-				import the main state machine or a scoped one and that&#39;s it.</p>
-				<a href="#important" id="important" style="color: inherit; text-decoration: none;">
-					<h4>IMPORTANT</h4>
-				</a>
-				<p>You shouldn&#39;t memoize your selectors and they should return a strictly equal value for identical input.
-				To create complex selectors use <code>combineSelectors</code> or <code>mergeSelectors</code>.</p>
-				<a href="#hot-module-replacement" id="hot-module-replacement" style="color: inherit; text-decoration: none;">
-					<h2>Hot module replacement</h2>
-				</a>
-				<p>The StateMachineFactory object expose a <code>replaceModule</code> function to replace the current module in the StateMachineFactory and in every StateMachine created without changing the current state.
-				This function is intented to be used for <a href="https://webpack.js.org/guides/hot-module-replacement/">hot module replacement</a>.</p>
-				<a href="#example-3" id="example-3" style="color: inherit; text-decoration: none;">
-					<h3>Example</h3>
-				</a>
-				<pre><code class="language-js"><span class="hljs-keyword">import</span> { create } <span class="hljs-keyword">from</span> <span class="hljs-string">'@ezy/makina'</span>;
-<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> root <span class="hljs-keyword">from</span> <span class="hljs-string">'./modules/index'</span>;
-
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> factory = create(root);
-
-<span class="hljs-keyword">if</span> (<span class="hljs-built_in">module</span>.hot) {
-  <span class="hljs-built_in">module</span>.hot.accept(<span class="hljs-string">'./modules/index'</span>, () =&gt;
-    factory.replaceModule(<span class="hljs-built_in">require</span>(<span class="hljs-string">'./modules/index'</span>))
-  );
-}</code></pre>
 				<a href="#links" id="links" style="color: inherit; text-decoration: none;">
 					<h2>Links</h2>
 				</a>
@@ -301,71 +230,32 @@ test(<span class="hljs-string">'user try to login but network fail - ensure noti
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="interfaces/barestatemachine.html" class="tsd-kind-icon">Bare<wbr>State<wbr>Machine</a>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/base.html" class="tsd-kind-icon">Base</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/baseinternals.html" class="tsd-kind-icon">Base<wbr>Internals</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="interfaces/barestatemachinefactory.html" class="tsd-kind-icon">Bare<wbr>State<wbr>Machine<wbr>Factory</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="interfaces/combinedmodule.html" class="tsd-kind-icon">Combined<wbr>Module</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="interfaces/combinedspec.html" class="tsd-kind-icon">Combined<wbr>Spec</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="interfaces/makinamodule.html" class="tsd-kind-icon">Makina<wbr>Module</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="interfaces/simplemodule.html" class="tsd-kind-icon">Simple<wbr>Module</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="interfaces/simplespec.html" class="tsd-kind-icon">Simple<wbr>Spec</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="interfaces/statemachine.html" class="tsd-kind-icon">State<wbr>Machine</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="interfaces/statemachinefactory.html" class="tsd-kind-icon">State<wbr>Machine<wbr>Factory</a>
+						<a href="interfaces/mapping.html" class="tsd-kind-icon">Mapping</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="globals.html#makinaspec" class="tsd-kind-icon">Makina<wbr>Spec</a>
+						<a href="globals.html#baseconstructor" class="tsd-kind-icon">Base<wbr>Constructor</a>
 					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="globals.html#middleware" class="tsd-kind-icon">Middleware</a>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#makinamodule" class="tsd-kind-icon">Makina<wbr>Module</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#createbase" class="tsd-kind-icon">create<wbr>Base</a>
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#config" class="tsd-kind-icon">config</a>
 					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="globals.html#combinereducers" class="tsd-kind-icon">combine<wbr>Reducers</a>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#createbase" class="tsd-kind-icon">create<wbr>Base</a>
 					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="globals.html#combineselectors" class="tsd-kind-icon">combine<wbr>Selectors</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="globals.html#create" class="tsd-kind-icon">create</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="globals.html#createbare" class="tsd-kind-icon">create<wbr>Bare</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="globals.html#createmodule" class="tsd-kind-icon">create<wbr>Module</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="globals.html#extendselector" class="tsd-kind-icon">extend<wbr>Selector</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="globals.html#mergereducers" class="tsd-kind-icon">merge<wbr>Reducers</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="globals.html#mergeselectors" class="tsd-kind-icon">merge<wbr>Selectors</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="globals.html#onactiontypes" class="tsd-kind-icon">on<wbr>Action<wbr>Types</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="globals.html#partializereducer" class="tsd-kind-icon">partialize<wbr>Reducer</a>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#isprimitive" class="tsd-kind-icon">is<wbr>Primitive</a>
 					</li>
 				</ul>
 			</nav>

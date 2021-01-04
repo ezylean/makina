@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>CombinedSpec | @ezy/makina</title>
+	<title>Mapping | @ezy/makina</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,31 +56,21 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="combinedspec.html">CombinedSpec</a>
+					<a href="mapping.html">Mapping</a>
 				</li>
 			</ul>
-			<h1>Interface CombinedSpec&lt;IO&gt;</h1>
+			<h1>Interface Mapping&lt;T&gt;</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>combined module spec to create <a href="combinedmodule.html">CombinedModule</a>
-							expect only one key <code>modules</code> with a mapping of modules.
-							their<code>actionCreators</code>, <code>middlewares</code> and <code>actionTypes</code> will be merged
-						and their <code>reducer</code> will be combined using <code>combineReducers</code></p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-type-parameters">
 				<h3>Type parameters</h3>
 				<ul class="tsd-type-parameters">
 					<li>
-						<h4>IO</h4>
+						<h4>T</h4>
 					</li>
 				</ul>
 			</section>
@@ -88,35 +78,13 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">CombinedSpec</span>
+						<span class="target">Mapping</span>
 					</li>
 				</ul>
 			</section>
-			<section class="tsd-panel-group tsd-index-group">
-				<h2>Index</h2>
-				<section class="tsd-panel tsd-index-panel">
-					<div class="tsd-index-content">
-						<section class="tsd-index-section ">
-							<h3>Properties</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="combinedspec.html#modules" class="tsd-kind-icon">modules</a></li>
-							</ul>
-						</section>
-					</div>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="modules" class="tsd-anchor"></a>
-					<h3>modules</h3>
-					<div class="tsd-signature tsd-kind-icon">modules<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Mapping</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Module</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">IO</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/be155f4/src/lib/utils/createCombinedModule.ts#L39">lib/utils/createCombinedModule.ts:39</a></li>
-						</ul>
-					</aside>
-				</section>
+			<section class="tsd-panel tsd-kind-interface tsd-has-type-parameter">
+				<h3 class="tsd-before-signature">Indexable</h3>
+				<div class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">[</span>name: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">T</span></div>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -129,80 +97,36 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="barestatemachine.html" class="tsd-kind-icon">Bare<wbr>State<wbr>Machine</a>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="../classes/base.html" class="tsd-kind-icon">Base</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="barestatemachinefactory.html" class="tsd-kind-icon">Bare<wbr>State<wbr>Machine<wbr>Factory</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="combinedmodule.html" class="tsd-kind-icon">Combined<wbr>Module</a>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="../classes/baseinternals.html" class="tsd-kind-icon">Base<wbr>Internals</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-has-type-parameter">
-						<a href="combinedspec.html" class="tsd-kind-icon">Combined<wbr>Spec</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="combinedspec.html#modules" class="tsd-kind-icon">modules</a>
-							</li>
-						</ul>
+						<a href="mapping.html" class="tsd-kind-icon">Mapping</a>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="makinamodule.html" class="tsd-kind-icon">Makina<wbr>Module</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="simplemodule.html" class="tsd-kind-icon">Simple<wbr>Module</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="simplespec.html" class="tsd-kind-icon">Simple<wbr>Spec</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="statemachine.html" class="tsd-kind-icon">State<wbr>Machine</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="statemachinefactory.html" class="tsd-kind-icon">State<wbr>Machine<wbr>Factory</a>
-					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="../globals.html#makinaspec" class="tsd-kind-icon">Makina<wbr>Spec</a>
+						<a href="../globals.html#baseconstructor" class="tsd-kind-icon">Base<wbr>Constructor</a>
 					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="../globals.html#middleware" class="tsd-kind-icon">Middleware</a>
+					<li class=" tsd-kind-type-alias">
+						<a href="../globals.html#makinamodule" class="tsd-kind-icon">Makina<wbr>Module</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../globals.html#createbase" class="tsd-kind-icon">create<wbr>Base</a>
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="../globals.html#config" class="tsd-kind-icon">config</a>
 					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../globals.html#combinereducers" class="tsd-kind-icon">combine<wbr>Reducers</a>
+					<li class=" tsd-kind-function">
+						<a href="../globals.html#createbase" class="tsd-kind-icon">create<wbr>Base</a>
 					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../globals.html#combineselectors" class="tsd-kind-icon">combine<wbr>Selectors</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../globals.html#create" class="tsd-kind-icon">create</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../globals.html#createbare" class="tsd-kind-icon">create<wbr>Bare</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../globals.html#createmodule" class="tsd-kind-icon">create<wbr>Module</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../globals.html#extendselector" class="tsd-kind-icon">extend<wbr>Selector</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../globals.html#mergereducers" class="tsd-kind-icon">merge<wbr>Reducers</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../globals.html#mergeselectors" class="tsd-kind-icon">merge<wbr>Selectors</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../globals.html#onactiontypes" class="tsd-kind-icon">on<wbr>Action<wbr>Types</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../globals.html#partializereducer" class="tsd-kind-icon">partialize<wbr>Reducer</a>
+					<li class=" tsd-kind-function">
+						<a href="../globals.html#isprimitive" class="tsd-kind-icon">is<wbr>Primitive</a>
 					</li>
 				</ul>
 			</nav>
