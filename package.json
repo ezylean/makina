@@ -49,7 +49,9 @@
   "engines": {
     "node": ">=8.9"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@umoja/filterable": "^4.4.1"
+  },
   "devDependencies": {
     "@bitjson/npm-scripts-info": "^1.0.0",
     "@istanbuljs/nyc-config-typescript": "^0.1.3",

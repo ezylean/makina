@@ -18,6 +18,10 @@
 export class CustomSignal<S, A> {
   private listeners: Array<(state: S, action: A) => void> = [];
 
+  public hasListeners() {
+    return this.listeners.length > 0;
+  }
+
   public subscribe(listener: (state: S, action: A) => void) {
     this.listeners.push(listener);
     return () => {
