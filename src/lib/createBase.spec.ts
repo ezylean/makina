@@ -18,7 +18,7 @@ import { createBase } from './createBase';
 //   }
 // }
 
-test('simple', t => {
+test.cb('simple', t => {
   interface Todo {
     id: number;
     text: string;
@@ -48,6 +48,8 @@ test('simple', t => {
     t.is(state, app.state);
 
     t.is(action, 'Todos:todoAdded');
+
+    t.end();
   });
 
   app.addTodo({ id: 0, text: 'write a todo' });
@@ -76,7 +78,7 @@ test('increment', t => {
   t.is(app.state, 0);
 });
 
-test('nested', t => {
+test.cb('nested', t => {
   interface Todo {
     id: number;
     text: string;
@@ -116,6 +118,8 @@ test('nested', t => {
     t.is(state, app.state);
 
     t.is(action, 'Todos:todoAdded');
+
+    t.end();
   });
 
   app.todos.addTodo({ id: 0, text: 'write a todo' });

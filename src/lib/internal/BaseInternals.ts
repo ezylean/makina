@@ -1,4 +1,4 @@
-// tslint:disable:prefer-for-of
+// tslint:disable:prefer-for-of variable-name
 
 import { config } from '../config';
 import { CustomSignal } from './CustomSignal';
@@ -10,9 +10,9 @@ function isPrimitive(test) {
 export class BaseInternals<State> {
   public stateChanged = new CustomSignal();
 
-  // tslint:disable-next-line
   private _isComputedStateUpToDate = false;
   private computedState: State & {};
+  private _submoduleUnsubscribes = [];
 
   constructor(
     private owner: any,
@@ -39,7 +39,25 @@ export class BaseInternals<State> {
   }
 
   public onStateChange(listener) {
-    return this.stateChanged.subscribe(listener);
+    if (!this.stateChanged.hasListeners()) {
+      this._submoduleUnsubscribes = this.subModuleNames.map(name =>
+        this.owner[name].internals.onStateChange((_, action) => {
+          this.updateState(this.settedState, action);
+        })
+      );
+    }
+    const unsuscribe = this.stateChanged.subscribe(listener);
+
+    return () => {
+      const result = unsuscribe();
+      if (!this.stateChanged.hasListeners()) {
+        this._submoduleUnsubscribes.forEach(submoduleUnsubscribe =>
+          submoduleUnsubscribe()
+        );
+        this._submoduleUnsubscribes = [];
+      }
+      return result;
+    };
   }
 
   public getComputedState() {
