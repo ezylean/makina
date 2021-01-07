@@ -51,7 +51,7 @@ class Notifications extends createBase() {
 
 // create a Messages module
 class Messages extends createBase() {
-  public refresh() {
+  refresh() {
     return this.IO.fetchMessages().then(messages => {
       this.commit('refreshed', { list: messages });
     });
@@ -66,7 +66,7 @@ const BaseApp = createBase({
 
 class App extends BaseApp {
 
-  protected init() {
+  init() {
     // add a filter to the Messages module refresh function
     // our filter will be triggered when the refresh function is called
     // to automatically create notification in our Notification module if neccessary
@@ -111,11 +111,11 @@ const app = new App(
 // UI bindings
 document
   .getElementById('refresh')
-  .addEventListener('click', app.messages.refresh);
+  .addEventListener('click', () => app.messages.refresh());
 
 const render = () => {
-  document.getElementById('messages').innerHTML = `<ul>${app.messages.state.list.map(msg => `<li>${msg.text}</li>`)}</ul>`;
-  document.getElementById('notifications').innerHTML = `<ul>${app.notifications.state.list.map(msg => `<li>${msg.text}</li>`)}</ul>`;
+  document.getElementById('messages').innerHTML = `<ul>${app.messages.state.list.map(msg => `<li>${msg.text}</li>`).join('')}</ul>`;
+  document.getElementById('notifications').innerHTML = `<ul>${app.notifications.state.list.map(msg => `<li>${msg.text}</li>`).join('')}</ul>`;
 };
 
 app.onStateChange(render);

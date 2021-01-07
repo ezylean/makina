@@ -2,9 +2,9 @@
 import { all as filterableAll, Filterables } from '@umoja/filterable';
 import { BaseInternals } from './internal/BaseInternals';
 
-type MakinaModule = new (initialState: any, IO?: any) => any;
+export type MakinaModule = new (initialState: any, IO?: any) => any;
 
-interface Mapping<T> {
+export interface Mapping<T> {
   [name: string]: T;
 }
 
@@ -29,7 +29,7 @@ export declare class Base<
   protected commit(name: string, newState: State): void;
 }
 
-type BaseConstructor<M extends Mapping<MakinaModule>> = new <
+export type BaseConstructor<M extends Mapping<MakinaModule>> = new <
   State = {},
   IOs extends Mapping<any> = {}
 >(
