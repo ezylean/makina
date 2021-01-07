@@ -113,7 +113,7 @@
 
 <span class="hljs-comment">// create a Messages module</span>
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Messages</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">createBase</span>() </span>{
-  public refresh() {
+  refresh() {
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.IO.fetchMessages().then(<span class="hljs-function"><span class="hljs-params">messages</span> =&gt;</span> {
       <span class="hljs-keyword">this</span>.commit(<span class="hljs-string">'refreshed'</span>, { <span class="hljs-attr">list</span>: messages });
     });
@@ -128,7 +128,7 @@
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">BaseApp</span> </span>{
 
-  protected init() {
+  init() {
     <span class="hljs-comment">// add a filter to the Messages module refresh function</span>
     <span class="hljs-comment">// our filter will be triggered when the refresh function is called</span>
     <span class="hljs-comment">// to automatically create notification in our Notification module if neccessary</span>
@@ -173,11 +173,11 @@
 <span class="hljs-comment">// UI bindings</span>
 <span class="hljs-built_in">document</span>
   .getElementById(<span class="hljs-string">'refresh'</span>)
-  .addEventListener(<span class="hljs-string">'click'</span>, app.messages.refresh);
+  .addEventListener(<span class="hljs-string">'click'</span>, () =&gt; app.messages.refresh());
 
 <span class="hljs-keyword">const</span> render = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
-  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'messages'</span>).innerHTML = <span class="hljs-string">`&lt;ul&gt;<span class="hljs-subst">${app.messages.state.list.map(msg =&gt; <span class="hljs-string">`&lt;li&gt;<span class="hljs-subst">${msg.text}</span>&lt;/li&gt;`</span>)}</span>&lt;/ul&gt;`</span>;
-  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'notifications'</span>).innerHTML = <span class="hljs-string">`&lt;ul&gt;<span class="hljs-subst">${app.notifications.state.list.map(msg =&gt; <span class="hljs-string">`&lt;li&gt;<span class="hljs-subst">${msg.text}</span>&lt;/li&gt;`</span>)}</span>&lt;/ul&gt;`</span>;
+  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'messages'</span>).innerHTML = <span class="hljs-string">`&lt;ul&gt;<span class="hljs-subst">${app.messages.state.list.map(msg =&gt; <span class="hljs-string">`&lt;li&gt;<span class="hljs-subst">${msg.text}</span>&lt;/li&gt;`</span>).join(<span class="hljs-string">''</span>)}</span>&lt;/ul&gt;`</span>;
+  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'notifications'</span>).innerHTML = <span class="hljs-string">`&lt;ul&gt;<span class="hljs-subst">${app.notifications.state.list.map(msg =&gt; <span class="hljs-string">`&lt;li&gt;<span class="hljs-subst">${msg.text}</span>&lt;/li&gt;`</span>).join(<span class="hljs-string">''</span>)}</span>&lt;/ul&gt;`</span>;
 };
 
 app.onStateChange(render);
