@@ -22,7 +22,7 @@ export declare class Base<
       state: State & { [K in keyof M]: InstanceType<M[K]>['state'] },
       action: string
     ) => void
-  ): void;
+  ): () => boolean;
 
   protected init(): void;
 
