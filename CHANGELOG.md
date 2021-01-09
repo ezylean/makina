@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/ezylean/makina/compare/v2.0.3...v2.1.0) (2021-01-09)
+
+
+### Features
+
+* **onstatechange:** add target and currentTarget parameters ([b4ce8b9](https://github.com/ezylean/makina/commit/b4ce8b9))
+
+
+
 ### [2.0.3](https://github.com/ezylean/makina/compare/v2.0.2...v2.0.3) (2021-01-07)
 
 
