@@ -40,14 +40,15 @@ test.cb('simple', t => {
 
   t.deepEqual(app.state, { todos: [] });
 
-  app.onStateChange((state, action) => {
+  app.onStateChange((state, action, target, currentTarget) => {
     t.deepEqual(state, {
       todos: [{ id: 0, text: 'write a todo' }]
     });
 
     t.is(state, app.state);
-
-    t.is(action, 'Todos:todoAdded');
+    t.is(action, 'todoAdded');
+    t.is(target, app);
+    t.is(currentTarget, app);
 
     t.end();
   });
@@ -108,7 +109,7 @@ test.cb('nested', t => {
 
   t.deepEqual(app.state, { todos: { list: [] } });
 
-  app.onStateChange((state, action) => {
+  app.onStateChange((state, action, target, currentTarget) => {
     t.deepEqual(state, {
       todos: {
         list: [{ id: 0, text: 'write a todo' }]
@@ -117,7 +118,9 @@ test.cb('nested', t => {
 
     t.is(state, app.state);
 
-    t.is(action, 'Todos:todoAdded');
+    t.is(action, 'todoAdded');
+    t.is(target, app.todos);
+    t.is(currentTarget, app);
 
     t.end();
   });

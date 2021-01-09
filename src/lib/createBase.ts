@@ -20,7 +20,9 @@ export declare class Base<
   public onStateChange(
     listener: (
       state: State & { [K in keyof M]: InstanceType<M[K]>['state'] },
-      action: string
+      action: string,
+      target: Base<any, any, any>,
+      currentTarget: Base<any, any, any>
     ) => void
   ): () => boolean;
 
@@ -78,9 +80,8 @@ export const createBase: createBase = modules => {
       /* noop */
     }
 
-    protected commit(name, newState) {
-      const action = `${this.constructor.name}:${name}`;
-      this.internals.updateState(newState, action);
+    protected commit(action, newState, target) {
+      this.internals.updateState(newState, action, target || this, this as any);
     }
   } as any;
 };

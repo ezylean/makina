@@ -1,6 +1,7 @@
 // tslint:disable:prefer-for-of variable-name
 
 import { config } from '../config';
+import { Base } from '../createBase';
 import { CustomSignal } from './CustomSignal';
 
 function isPrimitive(test) {
@@ -29,20 +30,30 @@ export class BaseInternals<State> {
     );
   }
 
-  public updateState(newState: State, action: string) {
+  public updateState(
+    newState: State,
+    action: string,
+    target: Base<any, any, any>,
+    currentTarget: Base<any, any, any>
+  ) {
     this._isComputedStateUpToDate = false;
     this.settedState = newState;
 
     if (this.stateChanged.hasListeners()) {
-      this.stateChanged.dispatch(this.getComputedState(), action);
+      this.stateChanged.dispatch(
+        this.getComputedState(),
+        action,
+        target,
+        currentTarget
+      );
     }
   }
 
   public onStateChange(listener) {
     if (!this.stateChanged.hasListeners()) {
       this._submoduleUnsubscribes = this.subModuleNames.map(name =>
-        this.owner[name].internals.onStateChange((_, action) => {
-          this.updateState(this.settedState, action);
+        this.owner[name].internals.onStateChange((_, action, target) => {
+          this.updateState(this.settedState, action, target, this.owner as any);
         })
       );
     }

@@ -1,6 +1,6 @@
 /**
  * A Signal is like an Event emitter but for only one event.
- * This is a custom signal class that dipatch 2 arguments to it's listeners
+ * This is a custom signal class that dipatch up to 4 arguments to it's listeners
  *
  * ### Usage
  * ```js
@@ -15,14 +15,18 @@
  * ```
  * @ignore
  */
-export class CustomSignal<S, A> {
-  private listeners: Array<(state: S, action: A) => void> = [];
+export class CustomSignal<S, A, T, CT> {
+  private listeners: Array<
+    (state: S, action: A, target: T, currentTarget: CT) => void
+  > = [];
 
   public hasListeners() {
     return this.listeners.length > 0;
   }
 
-  public subscribe(listener: (state: S, action: A) => void) {
+  public subscribe(
+    listener: (state: S, action: A, target: T, currentTarget: CT) => void
+  ) {
     this.listeners.push(listener);
     return () => {
       const id = this.listeners.indexOf(listener);
@@ -35,15 +39,15 @@ export class CustomSignal<S, A> {
     };
   }
 
-  public dispatch(state: S, action: A) {
+  public dispatch(state: S, action: A, target: T, currentTarget: CT) {
     const listeners = this.listeners;
     const totalListeners = listeners.length;
     if (totalListeners > 0) {
       if (totalListeners === 1) {
-        listeners[0](state, action);
+        listeners[0](state, action, target, currentTarget);
       } else {
         for (let index = 0; index < totalListeners; index++) {
-          listeners[index](state, action);
+          listeners[index](state, action, target, currentTarget);
         }
       }
     }
