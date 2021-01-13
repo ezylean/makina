@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/ezylean/makina/compare/v2.1.0...v2.2.0) (2021-01-13)
+
+
+### Features
+
+* **general:** complete rewrite ([2417a66](https://github.com/ezylean/makina/commit/2417a66))
+
+
+
 ## [2.1.0](https://github.com/ezylean/makina/compare/v2.0.3...v2.1.0) (2021-01-09)
 
 
