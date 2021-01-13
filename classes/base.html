@@ -108,8 +108,10 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="base.html#commit" class="tsd-kind-icon">commit</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-protected"><a href="base.html#create" class="tsd-kind-icon">create</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="base.html#init" class="tsd-kind-icon">init</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="base.html#onstatechange" class="tsd-kind-icon">on<wbr>State<wbr>Change</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="base.html#updatestate" class="tsd-kind-icon">update<wbr>State</a></li>
 							</ul>
 						</section>
 					</div>
@@ -123,7 +125,7 @@
 					<div class="tsd-signature tsd-kind-icon">IO<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">IOs</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/9b48888/src/lib/createBase.ts#L16">lib/createBase.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/createBase.ts#L20">lib/createBase.ts:20</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -140,7 +142,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/9b48888/src/lib/createBase.ts#L18">lib/createBase.ts:18</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/createBase.ts#L22">lib/createBase.ts:22</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">State</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span></h4>
@@ -160,7 +162,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/9b48888/src/lib/createBase.ts#L31">lib/createBase.ts:31</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/createBase.ts#L35">lib/createBase.ts:35</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -176,6 +178,41 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-protected">
+					<a name="create" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> create</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">create&lt;V&gt;<span class="tsd-signature-symbol">(</span>lens<span class="tsd-signature-symbol">: </span><a href="../globals.html#lens" class="tsd-signature-type">Lens</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"state"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">InstanceType</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">V</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"state"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span>, BaseClass<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">V</span>, IO<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">InstanceType</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">V</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"IO"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">InstanceType</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">V</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/createBase.ts#L37">lib/createBase.ts:37</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>V<span class="tsd-signature-symbol">: </span><a href="base.html" class="tsd-signature-type">Base</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span></h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>lens: <a href="../globals.html#lens" class="tsd-signature-type">Lens</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"state"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">InstanceType</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">V</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"state"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5>BaseClass: <span class="tsd-signature-type">V</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> IO: <span class="tsd-signature-type">InstanceType</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">V</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"IO"</span><span class="tsd-signature-symbol">]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">InstanceType</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">V</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 					<a name="init" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> init</h3>
@@ -186,7 +223,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/9b48888/src/lib/createBase.ts#L29">lib/createBase.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/createBase.ts#L33">lib/createBase.ts:33</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -203,7 +240,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/9b48888/src/lib/createBase.ts#L20">lib/createBase.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/createBase.ts#L24">lib/createBase.ts:24</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -255,6 +292,38 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private">
+					<a name="updatestate" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> update<wbr>State</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>State<span class="tsd-signature-symbol">(</span>newState<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">State</span>, action<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, target<span class="tsd-signature-symbol">: </span><a href="base.html" class="tsd-signature-type">Base</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span>, currentTarget<span class="tsd-signature-symbol">: </span><a href="base.html" class="tsd-signature-type">Base</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/createBase.ts#L46">lib/createBase.ts:46</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>newState: <span class="tsd-signature-type">State</span></h5>
+								</li>
+								<li>
+									<h5>action: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>target: <a href="base.html" class="tsd-signature-type">Base</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+								<li>
+									<h5>currentTarget: <a href="base.html" class="tsd-signature-type">Base</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -281,24 +350,33 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 								<a href="base.html#commit" class="tsd-kind-icon">commit</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-protected">
+								<a href="base.html#create" class="tsd-kind-icon">create</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
 								<a href="base.html#init" class="tsd-kind-icon">init</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="base.html#onstatechange" class="tsd-kind-icon">on<wbr>State<wbr>Change</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-private">
+								<a href="base.html#updatestate" class="tsd-kind-icon">update<wbr>State</a>
+							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="baseinternals.html" class="tsd-kind-icon">Base<wbr>Internals</a>
-					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="../interfaces/mapping.html" class="tsd-kind-icon">Mapping</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="../globals.html#baseconstructor" class="tsd-kind-icon">Base<wbr>Constructor</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="../globals.html#functor" class="tsd-kind-icon">Functor</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="../globals.html#lens" class="tsd-kind-icon">Lens</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="../globals.html#makinamodule" class="tsd-kind-icon">Makina<wbr>Module</a>
@@ -309,11 +387,59 @@
 					<li class=" tsd-kind-variable">
 						<a href="../globals.html#config" class="tsd-kind-icon">config</a>
 					</li>
+					<li class=" tsd-kind-variable">
+						<a href="../globals.html#findindex" class="tsd-kind-icon">find<wbr>Index</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="../globals.html#lens" class="tsd-kind-icon">lens</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="../globals.html#lensindex" class="tsd-kind-icon">lens<wbr>Index</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="../globals.html#lenspath" class="tsd-kind-icon">lens<wbr>Path</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="../globals.html#lensprop" class="tsd-kind-icon">lens<wbr>Prop</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="../globals.html#map" class="tsd-kind-icon">map</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="../globals.html#over" class="tsd-kind-icon">over</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="../globals.html#set" class="tsd-kind-icon">set</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="../globals.html#slice" class="tsd-kind-icon">slice</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="../globals.html#sort" class="tsd-kind-icon">sort</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="../globals.html#view" class="tsd-kind-icon">view</a>
+					</li>
 					<li class=" tsd-kind-function">
 						<a href="../globals.html#createbase" class="tsd-kind-icon">create<wbr>Base</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="../globals.html#isprimitive" class="tsd-kind-icon">is<wbr>Primitive</a>
+						<a href="../globals.html#findindexes" class="tsd-kind-icon">find<wbr>Indexes</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="../globals.html#lensfilter" class="tsd-kind-icon">lens<wbr>Filter</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="../globals.html#lensfind" class="tsd-kind-icon">lens<wbr>Find</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="../globals.html#lenssort" class="tsd-kind-icon">lens<wbr>Sort</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="../globals.html#memoizeone" class="tsd-kind-icon">memoize<wbr>One</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../globals.html#setatindexes" class="tsd-kind-icon">set<wbr>AtIndexes</a>
 					</li>
 				</ul>
 			</nav>
