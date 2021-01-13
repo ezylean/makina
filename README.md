@@ -144,6 +144,49 @@ index.html
 </html>
 ```
 
+### Advanced usage
+
+Under the hood Makina keep your state in a single place and use lenses to update that state
+
+```ts
+class App extends createBase({ messages: Messages })
+```
+
+is equivalent to 
+
+```ts
+class App extends createBase()<{ messages: MessagesState }> {
+  public messages: Messages = this.create(lensProp('messages'), Messages);
+}
+```
+
+`create` can be used to create state machines targeting just a part of your state on demand.
+
+```ts
+class App extends createBase({ messages: Messages }) {
+
+  public getMessageByIndex(index) {
+    return this.create(lensPath(['messages', 'list', index]), Message);
+  }
+}
+```
+
+#### available lenses utils
+- view
+- set
+- over
+- lens
+- lensPath
+- lensProp
+- lensIndex
+- lensFind
+- lensFilter
+- lensSort
+
+
+most of theses are provided by ramda, [read more on lenses](https://ramdajs.com/docs/#lens)
+
+
 ## Immutable state guarantee
 
 Makina provide a way to ensure your application state is never mutated.

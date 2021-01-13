@@ -1,22 +1,10 @@
 // tslint:disable:no-expression-statement max-classes-per-file
 import test from 'ava';
+import { config } from './config';
 import { createBase } from './createBase';
+import { lens, lensProp } from './lenses';
 
-// interface AuthentificationState {
-//   currentUser?: { username: string };
-// }
-
-// interface AuthentificationEvents {
-//   currentUserChanged: { username: string }
-// }
-
-// class Authentification extends createBase()<AuthentificationState, AuthentificationEvents> {
-//   public login(username: string) {
-//     const currentUser = { username };
-//     this.commit('userLoggedIn', { currentUser });
-//     this.emit('currentUserChanged', currentUser);
-//   }
-// }
+config.freeze = Object.freeze;
 
 test.cb('simple', t => {
   interface Todo {
@@ -39,11 +27,14 @@ test.cb('simple', t => {
   });
 
   t.deepEqual(app.state, { todos: [] });
+  t.is(Object.isFrozen(app.state), true);
 
   app.onStateChange((state, action, target, currentTarget) => {
     t.deepEqual(state, {
       todos: [{ id: 0, text: 'write a todo' }]
     });
+
+    t.is(Object.isFrozen(state), true);
 
     t.is(state, app.state);
     t.is(action, 'todoAdded');
@@ -89,6 +80,7 @@ test.cb('nested', t => {
     list: Todo[];
   }
 
+  // @ts-ignore
   class Todos extends createBase()<TodosState> {
     public addTodo(todo: Todo) {
       this.commit('todoAdded', { list: [...this.state.list, todo] });
@@ -217,4 +209,198 @@ test('nested w IO & filters', async t => {
   t.deepEqual(app.state.notifications, {
     list: [{ id: 0, text: '1 new messages' }]
   });
+});
+
+test('create state machine', t => {
+  interface Todo {
+    id: number;
+    title: string;
+  }
+
+  interface TodosState {
+    list: Todo[];
+  }
+
+  class SingleTodo extends createBase()<Todo> {
+    public updateTitle(title: string) {
+      this.commit('change title', { ...this.state, title });
+    }
+  }
+
+  class Todos extends createBase()<TodosState> {
+    public addTodo(todo: any) {
+      this.commit('todoAdded', { list: [...this.state.list, todo] });
+    }
+
+    public updateFirstTodoTitle(title: string) {
+      this.commit('change first todo title', {
+        list: [{ ...this.state.list[0], title }, ...this.state.list.slice(1)]
+      });
+    }
+
+    public getTodo(id) {
+      const todoAtIndex = lens<TodosState, Todo>(
+        (s: TodosState) => s.list[id],
+        (todo, s) => {
+          return {
+            ...s,
+            list: s.list.map((todo2, id2) => (id === id2 ? todo : todo2))
+          };
+        }
+      );
+      return this.create(todoAtIndex, SingleTodo);
+    }
+  }
+
+  const app = new Todos({ list: [{ id: 0, title: 'write title' }] });
+
+  const todo3 = app.getTodo(0);
+
+  t.deepEqual(app.state, { list: [{ id: 0, title: 'write title' }] });
+  t.deepEqual(todo3.state, { id: 0, title: 'write title' });
+
+  todo3.updateTitle('do something');
+
+  t.deepEqual(app.state, { list: [{ id: 0, title: 'do something' }] });
+  t.deepEqual(todo3.state, { id: 0, title: 'do something' });
+
+  app.updateFirstTodoTitle('do something else');
+
+  t.deepEqual(app.state, { list: [{ id: 0, title: 'do something else' }] });
+  t.deepEqual(todo3.state, { id: 0, title: 'do something else' });
+});
+
+test.cb('listener call sequence + unsubscibe', t => {
+  class Active extends createBase()<boolean> {}
+
+  interface Todo {
+    id: number;
+    text: string;
+  }
+
+  interface TodosState {
+    list: Todo[];
+    active: boolean;
+  }
+
+  class Todos extends createBase({ active: Active })<TodosState> {
+    public addTodo(todo: Todo) {
+      this.commit('todoAdded', {
+        active: true,
+        list: [...this.state.list, todo]
+      });
+    }
+  }
+
+  const BaseApp = createBase({
+    todos: Todos
+  });
+
+  class App extends BaseApp {
+    public addTodo(todo: Todo) {
+      this.commit('todoAdded', {
+        todos: { active: true, list: [...this.state.todos.list, todo] }
+      });
+    }
+  }
+
+  const app = new App({
+    todos: {
+      active: false,
+      list: []
+    }
+  });
+
+  t.deepEqual(app.state, { todos: { list: [], active: false } });
+
+  const callSequence = ['app.todos.active', 'app.todos', 'app', 'app'];
+  const appStates = [
+    {
+      todos: {
+        active: true,
+        list: [{ id: 0, text: 'write a todo' }]
+      }
+    },
+    {
+      todos: {
+        active: true,
+        list: [
+          { id: 0, text: 'write a todo' },
+          { id: 0, text: 'write another todo' }
+        ]
+      }
+    }
+  ];
+
+  app.onStateChange((state, action, target, currentTarget) => {
+    t.deepEqual(state, appStates.shift());
+
+    t.is(state, app.state);
+
+    t.is(action, 'todoAdded');
+    t.is(target, app);
+    t.is(currentTarget, app);
+
+    t.is(callSequence.shift(), 'app');
+  });
+
+  const unsubscribe = app.todos.onStateChange(
+    (state, action, target, currentTarget) => {
+      t.deepEqual(state, {
+        active: true,
+        list: [{ id: 0, text: 'write a todo' }]
+      });
+
+      t.is(state, app.todos.state);
+
+      t.is(action, 'todoAdded');
+      t.is(target, app);
+      t.is(currentTarget, app.todos);
+
+      t.is(callSequence.shift(), 'app.todos');
+    }
+  );
+
+  const unsubscribe2 = app.todos.active.onStateChange(
+    (state, action, target, currentTarget) => {
+      t.deepEqual(state, true);
+
+      t.is(state, app.todos.active.state);
+
+      t.is(action, 'todoAdded');
+      t.is(target, app);
+      t.is(currentTarget, app.todos.active);
+
+      t.is(callSequence.shift(), 'app.todos.active');
+    }
+  );
+
+  app.addTodo({ id: 0, text: 'write a todo' });
+
+  unsubscribe();
+  unsubscribe2();
+  unsubscribe2();
+
+  app.addTodo({ id: 0, text: 'write another todo' });
+
+  t.end();
+});
+
+test('alternative syntax', t => {
+  interface Message {
+    id: number;
+    text: string;
+  }
+
+  class Messages extends createBase()<Message[]> {}
+
+  class App extends createBase()<{ messages: Message[] }> {
+    public messages: Messages = this.create(lensProp('messages'), Messages);
+  }
+
+  const app = new App({
+    messages: [{ id: 0, text: 'hello' }]
+  });
+
+  t.deepEqual(app.messages.state, [{ id: 0, text: 'hello' }]);
 });

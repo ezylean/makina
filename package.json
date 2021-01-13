@@ -50,11 +50,14 @@
     "node": ">=8.9"
   },
   "dependencies": {
-    "@umoja/filterable": "^4.4.1"
+    "@umoja/filterable": "^5.0.0",
+    "fast-deep-equal": "^3.1.3",
+    "ramda": "^0.27.1"
   },
   "devDependencies": {
     "@bitjson/npm-scripts-info": "^1.0.0",
     "@istanbuljs/nyc-config-typescript": "^0.1.3",
+    "@types/ramda": "^0.27.34",
     "ava": "2.2.0",
     "codecov": "^3.5.0",
     "cz-conventional-changelog": "^2.1.0",
