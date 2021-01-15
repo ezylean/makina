@@ -76,6 +76,7 @@
 						<section class="tsd-index-section ">
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-interface"><a href="interfaces/makinaoptions.html" class="tsd-kind-icon">Makina<wbr>Options</a></li>
 								<li class="tsd-kind-interface tsd-has-type-parameter"><a href="interfaces/mapping.html" class="tsd-kind-icon">Mapping</a></li>
 							</ul>
 						</section>
@@ -83,9 +84,17 @@
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="globals.html#baseconstructor" class="tsd-kind-icon">Base<wbr>Constructor</a></li>
+								<li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="globals.html#clean" class="tsd-kind-icon">Clean</a></li>
+								<li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="globals.html#combinedio" class="tsd-kind-icon">CombinedIO</a></li>
+								<li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="globals.html#combinedstate" class="tsd-kind-icon">Combined<wbr>State</a></li>
 								<li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="globals.html#functor" class="tsd-kind-icon">Functor</a></li>
 								<li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="globals.html#lens" class="tsd-kind-icon">Lens</a></li>
 								<li class="tsd-kind-type-alias"><a href="globals.html#makinamodule" class="tsd-kind-icon">Makina<wbr>Module</a></li>
+								<li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="globals.html#maybeemptyobjectkeys" class="tsd-kind-icon">May<wbr>BeEmpty<wbr>Object<wbr>Keys</a></li>
+								<li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="globals.html#optional" class="tsd-kind-icon">Optional</a></li>
+								<li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="globals.html#pickandflatten" class="tsd-kind-icon">Pick<wbr>And<wbr>Flatten</a></li>
+								<li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="globals.html#requiredkeys" class="tsd-kind-icon">Required<wbr>Keys</a></li>
+								<li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="globals.html#uniontointersection" class="tsd-kind-icon">Union<wbr>ToIntersection</a></li>
 								<li class="tsd-kind-type-alias"><a href="globals.html#createbase" class="tsd-kind-icon">create<wbr>Base</a></li>
 							</ul>
 						</section>
@@ -129,7 +138,7 @@
 					<div class="tsd-signature tsd-kind-icon">Base<wbr>Constructor&lt;M&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/createBase.ts#L54">lib/createBase.ts:54</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/createBase.ts#L94">lib/createBase.ts:94</a></li>
 						</ul>
 					</aside>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -145,12 +154,60 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-has-type-parameter">
+					<a name="clean" class="tsd-anchor"></a>
+					<h3>Clean</h3>
+					<div class="tsd-signature tsd-kind-icon">Clean&lt;T&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-symbol">infer </span> U<span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">U</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">T</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/createBase.ts#L19">lib/createBase.ts:19</a></li>
+						</ul>
+					</aside>
+					<h4 class="tsd-type-parameters-title">Type parameters</h4>
+					<ul class="tsd-type-parameters">
+						<li>
+							<h4>T</h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-has-type-parameter">
+					<a name="combinedio" class="tsd-anchor"></a>
+					<h3>CombinedIO</h3>
+					<div class="tsd-signature tsd-kind-icon">CombinedIO&lt;T&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="globals.html#pickandflatten" class="tsd-signature-type">PickAndFlatten</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/createBase.ts#L44">lib/createBase.ts:44</a></li>
+						</ul>
+					</aside>
+					<h4 class="tsd-type-parameters-title">Type parameters</h4>
+					<ul class="tsd-type-parameters">
+						<li>
+							<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-has-type-parameter">
+					<a name="combinedstate" class="tsd-anchor"></a>
+					<h3>Combined<wbr>State</h3>
+					<div class="tsd-signature tsd-kind-icon">Combined<wbr>State&lt;T&gt;<span class="tsd-signature-symbol">:</span> <a href="globals.html#optional" class="tsd-signature-type">Optional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><a href="globals.html#maybeemptyobjectkeys" class="tsd-signature-type">MayBeEmptyObjectKeys</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/createBase.ts#L32">lib/createBase.ts:32</a></li>
+						</ul>
+					</aside>
+					<h4 class="tsd-type-parameters-title">Type parameters</h4>
+					<ul class="tsd-type-parameters">
+						<li>
+							<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-has-type-parameter">
 					<a name="functor" class="tsd-anchor"></a>
 					<h3>Functor</h3>
 					<div class="tsd-signature tsd-kind-icon">Functor&lt;A&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>fantasy-land/map<span class="tsd-signature-symbol">: </span>&lt;B&gt;<span class="tsd-signature-symbol">(</span>fn<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">B</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="globals.html#functor" class="tsd-signature-type">Functor</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">B</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>map<span class="tsd-signature-symbol">: </span>&lt;B&gt;<span class="tsd-signature-symbol">(</span>fn<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">B</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="globals.html#functor" class="tsd-signature-type">Functor</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">B</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/lenses.ts#L11">lib/lenses.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/lenses.ts#L11">lib/lenses.ts:11</a></li>
 						</ul>
 					</aside>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -166,7 +223,7 @@
 					<div class="tsd-signature tsd-kind-icon">Lens&lt;S, A&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>functorFactory<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="globals.html#functor" class="tsd-signature-type">Functor</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-symbol">(</span>s<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="globals.html#functor" class="tsd-signature-type">Functor</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/lenses.ts#L15">lib/lenses.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/lenses.ts#L15">lib/lenses.ts:15</a></li>
 						</ul>
 					</aside>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -242,7 +299,7 @@
 					<div class="tsd-signature tsd-kind-icon">Makina<wbr>Module<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/createBase.ts#L9">lib/createBase.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/createBase.ts#L9">lib/createBase.ts:9</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -251,13 +308,99 @@
 						</ul>
 					</div>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-has-type-parameter">
+					<a name="maybeemptyobjectkeys" class="tsd-anchor"></a>
+					<h3>May<wbr>BeEmpty<wbr>Object<wbr>Keys</h3>
+					<div class="tsd-signature tsd-kind-icon">May<wbr>BeEmpty<wbr>Object<wbr>Keys&lt;T&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/createBase.ts#L25">lib/createBase.ts:25</a></li>
+						</ul>
+					</aside>
+					<h4 class="tsd-type-parameters-title">Type parameters</h4>
+					<ul class="tsd-type-parameters">
+						<li>
+							<h4>T</h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-has-type-parameter">
+					<a name="optional" class="tsd-anchor"></a>
+					<h3>Optional</h3>
+					<div class="tsd-signature tsd-kind-icon">Optional&lt;T, K&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Omit</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Pick</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/createBase.ts#L29">lib/createBase.ts:29</a></li>
+						</ul>
+					</aside>
+					<h4 class="tsd-type-parameters-title">Type parameters</h4>
+					<ul class="tsd-type-parameters">
+						<li>
+							<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h4>
+						</li>
+						<li>
+							<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">T</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-has-type-parameter">
+					<a name="pickandflatten" class="tsd-anchor"></a>
+					<h3>Pick<wbr>And<wbr>Flatten</h3>
+					<div class="tsd-signature tsd-kind-icon">Pick<wbr>And<wbr>Flatten&lt;T, K&gt;<span class="tsd-signature-symbol">:</span> <a href="globals.html#uniontointersection" class="tsd-signature-type">UnionToIntersection</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/createBase.ts#L42">lib/createBase.ts:42</a></li>
+						</ul>
+					</aside>
+					<h4 class="tsd-type-parameters-title">Type parameters</h4>
+					<ul class="tsd-type-parameters">
+						<li>
+							<h4>T</h4>
+						</li>
+						<li>
+							<h4>K<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">T</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-has-type-parameter">
+					<a name="requiredkeys" class="tsd-anchor"></a>
+					<h3>Required<wbr>Keys</h3>
+					<div class="tsd-signature tsd-kind-icon">Required<wbr>Keys&lt;T&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/createBase.ts#L21">lib/createBase.ts:21</a></li>
+						</ul>
+					</aside>
+					<h4 class="tsd-type-parameters-title">Type parameters</h4>
+					<ul class="tsd-type-parameters">
+						<li>
+							<h4>T</h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-has-type-parameter">
+					<a name="uniontointersection" class="tsd-anchor"></a>
+					<h3>Union<wbr>ToIntersection</h3>
+					<div class="tsd-signature tsd-kind-icon">Union<wbr>ToIntersection&lt;U&gt;<span class="tsd-signature-symbol">:</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/createBase.ts#L37">lib/createBase.ts:37</a></li>
+						</ul>
+					</aside>
+					<h4 class="tsd-type-parameters-title">Type parameters</h4>
+					<ul class="tsd-type-parameters">
+						<li>
+							<h4>U</h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias">
 					<a name="createbase" class="tsd-anchor"></a>
 					<h3>create<wbr>Base</h3>
 					<div class="tsd-signature tsd-kind-icon">create<wbr>Base<span class="tsd-signature-symbol">:</span> &lt;M&gt;<span class="tsd-signature-symbol">(</span>modules<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">M</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="classes/base.html" class="tsd-signature-type">Base</a><span class="tsd-signature-symbol"> &amp; </span><a href="globals.html#baseconstructor" class="tsd-signature-type">BaseConstructor</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">M</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/createBase.ts#L65">lib/createBase.ts:65</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/createBase.ts#L110">lib/createBase.ts:110</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -297,7 +440,7 @@
 					<div class="tsd-signature tsd-kind-icon">config<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>freeze<span class="tsd-signature-symbol">?: </span>&lt;S&gt;<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/config.ts#L5">lib/config.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/config.ts#L5">lib/config.ts:5</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -356,7 +499,7 @@ config.freeze = process.env.NODE_ENV !== <span class="hljs-string">'production'<
 					<div class="tsd-signature tsd-kind-icon">find<wbr>Index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> = Array.prototype.findIndex.call.bind(Array.prototype.findIndex)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/lenses.ts#L78">lib/lenses.ts:78</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/lenses.ts#L78">lib/lenses.ts:78</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -366,7 +509,7 @@ config.freeze = process.env.NODE_ENV !== <span class="hljs-string">'production'<
 					<div class="tsd-signature tsd-kind-icon">lens<span class="tsd-signature-symbol">:</span> &lt;S, A&gt;<span class="tsd-signature-symbol">(</span>getter<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>s<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">A</span>, setter<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">A</span>, s<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="globals.html#lens" class="tsd-signature-type">Lens</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Rlens as any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/lenses.ts#L19">lib/lenses.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/lenses.ts#L19">lib/lenses.ts:19</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -448,7 +591,7 @@ config.freeze = process.env.NODE_ENV !== <span class="hljs-string">'production'<
 					<div class="tsd-signature tsd-kind-icon">lens<wbr>Index<span class="tsd-signature-symbol">:</span> &lt;T&gt;<span class="tsd-signature-symbol">(</span>index<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="globals.html#lens" class="tsd-signature-type">Lens</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = RlensIndex as any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/lenses.ts#L28">lib/lenses.ts:28</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/lenses.ts#L28">lib/lenses.ts:28</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -485,7 +628,7 @@ config.freeze = process.env.NODE_ENV !== <span class="hljs-string">'production'<
 					<div class="tsd-signature tsd-kind-icon">lens<wbr>Path<span class="tsd-signature-symbol">:</span> &lt;T, K0&gt;<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K0</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="globals.html#lens" class="tsd-signature-type">Lens</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K0</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span>&lt;T, K0, K1&gt;<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K0</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">K1</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="globals.html#lens" class="tsd-signature-type">Lens</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K0</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K1</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span>&lt;T, K0, K1, K2&gt;<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K0</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">K1</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">K2</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="globals.html#lens" class="tsd-signature-type">Lens</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K0</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K1</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K2</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span>&lt;T, K0, K1, K2, K3&gt;<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K0</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">K1</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">K2</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">K3</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="globals.html#lens" class="tsd-signature-type">Lens</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K0</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K1</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K2</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K3</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span>&lt;T, K0, K1, K2, K3, K4&gt;<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K0</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">K1</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">K2</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">K3</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">K4</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="globals.html#lens" class="tsd-signature-type">Lens</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K0</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K1</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K2</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K3</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K4</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="globals.html#lens" class="tsd-signature-type">Lens</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = RlensPath as any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/lenses.ts#L30">lib/lenses.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/lenses.ts#L30">lib/lenses.ts:30</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -495,7 +638,7 @@ config.freeze = process.env.NODE_ENV !== <span class="hljs-string">'production'<
 					<div class="tsd-signature tsd-kind-icon">lens<wbr>Prop<span class="tsd-signature-symbol">:</span> &lt;T, K&gt;<span class="tsd-signature-symbol">(</span>prop<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="globals.html#lens" class="tsd-signature-type">Lens</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">K</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = RlensProp as any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/lenses.ts#L24">lib/lenses.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/lenses.ts#L24">lib/lenses.ts:24</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -535,7 +678,7 @@ config.freeze = process.env.NODE_ENV !== <span class="hljs-string">'production'<
 					<div class="tsd-signature tsd-kind-icon">map<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> = Array.prototype.map.call.bind(Array.prototype.map)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/lenses.ts#L82">lib/lenses.ts:82</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/lenses.ts#L82">lib/lenses.ts:82</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -545,7 +688,7 @@ config.freeze = process.env.NODE_ENV !== <span class="hljs-string">'production'<
 					<div class="tsd-signature tsd-kind-icon">over<span class="tsd-signature-symbol">:</span> &lt;S, A&gt;<span class="tsd-signature-symbol">(</span>lens<span class="tsd-signature-symbol">: </span><a href="globals.html#lens" class="tsd-signature-type">Lens</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span>, fn<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">A</span>, s<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol"> = Rover as any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/lenses.ts#L72">lib/lenses.ts:72</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/lenses.ts#L72">lib/lenses.ts:72</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -609,7 +752,7 @@ config.freeze = process.env.NODE_ENV !== <span class="hljs-string">'production'<
 					<div class="tsd-signature tsd-kind-icon">set<span class="tsd-signature-symbol">:</span> &lt;S, A&gt;<span class="tsd-signature-symbol">(</span>lens<span class="tsd-signature-symbol">: </span><a href="globals.html#lens" class="tsd-signature-type">Lens</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span>, a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">A</span>, s<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol"> &amp; </span>&lt;S, A&gt;<span class="tsd-signature-symbol">(</span>lens<span class="tsd-signature-symbol">: </span><a href="globals.html#lens" class="tsd-signature-type">Lens</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">A</span>, s<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol"> &amp; </span>&lt;S, A&gt;<span class="tsd-signature-symbol">(</span>lens<span class="tsd-signature-symbol">: </span><a href="globals.html#lens" class="tsd-signature-type">Lens</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-symbol">(</span>s<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol"> = Rset as any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/lenses.ts#L68">lib/lenses.ts:68</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/lenses.ts#L68">lib/lenses.ts:68</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -619,7 +762,7 @@ config.freeze = process.env.NODE_ENV !== <span class="hljs-string">'production'<
 					<div class="tsd-signature tsd-kind-icon">slice<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> = Array.prototype.slice.call.bind(Array.prototype.slice)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/lenses.ts#L81">lib/lenses.ts:81</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/lenses.ts#L81">lib/lenses.ts:81</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -629,7 +772,7 @@ config.freeze = process.env.NODE_ENV !== <span class="hljs-string">'production'<
 					<div class="tsd-signature tsd-kind-icon">sort<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> = Array.prototype.sort.call.bind(Array.prototype.sort)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/lenses.ts#L83">lib/lenses.ts:83</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/lenses.ts#L83">lib/lenses.ts:83</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -639,7 +782,7 @@ config.freeze = process.env.NODE_ENV !== <span class="hljs-string">'production'<
 					<div class="tsd-signature tsd-kind-icon">view<span class="tsd-signature-symbol">:</span> &lt;S, A&gt;<span class="tsd-signature-symbol">(</span>lens<span class="tsd-signature-symbol">: </span><a href="globals.html#lens" class="tsd-signature-type">Lens</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span>, s<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol"> &amp; </span>&lt;S, A&gt;<span class="tsd-signature-symbol">(</span>lens<span class="tsd-signature-symbol">: </span><a href="globals.html#lens" class="tsd-signature-type">Lens</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-symbol">(</span>s<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">A</span><span class="tsd-signature-symbol"> = Rview as any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/lenses.ts#L65">lib/lenses.ts:65</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/lenses.ts#L65">lib/lenses.ts:65</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -656,7 +799,7 @@ config.freeze = process.env.NODE_ENV !== <span class="hljs-string">'production'<
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/createBase.ts#L69">lib/createBase.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/createBase.ts#L114">lib/createBase.ts:114</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -679,7 +822,7 @@ config.freeze = process.env.NODE_ENV !== <span class="hljs-string">'production'<
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/lenses.ts#L151">lib/lenses.ts:151</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/lenses.ts#L151">lib/lenses.ts:151</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -705,7 +848,7 @@ config.freeze = process.env.NODE_ENV !== <span class="hljs-string">'production'<
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/lenses.ts#L107">lib/lenses.ts:107</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/lenses.ts#L107">lib/lenses.ts:107</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -752,7 +895,7 @@ config.freeze = process.env.NODE_ENV !== <span class="hljs-string">'production'<
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/lenses.ts#L85">lib/lenses.ts:85</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/lenses.ts#L85">lib/lenses.ts:85</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -799,7 +942,7 @@ config.freeze = process.env.NODE_ENV !== <span class="hljs-string">'production'<
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/lenses.ts#L124">lib/lenses.ts:124</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/lenses.ts#L124">lib/lenses.ts:124</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -849,7 +992,7 @@ config.freeze = process.env.NODE_ENV !== <span class="hljs-string">'production'<
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/internal/utils.ts#L1">lib/internal/utils.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/internal/utils.ts#L1">lib/internal/utils.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -917,7 +1060,7 @@ config.freeze = process.env.NODE_ENV !== <span class="hljs-string">'production'<
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ezylean/makina/blob/855064f/src/lib/lenses.ts#L161">lib/lenses.ts:161</a></li>
+									<li>Defined in <a href="https://github.com/ezylean/makina/blob/d66f39d/src/lib/lenses.ts#L161">lib/lenses.ts:161</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -951,11 +1094,23 @@ config.freeze = process.env.NODE_ENV !== <span class="hljs-string">'production'<
 					<li class=" tsd-kind-class tsd-has-type-parameter">
 						<a href="classes/base.html" class="tsd-kind-icon">Base</a>
 					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/makinaoptions.html" class="tsd-kind-icon">Makina<wbr>Options</a>
+					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/mapping.html" class="tsd-kind-icon">Mapping</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="globals.html#baseconstructor" class="tsd-kind-icon">Base<wbr>Constructor</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#clean" class="tsd-kind-icon">Clean</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#combinedio" class="tsd-kind-icon">CombinedIO</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#combinedstate" class="tsd-kind-icon">Combined<wbr>State</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="globals.html#functor" class="tsd-kind-icon">Functor</a>
@@ -965,6 +1120,21 @@ config.freeze = process.env.NODE_ENV !== <span class="hljs-string">'production'<
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#makinamodule" class="tsd-kind-icon">Makina<wbr>Module</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#maybeemptyobjectkeys" class="tsd-kind-icon">May<wbr>BeEmpty<wbr>Object<wbr>Keys</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#optional" class="tsd-kind-icon">Optional</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#pickandflatten" class="tsd-kind-icon">Pick<wbr>And<wbr>Flatten</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#requiredkeys" class="tsd-kind-icon">Required<wbr>Keys</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#uniontointersection" class="tsd-kind-icon">Union<wbr>ToIntersection</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#createbase" class="tsd-kind-icon">create<wbr>Base</a>
