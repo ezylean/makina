@@ -49,8 +49,8 @@ test.cb('simple', t => {
 
 test('increment', t => {
   class Counter extends createBase()<number> {
-    constructor(initialState = 0) {
-      super(initialState);
+    constructor(initialState = 0, IO?, options?) {
+      super(initialState, IO, options);
     }
 
     public increment() {
@@ -131,6 +131,17 @@ test('nested w IO & filters', async t => {
   }
 
   class Notifications extends createBase()<NotificationsState> {
+    constructor(initialState: Partial<NotificationsState>, IO = {}, options) {
+      super(
+        {
+          list: [],
+          ...initialState
+        },
+        IO,
+        options
+      );
+    }
+
     public add(notification: Notification) {
       this.commit('notificationAdded', {
         list: [...this.state.list, notification]
@@ -152,6 +163,17 @@ test('nested w IO & filters', async t => {
   }
 
   class Messages extends createBase()<MessagesState, MessagesIO> {
+    constructor(initialState: Partial<MessagesState>, IO: MessagesIO, options) {
+      super(
+        {
+          list: [],
+          ...initialState
+        },
+        IO,
+        options
+      );
+    }
+
     public refresh() {
       return this.IO.fetchMessages().then(messages => {
         return this.commit('refreshed', { list: messages });
@@ -182,19 +204,9 @@ test('nested w IO & filters', async t => {
   }
 
   const app = new App(
+    {},
     {
-      messages: {
-        list: []
-      },
-      notifications: {
-        list: []
-      }
-    },
-    {
-      messages: {
-        fetchMessages: () => Promise.resolve([{ id: 0, text: 'message' }])
-      },
-      notifications: {}
+      fetchMessages: () => Promise.resolve([{ id: 0, text: 'message' }])
     }
   );
 

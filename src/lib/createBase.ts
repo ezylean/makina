@@ -6,10 +6,48 @@ import { CustomSignal } from './internal/CustomSignal';
 import { memoizeOne } from './internal/utils';
 import { Lens, lensProp, set, view } from './lenses';
 
-export type MakinaModule = new (initialState: any, IO?: any) => any;
+export type MakinaModule = new (
+  initialState: any,
+  IO?: any,
+  options?: MakinaOptions
+) => any;
 
 export interface Mapping<T> {
   [name: string]: T;
+}
+
+type Clean<T> = T extends infer U & {} ? U : T;
+
+type RequiredKeys<T> = {
+  [K in keyof T]-?: {} extends Pick<T, K> ? never : K;
+}[keyof T];
+
+type MayBeEmptyObjectKeys<T> = {
+  [K in keyof T]-?: RequiredKeys<T[K]> extends never ? K : never;
+}[keyof T];
+
+type Optional<T extends object, K extends keyof T> = Omit<T, K> &
+  Partial<Pick<T, K>>;
+
+export type CombinedState<T extends object> = Optional<
+  T,
+  MayBeEmptyObjectKeys<T>
+>;
+
+type UnionToIntersection<U> = (U extends any
+? (k: U) => void
+: never) extends (k: infer I) => void
+  ? I
+  : never;
+type PickAndFlatten<T, K extends keyof T> = UnionToIntersection<T[K]>;
+
+export type CombinedIO<T extends object> = Partial<
+  PickAndFlatten<T, keyof T> & { [K in keyof T]: Partial<T[K]> }
+>;
+
+export interface MakinaOptions {
+  source: Base;
+  lens: Lens<any, any>;
 }
 
 export declare class Base<
@@ -17,13 +55,15 @@ export declare class Base<
   IOs extends Mapping<any> = {},
   M extends Mapping<MakinaModule> = {}
 > {
-  protected IO: IOs & { [K in keyof M]: InstanceType<M[K]>['IO'] };
+  protected IO: Clean<IOs & { [K in keyof M]: InstanceType<M[K]>['IO'] }>;
 
-  public get state(): State & { [K in keyof M]: InstanceType<M[K]>['state'] };
+  public get state(): Clean<
+    State & { [K in keyof M]: InstanceType<M[K]>['state'] }
+  >;
 
   public onStateChange(
     listener: (
-      state: State & { [K in keyof M]: InstanceType<M[K]>['state'] },
+      state: Clean<State & { [K in keyof M]: InstanceType<M[K]>['state'] }>,
       action: string,
       target: Base<any, any, any>,
       currentTarget: Base<any, any, any>
@@ -55,8 +95,13 @@ export type BaseConstructor<M extends Mapping<MakinaModule>> = new <
   State = {},
   IOs extends Mapping<any> = {}
 >(
-  initialState: State & { [K in keyof M]: InstanceType<M[K]>['state'] },
-  IO?: IOs & { [K in keyof M]: InstanceType<M[K]>['IO'] }
+  initialState: Clean<
+    State & CombinedState<{ [K in keyof M]: ConstructorParameters<M[K]>[0] }>
+  >,
+  IO?: Clean<
+    IOs & CombinedIO<{ [K in keyof M]: ConstructorParameters<M[K]>[1] }>
+  >,
+  options?: MakinaOptions
 ) => Base<State, IOs, M> &
   {
     [K in keyof M]: InstanceType<M[K]> & Filterables<InstanceType<M[K]>>;
@@ -69,47 +114,38 @@ export type createBase = <M extends Mapping<MakinaModule> = {}>(
 export const createBase: createBase = modules => {
   // tslint:disable-next-line: no-shadowed-variable
   return class Base {
-    // @ts-ignore
-    private __IS_MAKINA = true;
-    private _previousState;
-    private _settedState;
-    private _stateSource;
-    private _stateGetter;
-    private _stateSetter;
-    private _broadcaster: CustomSignal<string, Base>;
-    private _depth: number;
+    private _state;
+    private _options;
     private _stateChanged = new CustomSignal<any, string, Base, Base>();
     private _unsubscribe;
 
     public get state() {
-      return this._stateSource
-        ? this._stateGetter(this._stateSource.state)
-        : this._settedState;
+      return this._options.source
+        ? this._options.getter(this._options.source.state)
+        : this._state;
     }
 
-    constructor(initialState: any = {}, protected IO = {}) {
-      if (
-        initialState &&
-        initialState.source?.__IS_MAKINA &&
-        typeof initialState.lens === 'function'
-      ) {
-        const { lens, source } = initialState;
-        this._stateSource = source;
-        this._stateGetter = memoizeOne(view(lens));
-        this._stateSetter = set(lens);
-        this._broadcaster = this._stateSource._broadcaster;
-        this._depth = this._stateSource._depth + 1;
+    constructor(initialState, protected IO = {}, options) {
+      if (options && options.source && options.lens) {
+        this._options = {
+          broadcaster: options.source._options.broadcaster,
+          depth: options.source._options.depth + 1,
+          getter: memoizeOne(view(options.lens)),
+          setter: set(options.lens),
+          source: options.source
+        };
       } else {
-        this._settedState = initialState;
-        this._broadcaster = new CustomSignal();
-        this._depth = 0;
-
-        if (config.freeze) {
-          this._settedState = config.freeze(this._settedState);
-        }
+        this._options = {
+          broadcaster: new CustomSignal(),
+          depth: 0
+        };
       }
 
-      this._previousState = this.state;
+      this._state = !config.freeze ? initialState : config.freeze(initialState);
+
+      if (this._options.source && this.state !== this._state) {
+        this.updateState(this._state, `new ${this.constructor.name}`, this);
+      }
 
       Object.keys(modules || {}).forEach(name => {
         this[name] = this.create(
@@ -123,15 +159,18 @@ export const createBase: createBase = modules => {
     }
 
     public onStateChange(listener) {
-      if (this._stateSource) {
+      if (this._options.source) {
         if (!this._stateChanged.hasListeners()) {
           // listen state change from root
-          this._unsubscribe = this._broadcaster.subscribe((action, target) => {
-            if (!deepEqual(this._previousState, this.state)) {
-              this._previousState = this.state;
-              this._stateChanged.dispatch(this.state, action, target, this);
-            }
-          }, this._depth);
+          this._unsubscribe = this._options.broadcaster.subscribe(
+            (action, target) => {
+              if (!deepEqual(this._state, this.state)) {
+                this._state = this.state;
+                this._stateChanged.dispatch(this.state, action, target, this);
+              }
+            },
+            this._options.depth
+          );
         }
 
         const unsuscribe = this._stateChanged.subscribe(listener);
@@ -161,29 +200,48 @@ export const createBase: createBase = modules => {
     }
 
     protected create(lens, BaseClass, IO) {
-      return filterableAll(
-        new BaseClass({ source: this, lens }, { ...this.IO, ...(IO || {}) }),
+      const instance = filterableAll(
+        new BaseClass(
+          view(lens, this.state),
+          { ...this.IO, ...(IO || {}) },
+          { source: this, lens }
+        ),
         true,
         false
       );
+
+      if (!instance._options.source) {
+        throw new Error(
+          `
+          missing "options" parameter in constructor of "${BaseClass.name}"
+          your constructor shoud look like this:
+
+          constructor(initialState, IO, options) {
+            super(initialState, IO, options)
+          }
+          `
+        );
+      }
+
+      return instance;
     }
 
     private updateState(newState, action, target) {
-      if (this._stateSource) {
-        this._stateSource.updateState(
-          this._stateSetter(newState, this._stateSource.state),
+      if (this._options.source) {
+        this._options.source.updateState(
+          this._options.setter(newState, this._options.source.state),
           action,
           target
         );
       } else {
-        this._settedState = newState;
+        this._state = newState;
 
         if (config.freeze) {
-          this._settedState = config.freeze(this._settedState);
+          this._state = config.freeze(this._state);
         }
 
-        if (this._broadcaster.hasListeners()) {
-          this._broadcaster.dispatch(action, target);
+        if (this._options.broadcaster.hasListeners()) {
+          this._options.broadcaster.dispatch(action, target);
         }
 
         if (this._stateChanged.hasListeners()) {
