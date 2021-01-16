@@ -3,14 +3,19 @@ import { all as filterableAll, Filterables } from '@umoja/filterable';
 import deepEqual from 'fast-deep-equal';
 import { config } from './config';
 import { CustomSignal } from './internal/CustomSignal';
-import { memoizeOne } from './internal/utils';
+import { memoizeOne, taskRunner } from './internal/utils';
 import { Lens, lensProp, set, view } from './lenses';
 
-export type MakinaModule = new (
-  initialState: any,
-  IO?: any,
-  options?: MakinaOptions
-) => any;
+export interface MakinaOptions {
+  source: Base;
+  lens: Lens<any, any>;
+}
+
+type MakinaModule = Base &
+  (new (initialState: any, IO: any, options: MakinaOptions) => any);
+
+export type StateMachine<T extends InstanceType<MakinaModule>> = T &
+  Filterables<T>;
 
 export interface Mapping<T> {
   [name: string]: T;
@@ -45,21 +50,17 @@ export type CombinedIO<T extends object> = Partial<
   PickAndFlatten<T, keyof T> & { [K in keyof T]: Partial<T[K]> }
 >;
 
-export interface MakinaOptions {
-  source: Base;
-  lens: Lens<any, any>;
-}
-
 export declare class Base<
   State = {},
   IOs extends Mapping<any> = {},
   M extends Mapping<MakinaModule> = {}
 > {
-  protected IO: Clean<IOs & { [K in keyof M]: InstanceType<M[K]>['IO'] }>;
-
   public get state(): Clean<
     State & { [K in keyof M]: InstanceType<M[K]>['state'] }
   >;
+
+  public ready: Promise<this>;
+  protected IO: Clean<IOs & { [K in keyof M]: InstanceType<M[K]>['IO'] }>;
 
   public onStateChange(
     listener: (
@@ -76,12 +77,16 @@ export declare class Base<
 
   protected create<
     V extends Base &
-      (new (state: InstanceType<V>['state'], IO: InstanceType<V>['IO']) => any)
+      (new (
+        state: ConstructorParameters<V>[0],
+        IO: ConstructorParameters<V>[1],
+        options: MakinaOptions
+      ) => InstanceType<V>)
   >(
-    lens: Lens<this['state'], InstanceType<V>['state']>,
+    lens: Lens<this['state'], V['state']>,
     BaseClass: V,
-    IO?: InstanceType<V>['IO']
-  ): InstanceType<V>;
+    IO?: Partial<ConstructorParameters<V>[1]>
+  ): StateMachine<InstanceType<V>>;
 
   private updateState(
     newState: State,
@@ -104,26 +109,27 @@ export type BaseConstructor<M extends Mapping<MakinaModule>> = new <
   options?: MakinaOptions
 ) => Base<State, IOs, M> &
   {
-    [K in keyof M]: InstanceType<M[K]> & Filterables<InstanceType<M[K]>>;
+    [K in keyof M]: StateMachine<InstanceType<M[K]>>;
   };
 
 export type createBase = <M extends Mapping<MakinaModule> = {}>(
-  modules?: M
+  modules?: Partial<M>
 ) => Base & BaseConstructor<M>;
 
 export const createBase: createBase = modules => {
   // tslint:disable-next-line: no-shadowed-variable
   return class Base {
-    private _state;
-    private _options;
-    private _stateChanged = new CustomSignal<any, string, Base, Base>();
-    private _unsubscribe;
-
     public get state() {
       return this._options.source
         ? this._options.getter(this._options.source.state)
         : this._state;
     }
+
+    public ready: Promise<this>;
+    private _state;
+    private _options;
+    private _stateChanged = new CustomSignal<any, string, Base, Base>();
+    private _unsubscribe;
 
     constructor(initialState, protected IO = {}, options) {
       if (options && options.source && options.lens) {
@@ -155,7 +161,10 @@ export const createBase: createBase = modules => {
         );
       });
 
-      this.init();
+      this.ready = taskRunner.then(() => {
+        this.init();
+        return this;
+      });
     }
 
     public onStateChange(listener) {

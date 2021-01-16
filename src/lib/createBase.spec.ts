@@ -1,7 +1,7 @@
 // tslint:disable:no-expression-statement max-classes-per-file
 import test from 'ava';
 import { config } from './config';
-import { createBase } from './createBase';
+import { createBase, StateMachine } from './createBase';
 import { lens, lensProp } from './lenses';
 
 config.freeze = Object.freeze;
@@ -181,24 +181,32 @@ test('nested w IO & filters', async t => {
     }
   }
 
-  const BaseApp = createBase({
-    messages: Messages,
+  const BaseApp = createBase<{
+    messages: typeof Messages;
+    notifications: typeof Notifications;
+  }>({
+    // messages: Messages,
     notifications: Notifications
   });
 
   class App extends BaseApp {
+    public messages: StateMachine<Messages> = this.create(
+      lensProp('messages'),
+      Messages
+    );
+
     protected init() {
-      this.messages.refresh.applyFilter(next => {
+      this.messages.refresh.applyFilter(async next => {
         const nbMsg = this.messages.state.list.length;
-        return next().then(() => {
-          const newMsg = this.messages.state.list.length - nbMsg;
-          if (newMsg > 0) {
-            this.notifications.add({
-              id: 0,
-              text: `${newMsg} new messages`
-            });
-          }
-        });
+        await next();
+        const newMsg = this.messages.state.list.length - nbMsg;
+
+        if (newMsg > 0) {
+          this.notifications.add({
+            id: 0,
+            text: `${newMsg} new messages`
+          });
+        }
       });
     }
   }
@@ -209,6 +217,8 @@ test('nested w IO & filters', async t => {
       fetchMessages: () => Promise.resolve([{ id: 0, text: 'message' }])
     }
   );
+
+  await app.ready;
 
   t.deepEqual(app.state, {
     messages: { list: [] },

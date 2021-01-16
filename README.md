@@ -70,21 +70,17 @@ class App extends BaseApp {
     // add a filter to the Messages module refresh function
     // our filter will be triggered when the refresh function is called
     // to automatically create notification in our Notification module if neccessary
-    this.messages.refresh.applyFilter(next => {
-      // previous nb of messages
+    this.messages.refresh.applyFilter(async (next) => {
       const nbMsg = this.messages.state.list.length;
+      await next();
+      const newMsg = this.messages.state.list.length - nbMsg;
 
-      return next().then(() => {
-        // total new messages
-        const newMsg = this.messages.state.list.length - nbMsg;
-
-        if (newMsg > 0) {
-          this.notifications.add({
-            id: 0,
-            text: `${newMsg} new messages`
-          });
-        }
-      });
+      if (newMsg > 0) {
+        this.notifications.add({
+          id: 0,
+          text: `${newMsg} new messages`
+        });
+      }
     });
   }
   
@@ -107,6 +103,13 @@ const app = new App(
     notifications: {}
   }
 );
+
+
+/**
+ * wait for all init functions to be called 
+ * not necessary in most cases but may be when unit testing
+ */
+// await app.ready;
 
 // UI bindings
 document
@@ -155,8 +158,8 @@ class App extends createBase({ messages: Messages })
 is equivalent to 
 
 ```ts
-class App extends createBase()<{ messages: MessagesState }> {
-  public messages: Messages = this.create(lensProp('messages'), Messages);
+class App extends createBase<{ messages: typeof Messages }>() {
+  public messages: StateMachine<Messages> = this.create(lensProp('messages'), Messages);
 }
 ```
 
