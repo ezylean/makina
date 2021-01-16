@@ -132,21 +132,17 @@
     <span class="hljs-comment">// add a filter to the Messages module refresh function</span>
     <span class="hljs-comment">// our filter will be triggered when the refresh function is called</span>
     <span class="hljs-comment">// to automatically create notification in our Notification module if neccessary</span>
-    <span class="hljs-keyword">this</span>.messages.refresh.applyFilter(<span class="hljs-function"><span class="hljs-params">next</span> =&gt;</span> {
-      <span class="hljs-comment">// previous nb of messages</span>
+    <span class="hljs-keyword">this</span>.messages.refresh.applyFilter(<span class="hljs-keyword">async</span> (next) =&gt; {
       <span class="hljs-keyword">const</span> nbMsg = <span class="hljs-keyword">this</span>.messages.state.list.length;
+      <span class="hljs-keyword">await</span> next();
+      <span class="hljs-keyword">const</span> newMsg = <span class="hljs-keyword">this</span>.messages.state.list.length - nbMsg;
 
-      <span class="hljs-keyword">return</span> next().then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
-        <span class="hljs-comment">// total new messages</span>
-        <span class="hljs-keyword">const</span> newMsg = <span class="hljs-keyword">this</span>.messages.state.list.length - nbMsg;
-
-        <span class="hljs-keyword">if</span> (newMsg &gt; <span class="hljs-number">0</span>) {
-          <span class="hljs-keyword">this</span>.notifications.add({
-            <span class="hljs-attr">id</span>: <span class="hljs-number">0</span>,
-            <span class="hljs-attr">text</span>: <span class="hljs-string">`<span class="hljs-subst">${newMsg}</span> new messages`</span>
-          });
-        }
-      });
+      <span class="hljs-keyword">if</span> (newMsg &gt; <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">this</span>.notifications.add({
+          <span class="hljs-attr">id</span>: <span class="hljs-number">0</span>,
+          <span class="hljs-attr">text</span>: <span class="hljs-string">`<span class="hljs-subst">${newMsg}</span> new messages`</span>
+        });
+      }
     });
   }
 
@@ -169,6 +165,13 @@
     <span class="hljs-attr">notifications</span>: {}
   }
 );
+
+
+<span class="hljs-comment">/**
+ * wait for all init functions to be called 
+ * not necessary in most cases but may be when unit testing
+ */</span>
+<span class="hljs-comment">// await app.ready;</span>
 
 <span class="hljs-comment">// UI bindings</span>
 <span class="hljs-built_in">document</span>
@@ -206,8 +209,8 @@ render();</code></pre>
 				<p>Under the hood Makina keep your state in a single place and use lenses to update that state</p>
 				<pre><code class="language-ts"><span class="hljs-keyword">class</span> App <span class="hljs-keyword">extends</span> createBase({ messages: Messages })</code></pre>
 				<p>is equivalent to </p>
-				<pre><code class="language-ts"><span class="hljs-keyword">class</span> App <span class="hljs-keyword">extends</span> createBase()&lt;{ messages: MessagesState }&gt; {
-  <span class="hljs-keyword">public</span> messages: Messages = <span class="hljs-keyword">this</span>.create(lensProp(<span class="hljs-string">'messages'</span>), Messages);
+				<pre><code class="language-ts"><span class="hljs-keyword">class</span> App <span class="hljs-keyword">extends</span> createBase&lt;{ messages: <span class="hljs-keyword">typeof</span> Messages }&gt;() {
+  <span class="hljs-keyword">public</span> messages: StateMachine&lt;Messages&gt; = <span class="hljs-keyword">this</span>.create(lensProp(<span class="hljs-string">'messages'</span>), Messages);
 }</code></pre>
 				<p><code>create</code> can be used to create state machines targeting just a part of your state on demand.</p>
 				<pre><code class="language-ts"><span class="hljs-keyword">class</span> App <span class="hljs-keyword">extends</span> createBase({ messages: Messages }) {
@@ -305,6 +308,9 @@ config.freeze =
 						<a href="globals.html#requiredkeys" class="tsd-kind-icon">Required<wbr>Keys</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#statemachine" class="tsd-kind-icon">State<wbr>Machine</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="globals.html#uniontointersection" class="tsd-kind-icon">Union<wbr>ToIntersection</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
@@ -360,9 +366,6 @@ config.freeze =
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#lenssort" class="tsd-kind-icon">lens<wbr>Sort</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="globals.html#memoizeone" class="tsd-kind-icon">memoize<wbr>One</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#setatindexes" class="tsd-kind-icon">set<wbr>AtIndexes</a>
