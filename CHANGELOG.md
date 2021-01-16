@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/ezylean/makina/compare/v2.3.0...v3.0.0) (2021-01-16)
+
+
+### Bug Fixes
+
+* **create:** fix create + add a ready Promise on stateMachines ([c0c5ccb](https://github.com/ezylean/makina/commit/c0c5ccb))
+
+
+### BREAKING CHANGES
+
+* **create:** init call is now asynchronous
+
+
+
 ## [2.3.0](https://github.com/ezylean/makina/compare/v2.2.0...v2.3.0) (2021-01-15)
 
 
