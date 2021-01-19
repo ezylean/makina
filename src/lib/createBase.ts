@@ -1,6 +1,5 @@
 // tslint:disable:prefer-for-of max-classes-per-file variable-name
 import { all as filterableAll, Filterables } from '@umoja/filterable';
-import deepEqual from 'fast-deep-equal';
 import { config } from './config';
 import { CustomSignal } from './internal/CustomSignal';
 import { memoizeOne, taskRunner } from './internal/utils';
@@ -173,7 +172,7 @@ export const createBase: createBase = modules => {
           // listen state change from root
           this._unsubscribe = this._options.broadcaster.subscribe(
             (action, target) => {
-              if (!deepEqual(this._state, this.state)) {
+              if (this._state !== this.state) {
                 this._state = this.state;
                 this._stateChanged.dispatch(this.state, action, target, this);
               }
