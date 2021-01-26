@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/ezylean/makina/compare/v3.0.1...v4.0.0) (2021-01-26)
+
+
+### Features
+
+* **add support for splitlens + remove ramda:** split lenses can now be used everywhere lenses can ([44fb979](https://github.com/ezylean/makina/commit/44fb979))
+
+
+### BREAKING CHANGES
+
+* **add support for splitlens + remove ramda:** over, lens, lensProp, lensIndex and lensPath can no longer be imported from this
+library, if needed import them directly from ramda
+
+
+
 ### [3.0.1](https://github.com/ezylean/makina/compare/v3.0.0...v3.0.1) (2021-01-19)
 
 
