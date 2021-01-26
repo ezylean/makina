@@ -93,10 +93,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="lens" class="tsd-anchor"></a>
 					<h3>lens</h3>
-					<div class="tsd-signature tsd-kind-icon">lens<span class="tsd-signature-symbol">:</span> <a href="../globals.html#lens" class="tsd-signature-type">Lens</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<div class="tsd-signature tsd-kind-icon">lens<span class="tsd-signature-symbol">:</span> <a href="../globals.html#lens" class="tsd-signature-type">Lens</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><a href="splitlens.html" class="tsd-signature-type">SplitLens</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/b0b29d3/src/lib/createBase.ts#L11">lib/createBase.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/8a5ef6d/src/lib/createBase.ts#L10">lib/createBase.ts:10</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -106,7 +106,7 @@
 					<div class="tsd-signature tsd-kind-icon">source<span class="tsd-signature-symbol">:</span> <a href="../classes/base.html" class="tsd-signature-type">Base</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/b0b29d3/src/lib/createBase.ts#L10">lib/createBase.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/8a5ef6d/src/lib/createBase.ts#L9">lib/createBase.ts:9</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -142,6 +142,9 @@
 				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="mapping.html" class="tsd-kind-icon">Mapping</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="splitlens.html" class="tsd-kind-icon">Split<wbr>Lens</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="../globals.html#baseconstructor" class="tsd-kind-icon">Base<wbr>Constructor</a>
@@ -192,25 +195,7 @@
 						<a href="../globals.html#findindex" class="tsd-kind-icon">find<wbr>Index</a>
 					</li>
 					<li class=" tsd-kind-variable">
-						<a href="../globals.html#lens" class="tsd-kind-icon">lens</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="../globals.html#lensindex" class="tsd-kind-icon">lens<wbr>Index</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="../globals.html#lenspath" class="tsd-kind-icon">lens<wbr>Path</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="../globals.html#lensprop" class="tsd-kind-icon">lens<wbr>Prop</a>
-					</li>
-					<li class=" tsd-kind-variable">
 						<a href="../globals.html#map" class="tsd-kind-icon">map</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="../globals.html#over" class="tsd-kind-icon">over</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="../globals.html#set" class="tsd-kind-icon">set</a>
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="../globals.html#slice" class="tsd-kind-icon">slice</a>
@@ -218,8 +203,11 @@
 					<li class=" tsd-kind-variable">
 						<a href="../globals.html#sort" class="tsd-kind-icon">sort</a>
 					</li>
-					<li class=" tsd-kind-variable">
-						<a href="../globals.html#view" class="tsd-kind-icon">view</a>
+					<li class=" tsd-kind-function">
+						<a href="../globals.html#const" class="tsd-kind-icon">Const</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../globals.html#identity" class="tsd-kind-icon">Identity</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../globals.html#createbase" class="tsd-kind-icon">create<wbr>Base</a>
@@ -236,8 +224,20 @@
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="../globals.html#lenssort" class="tsd-kind-icon">lens<wbr>Sort</a>
 					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="../globals.html#lenstosplitlens" class="tsd-kind-icon">lens<wbr>ToSplit<wbr>Lens</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="../globals.html#set" class="tsd-kind-icon">set</a>
+					</li>
 					<li class=" tsd-kind-function">
 						<a href="../globals.html#setatindexes" class="tsd-kind-icon">set<wbr>AtIndexes</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="../globals.html#splitlensprop" class="tsd-kind-icon">split<wbr>Lens<wbr>Prop</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="../globals.html#view" class="tsd-kind-icon">view</a>
 					</li>
 				</ul>
 			</nav>

@@ -225,23 +225,32 @@ render();</code></pre>
 				<ul>
 					<li>view</li>
 					<li>set</li>
-					<li>over</li>
-					<li>lens</li>
-					<li>lensPath</li>
-					<li>lensProp</li>
-					<li>lensIndex</li>
 					<li>lensFind</li>
 					<li>lensFilter</li>
 					<li>lensSort</li>
+					<li>splitLensProp</li>
+					<li>lensToSplitLens</li>
 				</ul>
-				<p>most of theses are provided by ramda, <a href="https://ramdajs.com/docs/#lens">read more on lenses</a></p>
+				<p><a href="https://ramdajs.com/docs/#lens">read more on lenses</a></p>
+				<a href="#emon-split-lensesem" id="emon-split-lensesem" style="color: inherit; text-decoration: none;">
+					<h5><em>on split lenses</em></h5>
+				</a>
+				<p>lenses being a composable pair of pure getter and setter functions,
+				Makina also handle split lenses which is just a pure getter and a pure setter in an object.</p>
+				<a href="#example-1" id="example-1" style="color: inherit; text-decoration: none;">
+					<h6>Example</h6>
+				</a>
+				<pre><code class="language-js">  <span class="hljs-keyword">const</span> nameSplitLens = {
+    <span class="hljs-attr">get</span>: <span class="hljs-function">(<span class="hljs-params">s</span>) =&gt;</span> s.name,
+    <span class="hljs-attr">set</span>: <span class="hljs-function">(<span class="hljs-params">name, s</span>) =&gt;</span> ({ ...s, name })
+  }</code></pre>
 				<a href="#immutable-state-guarantee" id="immutable-state-guarantee" style="color: inherit; text-decoration: none;">
 					<h2>Immutable state guarantee</h2>
 				</a>
 				<p>Makina provide a way to ensure your application state is never mutated.
 					set in the config object a freeze function to deep freeze your state when a new state is created.
 				Deep freezing objects can be costly from a performance standpoint, it&#39;s recommended to disable it in production.</p>
-				<a href="#example-1" id="example-1" style="color: inherit; text-decoration: none;">
+				<a href="#example-2" id="example-2" style="color: inherit; text-decoration: none;">
 					<h3>Example</h3>
 				</a>
 				<pre><code class="language-js"><span class="hljs-keyword">import</span> { config } <span class="hljs-keyword">from</span> <span class="hljs-string">'@ezy/makina'</span>;
@@ -273,6 +282,9 @@ config.freeze =
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/mapping.html" class="tsd-kind-icon">Mapping</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/splitlens.html" class="tsd-kind-icon">Split<wbr>Lens</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="globals.html#baseconstructor" class="tsd-kind-icon">Base<wbr>Constructor</a>
@@ -323,25 +335,7 @@ config.freeze =
 						<a href="globals.html#findindex" class="tsd-kind-icon">find<wbr>Index</a>
 					</li>
 					<li class=" tsd-kind-variable">
-						<a href="globals.html#lens" class="tsd-kind-icon">lens</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#lensindex" class="tsd-kind-icon">lens<wbr>Index</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#lenspath" class="tsd-kind-icon">lens<wbr>Path</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#lensprop" class="tsd-kind-icon">lens<wbr>Prop</a>
-					</li>
-					<li class=" tsd-kind-variable">
 						<a href="globals.html#map" class="tsd-kind-icon">map</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#over" class="tsd-kind-icon">over</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#set" class="tsd-kind-icon">set</a>
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#slice" class="tsd-kind-icon">slice</a>
@@ -349,8 +343,11 @@ config.freeze =
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#sort" class="tsd-kind-icon">sort</a>
 					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#view" class="tsd-kind-icon">view</a>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#const" class="tsd-kind-icon">Const</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#identity" class="tsd-kind-icon">Identity</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#createbase" class="tsd-kind-icon">create<wbr>Base</a>
@@ -367,8 +364,20 @@ config.freeze =
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#lenssort" class="tsd-kind-icon">lens<wbr>Sort</a>
 					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#lenstosplitlens" class="tsd-kind-icon">lens<wbr>ToSplit<wbr>Lens</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#set" class="tsd-kind-icon">set</a>
+					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#setatindexes" class="tsd-kind-icon">set<wbr>AtIndexes</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#splitlensprop" class="tsd-kind-icon">split<wbr>Lens<wbr>Prop</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#view" class="tsd-kind-icon">view</a>
 					</li>
 				</ul>
 			</nav>
