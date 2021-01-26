@@ -3,11 +3,11 @@ import { all as filterableAll, Filterables } from '@umoja/filterable';
 import { config } from './config';
 import { CustomSignal } from './internal/CustomSignal';
 import { memoizeOne, taskRunner } from './internal/utils';
-import { Lens, lensProp, set, view } from './lenses';
+import { Lens, lensToSplitLens, SplitLens, splitLensProp } from './lenses';
 
 export interface MakinaOptions {
   source: Base;
-  lens: Lens<any, any>;
+  lens: Lens<any, any> | SplitLens<any, any>;
 }
 
 type MakinaModule = Base &
@@ -82,7 +82,9 @@ export declare class Base<
         options: MakinaOptions
       ) => InstanceType<V>)
   >(
-    lens: Lens<this['state'], V['state']>,
+    lens:
+      | Lens<this['state'], V['state']>
+      | SplitLens<this['state'], V['state']>,
     BaseClass: V,
     IO?: Partial<ConstructorParameters<V>[1]>
   ): StateMachine<InstanceType<V>>;
@@ -132,11 +134,13 @@ export const createBase: createBase = modules => {
 
     constructor(initialState, protected IO = {}, options) {
       if (options && options.source && options.lens) {
+        const splitLens = lensToSplitLens(options.lens);
+
         this._options = {
           broadcaster: options.source._options.broadcaster,
           depth: options.source._options.depth + 1,
-          getter: memoizeOne(view(options.lens)),
-          setter: set(options.lens),
+          getter: memoizeOne(splitLens.get),
+          setter: splitLens.set,
           source: options.source
         };
       } else {
@@ -154,7 +158,7 @@ export const createBase: createBase = modules => {
 
       Object.keys(modules || {}).forEach(name => {
         this[name] = this.create(
-          lensProp<any, any>(name),
+          splitLensProp<any>(name),
           modules[name],
           IO[name]
         );
@@ -208,9 +212,11 @@ export const createBase: createBase = modules => {
     }
 
     protected create(lens, BaseClass, IO) {
+      const splitLens = lensToSplitLens(lens);
+
       const instance = filterableAll(
         new BaseClass(
-          view(lens, this.state),
+          splitLens.get(this.state),
           { ...this.IO, ...(IO || {}) },
           { source: this, lens }
         ),

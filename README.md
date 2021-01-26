@@ -174,21 +174,32 @@ class App extends createBase({ messages: Messages }) {
 }
 ```
 
+
 #### available lenses utils
 - view
 - set
-- over
-- lens
-- lensPath
-- lensProp
-- lensIndex
 - lensFind
 - lensFilter
 - lensSort
+- splitLensProp
+- lensToSplitLens
 
 
-most of theses are provided by ramda, [read more on lenses](https://ramdajs.com/docs/#lens)
+[read more on lenses](https://ramdajs.com/docs/#lens)
 
+##### *on split lenses*
+
+lenses being a composable pair of pure getter and setter functions, 
+Makina also handle split lenses which is just a pure getter and a pure setter in an object.
+
+###### Example
+
+```js
+  const nameSplitLens = {
+    get: (s) => s.name,
+    set: (name, s) => ({ ...s, name })
+  }
+```
 
 ## Immutable state guarantee
 

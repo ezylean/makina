@@ -1,13 +1,3 @@
-import {
-  lens as Rlens,
-  lensIndex as RlensIndex,
-  lensPath as RlensPath,
-  lensProp as RlensProp,
-  over as Rover,
-  set as Rset,
-  view as Rview
-} from 'ramda';
-
 export type Functor<A> =
   | { ['fantasy-land/map']: <B>(fn: (a: A) => B) => Functor<B> }
   | { map: <B>(fn: (a: A) => B) => Functor<B> };
@@ -16,64 +6,38 @@ export type Lens<S, A> = (
   functorFactory: (a: A) => Functor<A>
 ) => (s: S) => Functor<S>;
 
-export const lens: <S, A>(
-  getter: (s: S) => A,
-  setter: (a: A, s: S) => S
-) => Lens<S, A> = Rlens as any;
+export interface SplitLens<S, A> {
+  get(s: S): A;
+  set(a: A, s: S): S;
+}
 
-export const lensProp: <T, K extends keyof T>(
-  prop: K
-) => Lens<T, T[K]> = RlensProp as any;
+const Const = value => ({
+  value,
+  map() {
+    return this;
+  }
+});
+const Identity = value => ({ value, map: setter => Identity(setter(value)) });
 
-export const lensIndex: <T>(index: number) => Lens<T[], T> = RlensIndex as any;
+/**
+ *
+ * @param lens
+ * @param obj
+ */
+export function view<S, A>(lens: Lens<S, A>, obj: S): A {
+  // @ts-ignore
+  return lens(Const)(obj).value;
+}
 
-export const lensPath: (<T, K0 extends keyof T = keyof T>(
-  path: [K0]
-) => Lens<T, T[K0]>) &
-  (<T, K0 extends keyof T = keyof T, K1 extends keyof T[K0] = keyof T[K0]>(
-    path: [K0, K1]
-  ) => Lens<T, T[K0][K1]>) &
-  (<
-    T,
-    K0 extends keyof T = keyof T,
-    K1 extends keyof T[K0] = keyof T[K0],
-    K2 extends keyof T[K0][K1] = keyof T[K0][K1]
-  >(
-    path: [K0, K1, K2]
-  ) => Lens<T, T[K0][K1][K2]>) &
-  (<
-    T,
-    K0 extends keyof T = keyof T,
-    K1 extends keyof T[K0] = keyof T[K0],
-    K2 extends keyof T[K0][K1] = keyof T[K0][K1],
-    K3 extends keyof T[K0][K1][K2] = keyof T[K0][K1][K2]
-  >(
-    path: [K0, K1, K2, K3]
-  ) => Lens<T, T[K0][K1][K2][K3]>) &
-  (<
-    T,
-    K0 extends keyof T = keyof T,
-    K1 extends keyof T[K0] = keyof T[K0],
-    K2 extends keyof T[K0][K1] = keyof T[K0][K1],
-    K3 extends keyof T[K0][K1][K2] = keyof T[K0][K1][K2],
-    K4 extends keyof T[K0][K1][K2][K3] = keyof T[K0][K1][K2][K3]
-  >(
-    path: [K0, K1, K2, K3, K4]
-  ) => Lens<T, T[K0][K1][K2][K3][K4]>) &
-  ((path: Array<string | number>) => Lens<any, any>) = RlensPath as any;
-
-export const view: (<S, A>(lens: Lens<S, A>, s: S) => A) &
-  (<S, A>(lens: Lens<S, A>) => (s: S) => A) = Rview as any;
-
-export const set: (<S, A>(lens: Lens<S, A>, a: A, s: S) => S) &
-  (<S, A>(lens: Lens<S, A>) => (a: A, s: S) => S) &
-  (<S, A>(lens: Lens<S, A>) => (a: A) => (s: S) => S) = Rset as any;
-
-export const over: <S, A>(
-  lens: Lens<S, A>,
-  fn: (a: A) => A,
-  s: S
-) => S = Rover as any;
+/**
+ *
+ * @param lens
+ * @param obj
+ */
+export function set<S, A>(lens: Lens<S, A>, val: A, obj: S): S {
+  // @ts-ignore
+  return lens(() => Identity(val))(obj).value;
+}
 
 const findIndex = Array.prototype.findIndex.call.bind(
   Array.prototype.findIndex
@@ -82,6 +46,10 @@ const slice = Array.prototype.slice.call.bind(Array.prototype.slice);
 const map = Array.prototype.map.call.bind(Array.prototype.map);
 const sort = Array.prototype.sort.call.bind(Array.prototype.sort);
 
+/**
+ * 
+ * @param predicate 
+ */
 export function lensFind<A>(predicate: (a: A) => boolean): Lens<A[], A> {
   return funcConst => {
     return s => {
@@ -104,6 +72,10 @@ export function lensFind<A>(predicate: (a: A) => boolean): Lens<A[], A> {
   };
 }
 
+/**
+ * 
+ * @param predicate 
+ */
 export function lensFilter<A>(predicate: (a: A) => boolean): Lens<A[], A[]> {
   return funcConst => {
     return s => {
@@ -121,6 +93,10 @@ export function lensFilter<A>(predicate: (a: A) => boolean): Lens<A[], A[]> {
   };
 }
 
+/**
+ * 
+ * @param compareFunction 
+ */
 export function lensSort<A>(
   compareFunction: (a: A, b: A) => number = (a, b) =>
     a > b ? 1 : a < b ? -1 : 0
@@ -164,4 +140,33 @@ function setAtIndexes(arr, indexes, values) {
     result[indexes[i]] = values[i];
   }
   return result;
+}
+
+/**
+ * 
+ * @param name 
+ */
+export function splitLensProp<S, K extends keyof S = keyof S>(
+  name: K
+): SplitLens<S, S[K]> {
+  return {
+    get: s => s[name],
+    set: (a, s) => ({ ...s, [name]: a })
+  };
+}
+
+/**
+ * 
+ * @param lens 
+ */
+export function lensToSplitLens<S, A>(
+  lens: Lens<S, A> | SplitLens<S, A>
+): SplitLens<S, A> {
+  if (typeof lens === 'function') {
+    return {
+      get: (s: S) => view(lens, s),
+      set: (a: A, s: S) => set(lens, a, s)
+    };
+  }
+  return lens as SplitLens<S, A>;
 }

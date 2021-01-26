@@ -1,8 +1,8 @@
 // tslint:disable:no-expression-statement max-classes-per-file
 import test from 'ava';
+import { lens, lensProp } from 'ramda';
 import { config } from './config';
 import { createBase, StateMachine } from './createBase';
-import { lens, lensProp } from './lenses';
 
 config.freeze = Object.freeze;
 
