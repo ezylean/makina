@@ -47,8 +47,8 @@ const map = Array.prototype.map.call.bind(Array.prototype.map);
 const sort = Array.prototype.sort.call.bind(Array.prototype.sort);
 
 /**
- * 
- * @param predicate 
+ *
+ * @param predicate
  */
 export function lensFind<A>(predicate: (a: A) => boolean): Lens<A[], A> {
   return funcConst => {
@@ -73,8 +73,8 @@ export function lensFind<A>(predicate: (a: A) => boolean): Lens<A[], A> {
 }
 
 /**
- * 
- * @param predicate 
+ *
+ * @param predicate
  */
 export function lensFilter<A>(predicate: (a: A) => boolean): Lens<A[], A[]> {
   return funcConst => {
@@ -94,8 +94,8 @@ export function lensFilter<A>(predicate: (a: A) => boolean): Lens<A[], A[]> {
 }
 
 /**
- * 
- * @param compareFunction 
+ *
+ * @param compareFunction
  */
 export function lensSort<A>(
   compareFunction: (a: A, b: A) => number = (a, b) =>
@@ -143,8 +143,8 @@ function setAtIndexes(arr, indexes, values) {
 }
 
 /**
- * 
- * @param name 
+ *
+ * @param name
  */
 export function splitLensProp<S, K extends keyof S = keyof S>(
   name: K
@@ -156,8 +156,8 @@ export function splitLensProp<S, K extends keyof S = keyof S>(
 }
 
 /**
- * 
- * @param lens 
+ *
+ * @param lens
  */
 export function lensToSplitLens<S, A>(
   lens: Lens<S, A> | SplitLens<S, A>

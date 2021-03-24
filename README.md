@@ -42,6 +42,12 @@ import { createBase } from '@ezy/makina';
 
 // create a Notifications module
 class Notifications extends createBase() {
+
+  constructor(initialState, IO, options) {
+    // default state
+    super({ list: [], ...initialState }, IO, options)
+  }
+
   add(notification) {
     this.commit('notificationAdded', {
       list: [...this.state.list, notification]
@@ -51,6 +57,12 @@ class Notifications extends createBase() {
 
 // create a Messages module
 class Messages extends createBase() {
+
+  constructor(initialState, IO, options) {
+    // default state
+    super({ list: [], ...initialState }, IO, options)
+  }
+
   refresh() {
     return this.IO.fetchMessages().then(messages => {
       this.commit('refreshed', { list: messages });
@@ -88,14 +100,7 @@ class App extends BaseApp {
 
 // create an instance of our App with initial state and IOs
 const app = new App(
-  {
-    messages: {
-      list: []
-    },
-    notifications: {
-      list: []
-    }
-  },
+  {},
   {
     messages: {
       fetchMessages: () => Promise.resolve([{ id: 0, text: 'message' }])

@@ -14,7 +14,7 @@ type MakinaModule = Base &
   (new (initialState: any, IO: any, options: MakinaOptions) => any);
 
 export type StateMachine<T extends InstanceType<MakinaModule>> = T &
-  Filterables<T>;
+  Filterables<T, void>;
 
 export interface Mapping<T> {
   [name: string]: T;
@@ -70,7 +70,7 @@ export declare class Base<
     ) => void
   ): () => boolean;
 
-  protected init(): void;
+  protected init(): Promise<void> | void;
 
   protected commit(name: string, newState: State): void;
 
@@ -165,8 +165,7 @@ export const createBase: createBase = modules => {
       });
 
       this.ready = taskRunner.then(() => {
-        this.init();
-        return this;
+        return Promise.resolve(this.init()).then(() => this);
       });
     }
 
@@ -220,8 +219,7 @@ export const createBase: createBase = modules => {
           { ...this.IO, ...(IO || {}) },
           { source: this, lens }
         ),
-        true,
-        false
+        { bindContext: true, clone: false }
       );
 
       if (!instance._options.source) {
