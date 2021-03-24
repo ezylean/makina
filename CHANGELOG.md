@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.1.0](https://github.com/ezylean/makina/compare/v4.0.0...v4.1.0) (2021-03-24)
+
+
+### Features
+
+* **createbase:** allow async init functions + binded methods module ([ebd108d](https://github.com/ezylean/makina/commit/ebd108d))
+
+
+
 ## [4.0.0](https://github.com/ezylean/makina/compare/v3.0.1...v4.0.0) (2021-01-26)
 
 
