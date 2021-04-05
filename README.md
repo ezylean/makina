@@ -35,13 +35,22 @@ Application logic, I/O and state management of your application will be managed 
 
 ### Example
 
-index.js
+index.ts
 
-```js
+```ts
 import { createBase } from '@ezy/makina';
 
+interface Notification {
+  id: number,
+  text: string
+}
+
+interface NotificationsState {
+  list: Notification[]
+}
+
 // create a Notifications module
-class Notifications extends createBase() {
+class Notifications extends createBase()<NotificationsState> {
 
   constructor(initialState, IO, options) {
     // default state
@@ -55,8 +64,21 @@ class Notifications extends createBase() {
   }
 }
 
+interface Message {
+  id: number,
+  text: string
+}
+
+interface MessagesState {
+  list: Message[]
+}
+
+interface MessagesIO {
+  fetchMessages: () => Promise<Message[]>;
+}
+
 // create a Messages module
-class Messages extends createBase() {
+class Messages extends createBase()<MessagesState, MessagesIO> {
 
   constructor(initialState, IO, options) {
     // default state
@@ -226,3 +248,5 @@ config.freeze =
 [Reference](https://ezylean.github.io/makina)
 
 [Vue Bindings](https://www.npmjs.com/package/@ezy/vue-makina)
+
+[Svelte Bindings](https://www.npmjs.com/package/@ezy/svelte-makina)
