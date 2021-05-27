@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.0.0](https://github.com/ezylean/makina/compare/v4.1.1...v5.0.0) (2021-05-27)
+
+
+### Features
+
+* **general:** refactoring + add StateMachine Factory ([74177b8](https://github.com/ezylean/makina/commit/74177b8))
+
+
+### BREAKING CHANGES
+
+* **general:** most types have changed
+
+
+
 ### [4.1.1](https://github.com/ezylean/makina/compare/v4.1.0...v4.1.1) (2021-04-05)
 
 
