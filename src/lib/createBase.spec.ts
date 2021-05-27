@@ -1,8 +1,8 @@
 // tslint:disable:no-expression-statement max-classes-per-file
 import test from 'ava';
 import { lens, lensProp } from 'ramda';
+import { createBase, Filterables } from '../index';
 import { config } from './config';
-import { createBase, StateMachine } from './createBase';
 
 config.freeze = Object.freeze;
 
@@ -22,7 +22,7 @@ test.cb('simple', t => {
     }
   }
 
-  const app = new Todos({
+  const app = Todos.create({
     todos: []
   });
 
@@ -61,7 +61,7 @@ test('increment', t => {
     }
   }
 
-  const app = new Counter();
+  const app = Counter.create();
 
   t.is(app.state, 0);
   app.increment();
@@ -80,7 +80,6 @@ test.cb('nested', t => {
     list: Todo[];
   }
 
-  // @ts-ignore
   class Todos extends createBase()<TodosState> {
     public addTodo(todo: Todo) {
       this.commit('todoAdded', { list: [...this.state.list, todo] });
@@ -93,7 +92,7 @@ test.cb('nested', t => {
 
   class App extends BaseApp {}
 
-  const app = new App({
+  const app = App.create({
     todos: {
       list: []
     }
@@ -187,10 +186,10 @@ test('nested w IO & filters', async t => {
   }>({
     // messages: Messages,
     notifications: Notifications
-  });
+  } as any);
 
   class App extends BaseApp {
-    public messages: StateMachine<Messages> = this.create(
+    public messages: Filterables<Messages> = this.create(
       lensProp('messages'),
       Messages
     );
@@ -211,7 +210,7 @@ test('nested w IO & filters', async t => {
     }
   }
 
-  const app = new App(
+  const app = App.create(
     {},
     {
       fetchMessages: () => Promise.resolve([{ id: 0, text: 'message' }])
@@ -261,7 +260,7 @@ test('create state machine', t => {
     }
 
     public getTodo(id) {
-      const todoAtIndex = lens<TodosState, Todo>(
+      const todoAtIndex = lens(
         (s: TodosState) => s.list[id],
         (todo, s) => {
           return {
@@ -274,7 +273,7 @@ test('create state machine', t => {
     }
   }
 
-  const app = new Todos({ list: [{ id: 0, title: 'write title' }] });
+  const app = Todos.create({ list: [{ id: 0, title: 'write title' }] });
 
   const todo3 = app.getTodo(0);
 
@@ -326,7 +325,7 @@ test.cb('listener call sequence + unsubscibe', t => {
     }
   }
 
-  const app = new App({
+  const app = App.create({
     todos: {
       active: false,
       list: []
@@ -420,7 +419,7 @@ test('alternative syntax', t => {
     public messages: Messages = this.create(lensProp('messages'), Messages);
   }
 
-  const app = new App({
+  const app = App.create({
     messages: [{ id: 0, text: 'hello' }]
   });
 

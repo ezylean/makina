@@ -5,7 +5,7 @@
 export const config: {
   /**
    * consider activate in development to ensure
-   * you're not mutating the state outside of makina.
+   * you're not mutating the state outside of your StateMachines.
    *
    *  ### Example
    * ```js

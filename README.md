@@ -10,7 +10,7 @@
 
 ## Why
 
-Writing frontend applications is a mess.
+Writing frontend applications is difficult.
 
 Makina may help you create an all-in-one backend for your frontend.
 
@@ -121,7 +121,7 @@ class App extends BaseApp {
 }
 
 // create an instance of our App with initial state and IOs
-const app = new App(
+const app = App.create(
   {},
   {
     messages: {
@@ -185,7 +185,7 @@ class App extends createBase({ messages: Messages })
 is equivalent to 
 
 ```ts
-class App extends createBase<{ messages: typeof Messages }>() {
+class App extends createBase<{ messages: typeof Messages }>({} as any) {
   public messages: StateMachine<Messages> = this.create(lensProp('messages'), Messages);
 }
 ```
@@ -201,6 +201,16 @@ class App extends createBase({ messages: Messages }) {
 }
 ```
 
+alternatively the static `create` method can be used to create detached state machines
+
+```ts
+class App extends createBase({ messages: Messages }) {
+
+  public getMessageByIndex(index) {
+    return Message.create(this.state.messages.list[index], this.IO)
+  }
+}
+```
 
 #### available lenses utils
 - view

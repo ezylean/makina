@@ -56,7 +56,7 @@
     "node": ">=8.9"
   },
   "dependencies": {
-    "@umoja/filterable": "^6.0.0"
+    "@umoja/filterable": "^7.0.0"
   },
   "devDependencies": {
     "@bitjson/npm-scripts-info": "^1.0.0",

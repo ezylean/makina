@@ -1,22 +1,38 @@
+/**
+ * @ignore
+ */
 export type Functor<A> =
   | { ['fantasy-land/map']: <B>(fn: (a: A) => B) => Functor<B> }
   | { map: <B>(fn: (a: A) => B) => Functor<B> };
 
+/**
+ * functional lens
+ */
 export type Lens<S, A> = (
   functorFactory: (a: A) => Functor<A>
 ) => (s: S) => Functor<S>;
 
+/**
+ * alternative to functional lens
+ */
 export interface SplitLens<S, A> {
   get(s: S): A;
   set(a: A, s: S): S;
 }
 
+/**
+ * @ignore
+ */
 const Const = value => ({
   value,
   map() {
     return this;
   }
 });
+
+/**
+ * @ignore
+ */
 const Identity = value => ({ value, map: setter => Identity(setter(value)) });
 
 /**
@@ -39,11 +55,26 @@ export function set<S, A>(lens: Lens<S, A>, val: A, obj: S): S {
   return lens(() => Identity(val))(obj).value;
 }
 
+/**
+ * @ignore
+ */
 const findIndex = Array.prototype.findIndex.call.bind(
   Array.prototype.findIndex
 );
+
+/**
+ * @ignore
+ */
 const slice = Array.prototype.slice.call.bind(Array.prototype.slice);
+
+/**
+ * @ignore
+ */
 const map = Array.prototype.map.call.bind(Array.prototype.map);
+
+/**
+ * @ignore
+ */
 const sort = Array.prototype.sort.call.bind(Array.prototype.sort);
 
 /**
@@ -124,6 +155,9 @@ export function lensSort<A>(
   };
 }
 
+/**
+ * @ignore
+ */
 function findIndexes(arr, predicate) {
   const results = [];
   for (let index = 0; index < arr.length; index++) {
@@ -134,6 +168,9 @@ function findIndexes(arr, predicate) {
   return results;
 }
 
+/**
+ * @ignore
+ */
 function setAtIndexes(arr, indexes, values) {
   const result = arr.slice();
   for (let i = 0; i < indexes.length; i++) {
