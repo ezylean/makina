@@ -75,7 +75,7 @@
 				<a href="#why" id="why" style="color: inherit; text-decoration: none;">
 					<h2>Why</h2>
 				</a>
-				<p>Writing frontend applications is a mess.</p>
+				<p>Writing frontend applications is difficult.</p>
 				<p>Makina may help you create an all-in-one backend for your frontend.</p>
 				<a href="#mental-model" id="mental-model" style="color: inherit; text-decoration: none;">
 					<h2>Mental model</h2>
@@ -99,46 +99,68 @@
 				<a href="#example" id="example" style="color: inherit; text-decoration: none;">
 					<h3>Example</h3>
 				</a>
-				<p>index.js</p>
-				<pre><code class="language-js"><span class="hljs-keyword">import</span> { createBase } <span class="hljs-keyword">from</span> <span class="hljs-string">'@ezy/makina'</span>;
+				<p>index.ts</p>
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> { createBase } <span class="hljs-keyword">from</span> <span class="hljs-string">'@ezy/makina'</span>;
+
+<span class="hljs-keyword">interface</span> Notification {
+  id: <span class="hljs-built_in">number</span>,
+  text: <span class="hljs-built_in">string</span>
+}
+
+<span class="hljs-keyword">interface</span> NotificationsState {
+  list: Notification[]
+}
 
 <span class="hljs-comment">// create a Notifications module</span>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Notifications</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">createBase</span>() </span>{
+<span class="hljs-keyword">class</span> Notifications <span class="hljs-keyword">extends</span> createBase()&lt;NotificationsState&gt; {
 
-  <span class="hljs-keyword">constructor</span>(initialState, IO, options) {
+  <span class="hljs-keyword">constructor</span>(<span class="hljs-params">initialState, IO, options</span>) {
     <span class="hljs-comment">// default state</span>
-    <span class="hljs-keyword">super</span>({ <span class="hljs-attr">list</span>: [], ...initialState }, IO, options)
+    <span class="hljs-keyword">super</span>({ list: [], ...initialState }, IO, options)
   }
 
   add(notification) {
     <span class="hljs-keyword">this</span>.commit(<span class="hljs-string">'notificationAdded'</span>, {
-      <span class="hljs-attr">list</span>: [...this.state.list, notification]
+      list: [...this.state.list, notification]
     });
   }
 }
 
-<span class="hljs-comment">// create a Messages module</span>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Messages</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">createBase</span>() </span>{
+<span class="hljs-keyword">interface</span> Message {
+  id: <span class="hljs-built_in">number</span>,
+  text: <span class="hljs-built_in">string</span>
+}
 
-  <span class="hljs-keyword">constructor</span>(initialState, IO, options) {
+<span class="hljs-keyword">interface</span> MessagesState {
+  list: Message[]
+}
+
+<span class="hljs-keyword">interface</span> MessagesIO {
+  fetchMessages: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-built_in">Promise</span>&lt;Message[]&gt;;
+}
+
+<span class="hljs-comment">// create a Messages module</span>
+<span class="hljs-keyword">class</span> Messages <span class="hljs-keyword">extends</span> createBase()&lt;MessagesState, MessagesIO&gt; {
+
+  <span class="hljs-keyword">constructor</span>(<span class="hljs-params">initialState, IO, options</span>) {
     <span class="hljs-comment">// default state</span>
-    <span class="hljs-keyword">super</span>({ <span class="hljs-attr">list</span>: [], ...initialState }, IO, options)
+    <span class="hljs-keyword">super</span>({ list: [], ...initialState }, IO, options)
   }
 
   refresh() {
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.IO.fetchMessages().then(<span class="hljs-function"><span class="hljs-params">messages</span> =&gt;</span> {
-      <span class="hljs-keyword">this</span>.commit(<span class="hljs-string">'refreshed'</span>, { <span class="hljs-attr">list</span>: messages });
+      <span class="hljs-keyword">this</span>.commit(<span class="hljs-string">'refreshed'</span>, { list: messages });
     });
   }
 }
 
 <span class="hljs-comment">// define our app</span>
 <span class="hljs-keyword">const</span> BaseApp = createBase({
-  <span class="hljs-attr">messages</span>: Messages,
-  <span class="hljs-attr">notifications</span>: Notifications
+  messages: Messages,
+  notifications: Notifications
 });
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">BaseApp</span> </span>{
+<span class="hljs-keyword">class</span> App <span class="hljs-keyword">extends</span> BaseApp {
 
   init() {
     <span class="hljs-comment">// add a filter to the Messages module refresh function</span>
@@ -151,8 +173,8 @@
 
       <span class="hljs-keyword">if</span> (newMsg &gt; <span class="hljs-number">0</span>) {
         <span class="hljs-keyword">this</span>.notifications.add({
-          <span class="hljs-attr">id</span>: <span class="hljs-number">0</span>,
-          <span class="hljs-attr">text</span>: <span class="hljs-string">`<span class="hljs-subst">${newMsg}</span> new messages`</span>
+          id: <span class="hljs-number">0</span>,
+          text: <span class="hljs-string">`<span class="hljs-subst">${newMsg}</span> new messages`</span>
         });
       }
     });
@@ -161,13 +183,13 @@
 }
 
 <span class="hljs-comment">// create an instance of our App with initial state and IOs</span>
-<span class="hljs-keyword">const</span> app = <span class="hljs-keyword">new</span> App(
+<span class="hljs-keyword">const</span> app = App.create(
   {},
   {
-    <span class="hljs-attr">messages</span>: {
-      <span class="hljs-attr">fetchMessages</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-built_in">Promise</span>.resolve([{ <span class="hljs-attr">id</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">text</span>: <span class="hljs-string">'message'</span> }])
+    messages: {
+      fetchMessages: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-built_in">Promise</span>.resolve([{ id: <span class="hljs-number">0</span>, text: <span class="hljs-string">'message'</span> }])
     },
-    <span class="hljs-attr">notifications</span>: {}
+    notifications: {}
   }
 );
 
@@ -181,7 +203,7 @@
 <span class="hljs-comment">// UI bindings</span>
 <span class="hljs-built_in">document</span>
   .getElementById(<span class="hljs-string">'refresh'</span>)
-  .addEventListener(<span class="hljs-string">'click'</span>, () =&gt; app.messages.refresh());
+  .addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> app.messages.refresh());
 
 <span class="hljs-keyword">const</span> render = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
   <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'messages'</span>).innerHTML = <span class="hljs-string">`&lt;ul&gt;<span class="hljs-subst">${app.messages.state.list.map(msg =&gt; <span class="hljs-string">`&lt;li&gt;<span class="hljs-subst">${msg.text}</span>&lt;/li&gt;`</span>).join(<span class="hljs-string">''</span>)}</span>&lt;/ul&gt;`</span>;
@@ -214,7 +236,7 @@ render();</code></pre>
 				<p>Under the hood Makina keep your state in a single place and use lenses to update that state</p>
 				<pre><code class="language-ts"><span class="hljs-keyword">class</span> App <span class="hljs-keyword">extends</span> createBase({ messages: Messages })</code></pre>
 				<p>is equivalent to </p>
-				<pre><code class="language-ts"><span class="hljs-keyword">class</span> App <span class="hljs-keyword">extends</span> createBase&lt;{ messages: <span class="hljs-keyword">typeof</span> Messages }&gt;() {
+				<pre><code class="language-ts"><span class="hljs-keyword">class</span> App <span class="hljs-keyword">extends</span> createBase&lt;{ messages: <span class="hljs-keyword">typeof</span> Messages }&gt;({} <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>) {
   <span class="hljs-keyword">public</span> messages: StateMachine&lt;Messages&gt; = <span class="hljs-keyword">this</span>.create(lensProp(<span class="hljs-string">'messages'</span>), Messages);
 }</code></pre>
 				<p><code>create</code> can be used to create state machines targeting just a part of your state on demand.</p>
@@ -222,6 +244,13 @@ render();</code></pre>
 
   <span class="hljs-keyword">public</span> getMessageByIndex(index) {
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.create(lensPath([<span class="hljs-string">'messages'</span>, <span class="hljs-string">'list'</span>, index]), Message);
+  }
+}</code></pre>
+				<p>alternatively the static <code>create</code> method can be used to create detached state machines</p>
+				<pre><code class="language-ts"><span class="hljs-keyword">class</span> App <span class="hljs-keyword">extends</span> createBase({ messages: Messages }) {
+
+  <span class="hljs-keyword">public</span> getMessageByIndex(index) {
+    <span class="hljs-keyword">return</span> Message.create(<span class="hljs-keyword">this</span>.state.messages.list[index], <span class="hljs-keyword">this</span>.IO)
   }
 }</code></pre>
 				<a href="#available-lenses-utils" id="available-lenses-utils" style="color: inherit; text-decoration: none;">
@@ -267,6 +296,7 @@ config.freeze =
 				</a>
 				<p><a href="https://ezylean.github.io/makina">Reference</a></p>
 				<p><a href="https://www.npmjs.com/package/@ezy/vue-makina">Vue Bindings</a></p>
+				<p><a href="https://www.npmjs.com/package/@ezy/svelte-makina">Svelte Bindings</a></p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -279,86 +309,26 @@ config.freeze =
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="classes/base.html" class="tsd-kind-icon">Base</a>
-					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/makinaoptions.html" class="tsd-kind-icon">Makina<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="interfaces/mapping.html" class="tsd-kind-icon">Mapping</a>
+						<a href="interfaces/options.html" class="tsd-kind-icon">Options</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/splitlens.html" class="tsd-kind-icon">Split<wbr>Lens</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="globals.html#baseconstructor" class="tsd-kind-icon">Base<wbr>Constructor</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="globals.html#clean" class="tsd-kind-icon">Clean</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="globals.html#combinedio" class="tsd-kind-icon">CombinedIO</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="globals.html#combinedstate" class="tsd-kind-icon">Combined<wbr>State</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="globals.html#functor" class="tsd-kind-icon">Functor</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="globals.html#lens" class="tsd-kind-icon">Lens</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#makinamodule" class="tsd-kind-icon">Makina<wbr>Module</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="globals.html#maybeemptyobjectkeys" class="tsd-kind-icon">May<wbr>BeEmpty<wbr>Object<wbr>Keys</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="globals.html#optional" class="tsd-kind-icon">Optional</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="globals.html#pickandflatten" class="tsd-kind-icon">Pick<wbr>And<wbr>Flatten</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="globals.html#requiredkeys" class="tsd-kind-icon">Required<wbr>Keys</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="globals.html#statemachine" class="tsd-kind-icon">State<wbr>Machine</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="globals.html#uniontointersection" class="tsd-kind-icon">Union<wbr>ToIntersection</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#createbase" class="tsd-kind-icon">create<wbr>Base</a>
+						<a href="globals.html#statemachinector" class="tsd-kind-icon">State<wbr>Machine<wbr>Ctor</a>
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#config" class="tsd-kind-icon">config</a>
 					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#findindex" class="tsd-kind-icon">find<wbr>Index</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#map" class="tsd-kind-icon">map</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#slice" class="tsd-kind-icon">slice</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#sort" class="tsd-kind-icon">sort</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#const" class="tsd-kind-icon">Const</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#identity" class="tsd-kind-icon">Identity</a>
-					</li>
-					<li class=" tsd-kind-function">
+					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#createbase" class="tsd-kind-icon">create<wbr>Base</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#findindexes" class="tsd-kind-icon">find<wbr>Indexes</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#lensfilter" class="tsd-kind-icon">lens<wbr>Filter</a>
@@ -374,9 +344,6 @@ config.freeze =
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#set" class="tsd-kind-icon">set</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#setatindexes" class="tsd-kind-icon">set<wbr>AtIndexes</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#splitlensprop" class="tsd-kind-icon">split<wbr>Lens<wbr>Prop</a>
