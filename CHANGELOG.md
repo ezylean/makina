@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0](https://github.com/ezylean/makina/compare/v5.0.0...v6.0.0) (2021-06-06)
+
+
+### Features
+
+* **createbase:** finally add state machine related options ([cfe2dea](https://github.com/ezylean/makina/commit/cfe2dea))
+
+
+### BREAKING CHANGES
+
+* **createbase:** modules must now be passed to createbase in the modules key and commit now return a
+boolean
+
+
+
 ## [5.0.0](https://github.com/ezylean/makina/compare/v4.1.1...v5.0.0) (2021-05-27)
 
 
