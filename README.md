@@ -40,6 +40,87 @@ index.ts
 ```ts
 import { createBase } from '@ezy/makina';
 
+enum CURRENT_USER {
+  DISCONNECTED = 'DISCONNECTED',
+  CONNECTING = 'CONNECTING',
+  CONNECTED = 'CONNECTED'
+}
+
+interface UserProfile {
+  email: string;
+}
+
+interface CurrentUserState {
+  isConnecting?: boolean;
+  profile?: UserProfile;
+  error?: string;
+}
+
+interface Credentials {
+  email: string;
+  password: string;
+}
+
+interface CurrentUserIO {
+  api: {
+    login: (credentials: Credentials) => Promise<UserProfile>;
+  };
+}
+
+const CurrentUserBase = createBase({
+  // we declare every state with a match function 
+  states: {
+    [CURRENT_USER.CONNECTING]: (state: CurrentUserState) =>
+      state.isConnecting,
+    [CURRENT_USER.CONNECTED]: (state: CurrentUserState) => !!state.profile,
+    [CURRENT_USER.DISCONNECTED]: (state: CurrentUserState) => !state.profile
+  },
+  // and here all allowed transitions
+  transitions: {
+    [CURRENT_USER.DISCONNECTED]: [CURRENT_USER.CONNECTING],
+    [CURRENT_USER.CONNECTING]: [
+      CURRENT_USER.CONNECTED,
+      CURRENT_USER.DISCONNECTED
+    ],
+    [CURRENT_USER.CONNECTED]: [CURRENT_USER.DISCONNECTED]
+  }
+});
+
+class CurrentUser extends CurrentUserBase<CurrentUserState, CurrentUserIO> {
+  /**
+    * connect currrent user
+    *
+    * @param credentials
+    */
+  public async connect(credentials: Credentials) {
+    // transition to CONNECTING state
+    // there is no transition from CONNECTING to CONNECTING so double clicks are handled for us
+    if (this.commit(CURRENT_USER.CONNECTING, { isConnecting: true })) {
+      try {
+        const profile = await this.IO.api.login(credentials);
+        return this.commit(CURRENT_USER.CONNECTED, {
+          isConnecting: false,
+          profile
+        });
+      } catch (e) {
+        return this.commit(CURRENT_USER.DISCONNECTED, {
+          error: e,
+          isConnecting: false
+        });
+      }
+    }
+    return false;
+  }
+
+  /**
+    * disconnect currrent user
+    */
+  public disconnect() {
+    return this.commit(CURRENT_USER.DISCONNECTED, {});
+  }
+}
+
+
 interface Notification {
   id: number,
   text: string
@@ -64,57 +145,31 @@ class Notifications extends createBase()<NotificationsState> {
   }
 }
 
-interface Message {
-  id: number,
-  text: string
-}
-
-interface MessagesState {
-  list: Message[]
-}
-
-interface MessagesIO {
-  fetchMessages: () => Promise<Message[]>;
-}
-
-// create a Messages module
-class Messages extends createBase()<MessagesState, MessagesIO> {
-
-  constructor(initialState, IO, options) {
-    // default state
-    super({ list: [], ...initialState }, IO, options)
-  }
-
-  refresh() {
-    return this.IO.fetchMessages().then(messages => {
-      this.commit('refreshed', { list: messages });
-    });
-  }
-}
-
 // define our app
 const BaseApp = createBase({
-  messages: Messages,
-  notifications: Notifications
+  modules: {
+    currentUser: CurrentUser,
+    notifications: Notifications
+  }
 });
 
 class App extends BaseApp {
 
   init() {
-    // add a filter to the Messages module refresh function
-    // our filter will be triggered when the refresh function is called
+    // add a filter to the CurrentUser module connect method
+    // our filter will be triggered when the connect method is called
     // to automatically create notification in our Notification module if neccessary
-    this.messages.refresh.applyFilter(async (next) => {
-      const nbMsg = this.messages.state.list.length;
-      await next();
-      const newMsg = this.messages.state.list.length - nbMsg;
+    this.currentUser.connect.applyFilter(async (next, credentials) => {
+      if (await next(credentials)) {
 
-      if (newMsg > 0) {
         this.notifications.add({
           id: 0,
-          text: `${newMsg} new messages`
+          text: `welcome back ${this.currentUser.state.profile.email}`
         });
+
+        return true
       }
+      return false
     });
   }
   
@@ -124,10 +179,11 @@ class App extends BaseApp {
 const app = App.create(
   {},
   {
-    messages: {
-      fetchMessages: () => Promise.resolve([{ id: 0, text: 'message' }])
-    },
-    notifications: {}
+    api: {
+      login: (credentials: Credentials) => {
+        return Promise.resolve({ email: credentials.email });
+      }
+    }
   }
 );
 
@@ -140,12 +196,24 @@ const app = App.create(
 
 // UI bindings
 document
-  .getElementById('refresh')
-  .addEventListener('click', () => app.messages.refresh());
+  .getElementById('submit')
+  .addEventListener('click', () => {
+    app.currentUser.connect({ 
+      email: document.getElementById('email').value, 
+      password: document.getElementById('password').value 
+    })
+  });
+
+document
+  .getElementById('logout')
+  .addEventListener('click', () => app.currentUser.disconnect());
 
 const render = () => {
-  document.getElementById('messages').innerHTML = `<ul>${app.messages.state.list.map(msg => `<li>${msg.text}</li>`).join('')}</ul>`;
-  document.getElementById('notifications').innerHTML = `<ul>${app.notifications.state.list.map(msg => `<li>${msg.text}</li>`).join('')}</ul>`;
+  document.getElementById('notifications').innerHTML = `
+    <ul>${
+      app.notifications.state.list.map(msg => `<li>${msg.text}</li>`).join('')
+    }</ul>
+  `;
 };
 
 app.onStateChange(render);
@@ -160,14 +228,19 @@ index.html
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Counter</title>
+    <title>App</title>
   </head>
   <body>
     <div id="app">
-      <div id="result"></div>
-      <button id="refresh">refresh</button>
+      <button id="logout">X</button> 
       <div id="notifications"></div>
-      <div id="messages"></div>
+      <form>  
+        <label>Email : </label>   
+        <input type="text" placeholder="Enter Email" id="email" required>  
+        <label>Password : </label>   
+        <input type="password" placeholder="Enter Password" id="password" required>  
+        <button id="submit">Login</button>  
+      </form>
     </div>
     <script src="index.js"></script>
   </body>
@@ -185,8 +258,10 @@ class App extends createBase({ messages: Messages })
 is equivalent to 
 
 ```ts
-class App extends createBase<{ messages: typeof Messages }>({} as any) {
-  public messages: StateMachine<Messages> = this.create(lensProp('messages'), Messages);
+class App extends createBase()<{ messages: MessagesState }> {
+  public messages: Filterables<Messages> = this.create(lensProp('messages'), Messages);
+  // or
+  // public messages: Filterables<Messages> = this.create('messages', Messages);
 }
 ```
 

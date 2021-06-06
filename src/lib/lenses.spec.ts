@@ -2,10 +2,17 @@
 import test from 'ava';
 import { lensFilter, lensFind, lensSort, set, view } from './lenses';
 
+/**
+ * @ignore
+ */
 interface User {
   name: string;
   age: number;
 }
+
+/**
+ * @ignore
+ */
 const users = [
   { name: 'jane', age: 19 },
   { name: 'mike', age: 21 },

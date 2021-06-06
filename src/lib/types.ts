@@ -57,6 +57,11 @@ type PickAndFlatten<T, K extends keyof T> = UnionToIntersection<T[K]>;
 /**
  * @ignore
  */
+export type Constructor<T = {}> = new (...args: any[]) => T;
+
+/**
+ * @ignore
+ */
 type CombinedIO<T extends object> = Partial<
   PickAndFlatten<T, keyof T> & { [K in keyof T]: Partial<T[K]> }
 >;
@@ -74,16 +79,16 @@ export interface Options {
 /**
  * @ignore
  */
-export interface RootOptions {
-  broadcaster: CustomSignal<string, StateMachine>;
+export interface RootOptions<S> {
+  broadcaster: CustomSignal<S | S[], StateMachine>;
   depth: 0;
 }
 
 /**
  * @ignore
  */
-export interface LeafOptions<State> {
-  broadcaster: CustomSignal<string, StateMachine>;
+export interface LeafOptions<State, S> {
+  broadcaster: CustomSignal<S | S[], StateMachine>;
   depth: number;
   getter: <ParentState>(parentState: ParentState) => State;
   setter: <ParentState>(state: State, parentState: ParentState) => ParentState;
@@ -114,7 +119,7 @@ export type FullState<S, M extends Mapping<StateMachineCtor>> = Clean<
  * @ignore
  */
 type FullStateComplete<S, M extends Mapping<StateMachineCtor>> = Clean<
-  S & CombinedState<{ [K in keyof M]: InstanceType<M[K]>['state'] }>
+  S & { [K in keyof M]: InstanceType<M[K]>['state'] }
 >;
 
 /**
@@ -142,8 +147,9 @@ type WithoutConstructor<T> = Pick<T, WithoutConstructorKeys<T>>;
 export type StateMachine<
   State = any,
   IO extends Mapping = any,
-  M extends Mapping<StateMachineCtor> = any
-> = Base<FullStateComplete<State, M>, FullIO<IO, M>> &
+  M extends Mapping<StateMachineCtor> = any,
+  S extends string | number | symbol = any
+> = Base<FullStateComplete<State, M>, FullIO<IO, M>, S> &
   {
     [K in keyof M]: Filterables<InstanceType<M[K]>>;
   };
@@ -152,10 +158,11 @@ export type StateMachine<
  * @ignore
  */
 export type StateMachineBase<
-  M extends Mapping<StateMachineCtor> = {}
+  M extends Mapping<StateMachineCtor> = {},
+  S extends string | number | symbol = string
 > = WithoutConstructor<typeof Base> &
   (new <State = {}, IO extends Mapping = {}>(
     initialState: FullState<State, M>,
     IO?: FullIO<IO, M>,
     options?: Options
-  ) => StateMachine<State, IO, M>);
+  ) => StateMachine<State, IO, M, S>);

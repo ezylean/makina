@@ -4,7 +4,7 @@ import { all as filterableAll, Filterables } from '@umoja/filterable';
 import { config } from './config';
 import { CustomSignal } from './internal/CustomSignal';
 import { memoizeOne } from './internal/utils';
-import { Lens, lensToSplitLens, SplitLens } from './lenses';
+import { Lens, lensToSplitLens, SplitLens, splitLensProp } from './lenses';
 import {
   LeafOptions,
   Options,
@@ -16,7 +16,7 @@ import {
 /**
  * @ignore
  */
-export class Base<State, IO> {
+export class Base<State, IO, S> {
   /**
    * state machine factory
    *
@@ -45,10 +45,10 @@ export class Base<State, IO> {
    */
   public ready: Promise<this>;
   private _state?: State;
-  private _options: RootOptions | LeafOptions<State>;
+  private _options: RootOptions<S> | LeafOptions<State, S>;
   private _stateChanged = new CustomSignal<
     State,
-    string,
+    S | S[],
     StateMachine,
     StateMachine
   >();
@@ -86,7 +86,11 @@ export class Base<State, IO> {
     this._state = !config.freeze ? initialState : config.freeze(initialState);
 
     if ('source' in this._options && this.state !== this._state) {
-      this.updateState(this._state, `new ${this.constructor.name}`, this);
+      this._updateState(
+        this._state,
+        `new ${this.constructor.name}` as any,
+        this
+      );
     }
   }
 
@@ -100,7 +104,7 @@ export class Base<State, IO> {
   public onStateChange(
     listener: (
       state: State,
-      action: string,
+      action: S | S[],
       target: StateMachine,
       source: StateMachine
     ) => void
@@ -148,10 +152,12 @@ export class Base<State, IO> {
    * @param action
    * @param newState
    */
-  protected commit(action: string, newState: State) {
+  protected commit(action: S | S[], newState: State) {
     if (newState !== this.state) {
-      this.updateState(newState, action, this);
+      this._updateState(newState, action, this);
+      return true;
     }
+    return false;
   }
 
   /**
@@ -165,20 +171,26 @@ export class Base<State, IO> {
     T extends { create: typeof Base['create'] } & StateMachineCtor
   >(
     lens:
+      | keyof this['state']
       | Lens<this['state'], InstanceType<T>['state']>
       | SplitLens<this['state'], InstanceType<T>['state']>,
     ModuleClass: T,
     IO?: Partial<ConstructorParameters<T>[1]>
   ): Filterables<InstanceType<T>> {
-    const splitLens = lensToSplitLens(lens);
+    const splitLens =
+      typeof lens === 'string' || typeof lens === 'number'
+        ? splitLensProp<this['state']>(lens)
+        : lensToSplitLens(
+            lens as Lens<this['state'], InstanceType<T>['state']>
+          );
 
     const instance = ModuleClass.create<any>(
       splitLens.get(this.state),
       { ...this.IO, ...(IO || {}) },
-      { source: this, lens }
+      { source: this, lens: splitLens }
     );
 
-    if (!(instance._options as LeafOptions<any>).source) {
+    if (!(instance._options as LeafOptions<any, any>).source) {
       throw new Error(
         `
         missing "options" parameter in constructor of "${ModuleClass.name}"
@@ -194,9 +206,9 @@ export class Base<State, IO> {
     return instance;
   }
 
-  private updateState(newState: State, action: string, target: StateMachine) {
+  private _updateState(newState: State, action: S | S[], target: StateMachine) {
     if ('source' in this._options) {
-      this._options.source.updateState(
+      this._options.source._updateState(
         this._options.setter(newState, this._options.source.state),
         action,
         target

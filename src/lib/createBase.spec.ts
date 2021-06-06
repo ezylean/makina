@@ -87,7 +87,9 @@ test.cb('nested', t => {
   }
 
   const BaseApp = createBase({
-    todos: Todos
+    modules: {
+      todos: Todos
+    }
   });
 
   class App extends BaseApp {}
@@ -180,15 +182,13 @@ test('nested w IO & filters', async t => {
     }
   }
 
-  const BaseApp = createBase<{
-    messages: typeof Messages;
-    notifications: typeof Notifications;
-  }>({
-    // messages: Messages,
-    notifications: Notifications
-  } as any);
+  const BaseApp = createBase({
+    modules: {
+      notifications: Notifications
+    }
+  });
 
-  class App extends BaseApp {
+  class App extends BaseApp<{ messages?: MessagesState }, MessagesIO> {
     public messages: Filterables<Messages> = this.create(
       lensProp('messages'),
       Messages
@@ -197,15 +197,18 @@ test('nested w IO & filters', async t => {
     protected init() {
       this.messages.refresh.applyFilter(async next => {
         const nbMsg = this.messages.state.list.length;
-        await next();
-        const newMsg = this.messages.state.list.length - nbMsg;
+        if (await next()) {
+          const newMsg = this.messages.state.list.length - nbMsg;
 
-        if (newMsg > 0) {
-          this.notifications.add({
-            id: 0,
-            text: `${newMsg} new messages`
-          });
+          if (newMsg > 0) {
+            this.notifications.add({
+              id: 0,
+              text: `${newMsg} new messages`
+            });
+          }
+          return true;
         }
+        return false;
       });
     }
   }
@@ -304,7 +307,7 @@ test.cb('listener call sequence + unsubscibe', t => {
     active: boolean;
   }
 
-  class Todos extends createBase({ active: Active })<TodosState> {
+  class Todos extends createBase({ modules: { active: Active } })<TodosState> {
     public addTodo(todo: Todo) {
       this.commit('todoAdded', {
         active: true,
@@ -314,7 +317,9 @@ test.cb('listener call sequence + unsubscibe', t => {
   }
 
   const BaseApp = createBase({
-    todos: Todos
+    modules: {
+      todos: Todos
+    }
   });
 
   class App extends BaseApp {
@@ -419,7 +424,7 @@ test('alternative syntax', t => {
     public messages: Messages = this.create(lensProp('messages'), Messages);
   }
 
-  const app = App.create({
+  const app = new App({
     messages: [{ id: 0, text: 'hello' }]
   });
 
