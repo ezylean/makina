@@ -252,7 +252,7 @@ index.html
 Under the hood Makina keep your state in a single place and use lenses to update that state
 
 ```ts
-class App extends createBase({ messages: Messages })
+class App extends createBase({ modules: { messages: Messages } })
 ```
 
 is equivalent to 
@@ -268,7 +268,7 @@ class App extends createBase()<{ messages: MessagesState }> {
 `create` can be used to create state machines targeting just a part of your state on demand.
 
 ```ts
-class App extends createBase({ messages: Messages }) {
+class App extends createBase({ modules: { messages: Messages } }) {
 
   public getMessageByIndex(index) {
     return this.create(lensPath(['messages', 'list', index]), Message);
@@ -279,7 +279,7 @@ class App extends createBase({ messages: Messages }) {
 alternatively the static `create` method can be used to create detached state machines
 
 ```ts
-class App extends createBase({ messages: Messages }) {
+class App extends createBase({ modules: { messages: Messages } }) {
 
   public getMessageByIndex(index) {
     return Message.create(this.state.messages.list[index], this.IO)
