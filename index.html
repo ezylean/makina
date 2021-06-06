@@ -102,6 +102,87 @@
 				<p>index.ts</p>
 				<pre><code class="language-ts"><span class="hljs-keyword">import</span> { createBase } <span class="hljs-keyword">from</span> <span class="hljs-string">'@ezy/makina'</span>;
 
+<span class="hljs-keyword">enum</span> CURRENT_USER {
+  DISCONNECTED = <span class="hljs-string">'DISCONNECTED'</span>,
+  CONNECTING = <span class="hljs-string">'CONNECTING'</span>,
+  CONNECTED = <span class="hljs-string">'CONNECTED'</span>
+}
+
+<span class="hljs-keyword">interface</span> UserProfile {
+  email: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">interface</span> CurrentUserState {
+  isConnecting?: <span class="hljs-built_in">boolean</span>;
+  profile?: UserProfile;
+  error?: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">interface</span> Credentials {
+  email: <span class="hljs-built_in">string</span>;
+  password: <span class="hljs-built_in">string</span>;
+}
+
+<span class="hljs-keyword">interface</span> CurrentUserIO {
+  api: {
+    login: <span class="hljs-function">(<span class="hljs-params">credentials: Credentials</span>) =&gt;</span> <span class="hljs-built_in">Promise</span>&lt;UserProfile&gt;;
+  };
+}
+
+<span class="hljs-keyword">const</span> CurrentUserBase = createBase({
+  <span class="hljs-comment">// we declare every state with a match function </span>
+  states: {
+    [CURRENT_USER.CONNECTING]: <span class="hljs-function">(<span class="hljs-params">state: CurrentUserState</span>) =&gt;</span>
+      state.isConnecting,
+    [CURRENT_USER.CONNECTED]: <span class="hljs-function">(<span class="hljs-params">state: CurrentUserState</span>) =&gt;</span> !!state.profile,
+    [CURRENT_USER.DISCONNECTED]: <span class="hljs-function">(<span class="hljs-params">state: CurrentUserState</span>) =&gt;</span> !state.profile
+  },
+  <span class="hljs-comment">// and here all allowed transitions</span>
+  transitions: {
+    [CURRENT_USER.DISCONNECTED]: [CURRENT_USER.CONNECTING],
+    [CURRENT_USER.CONNECTING]: [
+      CURRENT_USER.CONNECTED,
+      CURRENT_USER.DISCONNECTED
+    ],
+    [CURRENT_USER.CONNECTED]: [CURRENT_USER.DISCONNECTED]
+  }
+});
+
+<span class="hljs-keyword">class</span> CurrentUser <span class="hljs-keyword">extends</span> CurrentUserBase&lt;CurrentUserState, CurrentUserIO&gt; {
+  <span class="hljs-comment">/**
+    * connect currrent user
+    *
+    * @param credentials
+    */</span>
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">async</span> connect(credentials: Credentials) {
+    <span class="hljs-comment">// transition to CONNECTING state</span>
+    <span class="hljs-comment">// there is no transition from CONNECTING to CONNECTING so double clicks are handled for us</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.commit(CURRENT_USER.CONNECTING, { isConnecting: <span class="hljs-literal">true</span> })) {
+      <span class="hljs-keyword">try</span> {
+        <span class="hljs-keyword">const</span> profile = <span class="hljs-keyword">await</span> <span class="hljs-keyword">this</span>.IO.api.login(credentials);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.commit(CURRENT_USER.CONNECTED, {
+          isConnecting: <span class="hljs-literal">false</span>,
+          profile
+        });
+      } <span class="hljs-keyword">catch</span> (e) {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.commit(CURRENT_USER.DISCONNECTED, {
+          error: e,
+          isConnecting: <span class="hljs-literal">false</span>
+        });
+      }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  }
+
+  <span class="hljs-comment">/**
+    * disconnect currrent user
+    */</span>
+  <span class="hljs-keyword">public</span> disconnect() {
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.commit(CURRENT_USER.DISCONNECTED, {});
+  }
+}
+
+
 <span class="hljs-keyword">interface</span> Notification {
   id: <span class="hljs-built_in">number</span>,
   text: <span class="hljs-built_in">string</span>
@@ -126,57 +207,31 @@
   }
 }
 
-<span class="hljs-keyword">interface</span> Message {
-  id: <span class="hljs-built_in">number</span>,
-  text: <span class="hljs-built_in">string</span>
-}
-
-<span class="hljs-keyword">interface</span> MessagesState {
-  list: Message[]
-}
-
-<span class="hljs-keyword">interface</span> MessagesIO {
-  fetchMessages: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-built_in">Promise</span>&lt;Message[]&gt;;
-}
-
-<span class="hljs-comment">// create a Messages module</span>
-<span class="hljs-keyword">class</span> Messages <span class="hljs-keyword">extends</span> createBase()&lt;MessagesState, MessagesIO&gt; {
-
-  <span class="hljs-keyword">constructor</span>(<span class="hljs-params">initialState, IO, options</span>) {
-    <span class="hljs-comment">// default state</span>
-    <span class="hljs-keyword">super</span>({ list: [], ...initialState }, IO, options)
-  }
-
-  refresh() {
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.IO.fetchMessages().then(<span class="hljs-function"><span class="hljs-params">messages</span> =&gt;</span> {
-      <span class="hljs-keyword">this</span>.commit(<span class="hljs-string">'refreshed'</span>, { list: messages });
-    });
-  }
-}
-
 <span class="hljs-comment">// define our app</span>
 <span class="hljs-keyword">const</span> BaseApp = createBase({
-  messages: Messages,
-  notifications: Notifications
+  modules: {
+    currentUser: CurrentUser,
+    notifications: Notifications
+  }
 });
 
 <span class="hljs-keyword">class</span> App <span class="hljs-keyword">extends</span> BaseApp {
 
   init() {
-    <span class="hljs-comment">// add a filter to the Messages module refresh function</span>
-    <span class="hljs-comment">// our filter will be triggered when the refresh function is called</span>
+    <span class="hljs-comment">// add a filter to the CurrentUser module connect method</span>
+    <span class="hljs-comment">// our filter will be triggered when the connect method is called</span>
     <span class="hljs-comment">// to automatically create notification in our Notification module if neccessary</span>
-    <span class="hljs-keyword">this</span>.messages.refresh.applyFilter(<span class="hljs-keyword">async</span> (next) =&gt; {
-      <span class="hljs-keyword">const</span> nbMsg = <span class="hljs-keyword">this</span>.messages.state.list.length;
-      <span class="hljs-keyword">await</span> next();
-      <span class="hljs-keyword">const</span> newMsg = <span class="hljs-keyword">this</span>.messages.state.list.length - nbMsg;
+    <span class="hljs-keyword">this</span>.currentUser.connect.applyFilter(<span class="hljs-keyword">async</span> (next, credentials) =&gt; {
+      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">await</span> next(credentials)) {
 
-      <span class="hljs-keyword">if</span> (newMsg &gt; <span class="hljs-number">0</span>) {
         <span class="hljs-keyword">this</span>.notifications.add({
           id: <span class="hljs-number">0</span>,
-          text: <span class="hljs-string">`<span class="hljs-subst">${newMsg}</span> new messages`</span>
+          text: <span class="hljs-string">`welcome back <span class="hljs-subst">${<span class="hljs-keyword">this</span>.currentUser.state.profile.email}</span>`</span>
         });
+
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
       }
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
     });
   }
 
@@ -186,10 +241,11 @@
 <span class="hljs-keyword">const</span> app = App.create(
   {},
   {
-    messages: {
-      fetchMessages: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-built_in">Promise</span>.resolve([{ id: <span class="hljs-number">0</span>, text: <span class="hljs-string">'message'</span> }])
-    },
-    notifications: {}
+    api: {
+      login: <span class="hljs-function">(<span class="hljs-params">credentials: Credentials</span>) =&gt;</span> {
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.resolve({ email: credentials.email });
+      }
+    }
   }
 );
 
@@ -202,12 +258,24 @@
 
 <span class="hljs-comment">// UI bindings</span>
 <span class="hljs-built_in">document</span>
-  .getElementById(<span class="hljs-string">'refresh'</span>)
-  .addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> app.messages.refresh());
+  .getElementById(<span class="hljs-string">'submit'</span>)
+  .addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+    app.currentUser.connect({ 
+      email: <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'email'</span>).value, 
+      password: <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'password'</span>).value 
+    })
+  });
+
+<span class="hljs-built_in">document</span>
+  .getElementById(<span class="hljs-string">'logout'</span>)
+  .addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> app.currentUser.disconnect());
 
 <span class="hljs-keyword">const</span> render = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
-  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'messages'</span>).innerHTML = <span class="hljs-string">`&lt;ul&gt;<span class="hljs-subst">${app.messages.state.list.map(msg =&gt; <span class="hljs-string">`&lt;li&gt;<span class="hljs-subst">${msg.text}</span>&lt;/li&gt;`</span>).join(<span class="hljs-string">''</span>)}</span>&lt;/ul&gt;`</span>;
-  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'notifications'</span>).innerHTML = <span class="hljs-string">`&lt;ul&gt;<span class="hljs-subst">${app.notifications.state.list.map(msg =&gt; <span class="hljs-string">`&lt;li&gt;<span class="hljs-subst">${msg.text}</span>&lt;/li&gt;`</span>).join(<span class="hljs-string">''</span>)}</span>&lt;/ul&gt;`</span>;
+  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'notifications'</span>).innerHTML = <span class="hljs-string">`
+    &lt;ul&gt;<span class="hljs-subst">${
+      app.notifications.state.list.map(msg =&gt; <span class="hljs-string">`&lt;li&gt;<span class="hljs-subst">${msg.text}</span>&lt;/li&gt;`</span>).join(<span class="hljs-string">''</span>)
+    }</span>&lt;/ul&gt;
+  `</span>;
 };
 
 app.onStateChange(render);
@@ -218,14 +286,19 @@ render();</code></pre>
   <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"UTF-8"</span> /&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"viewport"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"width=device-width, initial-scale=1.0"</span> /&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Counter<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>App<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"app"</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"result"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"refresh"</span>&gt;</span>refresh<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"logout"</span>&gt;</span>X<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span> 
       <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"notifications"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"messages"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">form</span>&gt;</span>  
+        <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>Email : <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>   
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"Enter Email"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"email"</span> <span class="hljs-attr">required</span>&gt;</span>  
+        <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>Password : <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>   
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"password"</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"Enter Password"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"password"</span> <span class="hljs-attr">required</span>&gt;</span>  
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"submit"</span>&gt;</span>Login<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>  
+      <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"index.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
@@ -234,20 +307,22 @@ render();</code></pre>
 					<h3>Advanced usage</h3>
 				</a>
 				<p>Under the hood Makina keep your state in a single place and use lenses to update that state</p>
-				<pre><code class="language-ts"><span class="hljs-keyword">class</span> App <span class="hljs-keyword">extends</span> createBase({ messages: Messages })</code></pre>
+				<pre><code class="language-ts"><span class="hljs-keyword">class</span> App <span class="hljs-keyword">extends</span> createBase({ modules: { messages: Messages } })</code></pre>
 				<p>is equivalent to </p>
-				<pre><code class="language-ts"><span class="hljs-keyword">class</span> App <span class="hljs-keyword">extends</span> createBase&lt;{ messages: <span class="hljs-keyword">typeof</span> Messages }&gt;({} <span class="hljs-keyword">as</span> <span class="hljs-built_in">any</span>) {
-  <span class="hljs-keyword">public</span> messages: StateMachine&lt;Messages&gt; = <span class="hljs-keyword">this</span>.create(lensProp(<span class="hljs-string">'messages'</span>), Messages);
+				<pre><code class="language-ts"><span class="hljs-keyword">class</span> App <span class="hljs-keyword">extends</span> createBase()&lt;{ messages: MessagesState }&gt; {
+  <span class="hljs-keyword">public</span> messages: Filterables&lt;Messages&gt; = <span class="hljs-keyword">this</span>.create(lensProp(<span class="hljs-string">'messages'</span>), Messages);
+  <span class="hljs-comment">// or</span>
+  <span class="hljs-comment">// public messages: Filterables&lt;Messages&gt; = this.create('messages', Messages);</span>
 }</code></pre>
 				<p><code>create</code> can be used to create state machines targeting just a part of your state on demand.</p>
-				<pre><code class="language-ts"><span class="hljs-keyword">class</span> App <span class="hljs-keyword">extends</span> createBase({ messages: Messages }) {
+				<pre><code class="language-ts"><span class="hljs-keyword">class</span> App <span class="hljs-keyword">extends</span> createBase({ modules: { messages: Messages } }) {
 
   <span class="hljs-keyword">public</span> getMessageByIndex(index) {
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.create(lensPath([<span class="hljs-string">'messages'</span>, <span class="hljs-string">'list'</span>, index]), Message);
   }
 }</code></pre>
 				<p>alternatively the static <code>create</code> method can be used to create detached state machines</p>
-				<pre><code class="language-ts"><span class="hljs-keyword">class</span> App <span class="hljs-keyword">extends</span> createBase({ messages: Messages }) {
+				<pre><code class="language-ts"><span class="hljs-keyword">class</span> App <span class="hljs-keyword">extends</span> createBase({ modules: { messages: Messages } }) {
 
   <span class="hljs-keyword">public</span> getMessageByIndex(index) {
     <span class="hljs-keyword">return</span> Message.create(<span class="hljs-keyword">this</span>.state.messages.list[index], <span class="hljs-keyword">this</span>.IO)
