@@ -18,10 +18,10 @@ const users = [
   { name: 'mike', age: 21 },
   { name: 'marco', age: 12 },
   { name: 'aline', age: 56 },
-  { name: 'polo', age: 16 }
+  { name: 'polo', age: 16 },
 ];
 
-test('lensFind', t => {
+test('lensFind', (t) => {
   const firstUserOver21 = lensFind((user: User) => user.age >= 21);
 
   t.deepEqual(view(firstUserOver21, users), { name: 'mike', age: 21 });
@@ -31,11 +31,11 @@ test('lensFind', t => {
     { name: 'super mike', age: 21 },
     { name: 'marco', age: 12 },
     { name: 'aline', age: 56 },
-    { name: 'polo', age: 16 }
+    { name: 'polo', age: 16 },
   ]);
 });
 
-test('lensFind - no results', t => {
+test('lensFind - no results', (t) => {
   const deadz = lensFind((user: User) => user.age > 9000);
 
   t.is(view(deadz, users), undefined);
@@ -43,12 +43,12 @@ test('lensFind - no results', t => {
   t.is(set(deadz, { name: 'super mike', age: 21 }, users), users);
 });
 
-test('lensFilter', t => {
+test('lensFilter', (t) => {
   const usersOver21 = lensFilter((user: User) => user.age >= 21);
 
   t.deepEqual(view(usersOver21, users), [
     { name: 'mike', age: 21 },
-    { name: 'aline', age: 56 }
+    { name: 'aline', age: 56 },
   ]);
 
   t.deepEqual(
@@ -56,7 +56,7 @@ test('lensFilter', t => {
       usersOver21,
       [
         { name: 'super mike', age: 21 },
-        { name: 'super aline', age: 56 }
+        { name: 'super aline', age: 56 },
       ],
       users
     ),
@@ -65,12 +65,12 @@ test('lensFilter', t => {
       { name: 'super mike', age: 21 },
       { name: 'marco', age: 12 },
       { name: 'super aline', age: 56 },
-      { name: 'polo', age: 16 }
+      { name: 'polo', age: 16 },
     ]
   );
 });
 
-test('lensFilter - no results', t => {
+test('lensFilter - no results', (t) => {
   const deadz = lensFilter((user: User) => user.age > 9000);
 
   t.deepEqual(view(deadz, users), []);
@@ -80,7 +80,7 @@ test('lensFilter - no results', t => {
       deadz,
       [
         { name: 'super mike', age: 21 },
-        { name: 'super aline', age: 56 }
+        { name: 'super aline', age: 56 },
       ],
       users
     ),
@@ -88,7 +88,7 @@ test('lensFilter - no results', t => {
   );
 });
 
-test('lensSort', t => {
+test('lensSort', (t) => {
   const sortedUsersOver21 = lensSort((user1: User, user2: User) =>
     user1.age > user2.age ? 1 : user1.age < user2.age ? -1 : 0
   );
@@ -98,7 +98,7 @@ test('lensSort', t => {
     { name: 'polo', age: 16 },
     { name: 'jane', age: 19 },
     { name: 'mike', age: 21 },
-    { name: 'aline', age: 56 }
+    { name: 'aline', age: 56 },
   ]);
 
   const newData = [
@@ -106,7 +106,7 @@ test('lensSort', t => {
     { name: 'young polo', age: 16 },
     { name: 'young jane', age: 19 },
     { name: 'mike', age: 21 },
-    { name: 'aline', age: 56 }
+    { name: 'aline', age: 56 },
   ];
 
   t.deepEqual(set(sortedUsersOver21, newData, users), [
@@ -114,27 +114,19 @@ test('lensSort', t => {
     { name: 'mike', age: 21 },
     { name: 'young marco', age: 12 },
     { name: 'aline', age: 56 },
-    { name: 'young polo', age: 16 }
+    { name: 'young polo', age: 16 },
   ]);
 });
 
-test('lensSort - default comparator', t => {
+test('lensSort - default comparator', (t) => {
   const listnbr = [1, 5, 9, 8, 7, 6, 3, 5, 4, 0];
 
   t.deepEqual(view(lensSort(), listnbr), [0, 1, 3, 4, 5, 5, 6, 7, 8, 9]);
 
   const listnbrSortedChanged = [0, 1, 3, 4, 5, 5000, 6, 7, 8, 9];
 
-  t.deepEqual(set(lensSort(), listnbrSortedChanged, listnbr), [
-    1,
-    5,
-    9,
-    8,
-    7,
-    6,
-    3,
-    5000,
-    4,
-    0
-  ]);
+  t.deepEqual(
+    set(lensSort(), listnbrSortedChanged, listnbr),
+    [1, 5, 9, 8, 7, 6, 3, 5000, 4, 0]
+  );
 });

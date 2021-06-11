@@ -5,5 +5,5 @@ export {
   Filterables,
   Options,
   StateMachineCtor,
-  StateMachine
+  StateMachine,
 } from './lib/types';

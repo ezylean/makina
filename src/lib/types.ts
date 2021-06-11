@@ -43,9 +43,9 @@ type CombinedState<T extends object> = Optional<T, MayBeEmptyObjectKeys<T>>;
 /**
  * @ignore
  */
-type UnionToIntersection<U> = (U extends any
-? (k: U) => void
-: never) extends (k: infer I) => void
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+  k: infer I
+) => void
   ? I
   : never;
 

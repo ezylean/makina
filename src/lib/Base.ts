@@ -10,7 +10,7 @@ import {
   Options,
   RootOptions,
   StateMachine,
-  StateMachineCtor
+  StateMachineCtor,
 } from './types';
 
 /**
@@ -27,8 +27,11 @@ export class Base<State, IO, S> {
   public static create<T extends StateMachineCtor>(
     this: T,
     ...[initialState, IO, options]: ConstructorParameters<T>
-  ): Filterables<InstanceType<T>> {
-    return filterableAll(new this(initialState, IO, options), false) as any;
+  ) {
+    return filterableAll(
+      new this(initialState, IO, options),
+      false
+    ) as Filterables<InstanceType<T>>;
   }
 
   /**
@@ -74,12 +77,12 @@ export class Base<State, IO, S> {
         depth: options.source._options.depth + 1,
         getter: memoizeOne(splitLens.get),
         setter: splitLens.set,
-        source: options.source
+        source: options.source,
       };
     } else {
       this._options = {
         broadcaster: new CustomSignal(),
-        depth: 0
+        depth: 0,
       };
     }
 

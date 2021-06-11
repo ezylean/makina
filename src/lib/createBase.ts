@@ -4,14 +4,14 @@ import {
   hashGrid,
   memoizeOne,
   taskRunner,
-  valuesEqual
+  valuesEqual,
 } from './internal/utils';
 import { splitLensProp } from './lenses';
 import {
   Constructor,
   Mapping,
   StateMachineBase,
-  StateMachineCtor
+  StateMachineCtor,
 } from './types';
 
 /**
@@ -47,7 +47,6 @@ export function createBase<
       }
     | { modules?: M } = {}
 ) {
-
   // modules
   let Extended = class extends Base<any, any, any> {
     constructor(initialState, IO = {}, options) {
@@ -55,7 +54,7 @@ export function createBase<
 
       const modules = spec?.modules;
 
-      Object.keys(modules || {}).forEach(name => {
+      Object.keys(modules || {}).forEach((name) => {
         this[name] = this.create(
           splitLensProp<any>(name),
           modules[name] as any,
@@ -68,24 +67,24 @@ export function createBase<
       });
     }
   } as any;
-  
+
   // state machines
   if ('states' in spec && 'transitions' in spec) {
     const states = spec.states;
     const transitionGrid = hashGrid(spec.transitions);
 
-    const stateNames = Object.keys(states).map(name =>
+    const stateNames = Object.keys(states).map((name) =>
       isNaN(+name) ? name : +name
     );
 
     function match(state: BaseState): Array<keyof S> {
-      return stateNames.filter(name => states[name](state)) as any;
+      return stateNames.filter((name) => states[name](state)) as any;
     }
 
     const memoizedMatch = memoizeOne(match);
 
     function isAllowed(froms: Array<keyof S>, tos: Array<keyof S>) {
-      return tos.every(to => froms.some(from => transitionGrid[from][to]));
+      return tos.every((to) => froms.some((from) => transitionGrid[from][to]));
     }
 
     const baseIs = stateNames.reduce((result, name) => {
@@ -112,11 +111,11 @@ export function createBase<
         const froms = memoizedMatch(this.state);
 
         const actuals = match(newState).filter(
-          state => froms.indexOf(state) === -1
+          (state) => froms.indexOf(state) === -1
         );
 
         const expecteds = (Array.isArray(action) ? action : [action]).filter(
-          state => froms.indexOf(state) === -1
+          (state) => froms.indexOf(state) === -1
         );
 
         if (!valuesEqual(expecteds, actuals)) {

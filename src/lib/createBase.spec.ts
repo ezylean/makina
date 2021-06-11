@@ -6,7 +6,7 @@ import { config } from './config';
 
 config.freeze = Object.freeze;
 
-test.cb('simple', t => {
+test.cb('simple', (t) => {
   interface Todo {
     id: number;
     text: string;
@@ -23,7 +23,7 @@ test.cb('simple', t => {
   }
 
   const app = Todos.create({
-    todos: []
+    todos: [],
   });
 
   t.deepEqual(app.state, { todos: [] });
@@ -31,7 +31,7 @@ test.cb('simple', t => {
 
   app.onStateChange((state, action, target, currentTarget) => {
     t.deepEqual(state, {
-      todos: [{ id: 0, text: 'write a todo' }]
+      todos: [{ id: 0, text: 'write a todo' }],
     });
 
     t.is(Object.isFrozen(state), true);
@@ -47,7 +47,7 @@ test.cb('simple', t => {
   app.addTodo({ id: 0, text: 'write a todo' });
 });
 
-test('increment', t => {
+test('increment', (t) => {
   class Counter extends createBase()<number> {
     constructor(initialState = 0, IO?, options?) {
       super(initialState, IO, options);
@@ -70,7 +70,7 @@ test('increment', t => {
   t.is(app.state, 0);
 });
 
-test.cb('nested', t => {
+test.cb('nested', (t) => {
   interface Todo {
     id: number;
     text: string;
@@ -88,16 +88,16 @@ test.cb('nested', t => {
 
   const BaseApp = createBase({
     modules: {
-      todos: Todos
-    }
+      todos: Todos,
+    },
   });
 
   class App extends BaseApp {}
 
   const app = App.create({
     todos: {
-      list: []
-    }
+      list: [],
+    },
   });
 
   t.deepEqual(app.state, { todos: { list: [] } });
@@ -105,8 +105,8 @@ test.cb('nested', t => {
   app.onStateChange((state, action, target, currentTarget) => {
     t.deepEqual(state, {
       todos: {
-        list: [{ id: 0, text: 'write a todo' }]
-      }
+        list: [{ id: 0, text: 'write a todo' }],
+      },
     });
 
     t.is(state, app.state);
@@ -121,7 +121,7 @@ test.cb('nested', t => {
   app.todos.addTodo({ id: 0, text: 'write a todo' });
 });
 
-test('nested w IO & filters', async t => {
+test('nested w IO & filters', async (t) => {
   interface Notification {
     id: number;
     text: string;
@@ -136,7 +136,7 @@ test('nested w IO & filters', async t => {
       super(
         {
           list: [],
-          ...initialState
+          ...initialState,
         },
         IO,
         options
@@ -145,7 +145,7 @@ test('nested w IO & filters', async t => {
 
     public add(notification: Notification) {
       this.commit('notificationAdded', {
-        list: [...this.state.list, notification]
+        list: [...this.state.list, notification],
       });
     }
   }
@@ -168,7 +168,7 @@ test('nested w IO & filters', async t => {
       super(
         {
           list: [],
-          ...initialState
+          ...initialState,
         },
         IO,
         options
@@ -176,7 +176,7 @@ test('nested w IO & filters', async t => {
     }
 
     public refresh() {
-      return this.IO.fetchMessages().then(messages => {
+      return this.IO.fetchMessages().then((messages) => {
         return this.commit('refreshed', { list: messages });
       });
     }
@@ -184,8 +184,8 @@ test('nested w IO & filters', async t => {
 
   const BaseApp = createBase({
     modules: {
-      notifications: Notifications
-    }
+      notifications: Notifications,
+    },
   });
 
   class App extends BaseApp<{ messages?: MessagesState }, MessagesIO> {
@@ -195,7 +195,7 @@ test('nested w IO & filters', async t => {
     );
 
     protected init() {
-      this.messages.refresh.applyFilter(async next => {
+      this.messages.refresh.applyFilter(async (next) => {
         const nbMsg = this.messages.state.list.length;
         if (await next()) {
           const newMsg = this.messages.state.list.length - nbMsg;
@@ -203,7 +203,7 @@ test('nested w IO & filters', async t => {
           if (newMsg > 0) {
             this.notifications.add({
               id: 0,
-              text: `${newMsg} new messages`
+              text: `${newMsg} new messages`,
             });
           }
           return true;
@@ -216,7 +216,7 @@ test('nested w IO & filters', async t => {
   const app = App.create(
     {},
     {
-      fetchMessages: () => Promise.resolve([{ id: 0, text: 'message' }])
+      fetchMessages: () => Promise.resolve([{ id: 0, text: 'message' }]),
     }
   );
 
@@ -224,18 +224,18 @@ test('nested w IO & filters', async t => {
 
   t.deepEqual(app.state, {
     messages: { list: [] },
-    notifications: { list: [] }
+    notifications: { list: [] },
   });
 
   await app.messages.refresh();
 
   t.deepEqual(app.state.messages, { list: [{ id: 0, text: 'message' }] });
   t.deepEqual(app.state.notifications, {
-    list: [{ id: 0, text: '1 new messages' }]
+    list: [{ id: 0, text: '1 new messages' }],
   });
 });
 
-test('create state machine', t => {
+test('create state machine', (t) => {
   interface Todo {
     id: number;
     title: string;
@@ -258,7 +258,7 @@ test('create state machine', t => {
 
     public updateFirstTodoTitle(title: string) {
       this.commit('change first todo title', {
-        list: [{ ...this.state.list[0], title }, ...this.state.list.slice(1)]
+        list: [{ ...this.state.list[0], title }, ...this.state.list.slice(1)],
       });
     }
 
@@ -268,7 +268,7 @@ test('create state machine', t => {
         (todo, s) => {
           return {
             ...s,
-            list: s.list.map((todo2, id2) => (id === id2 ? todo : todo2))
+            list: s.list.map((todo2, id2) => (id === id2 ? todo : todo2)),
           };
         }
       );
@@ -294,7 +294,7 @@ test('create state machine', t => {
   t.deepEqual(todo3.state, { id: 0, title: 'do something else' });
 });
 
-test.cb('listener call sequence + unsubscibe', t => {
+test.cb('listener call sequence + unsubscibe', (t) => {
   class Active extends createBase()<boolean> {}
 
   interface Todo {
@@ -311,21 +311,21 @@ test.cb('listener call sequence + unsubscibe', t => {
     public addTodo(todo: Todo) {
       this.commit('todoAdded', {
         active: true,
-        list: [...this.state.list, todo]
+        list: [...this.state.list, todo],
       });
     }
   }
 
   const BaseApp = createBase({
     modules: {
-      todos: Todos
-    }
+      todos: Todos,
+    },
   });
 
   class App extends BaseApp {
     public addTodo(todo: Todo) {
       this.commit('todoAdded', {
-        todos: { active: true, list: [...this.state.todos.list, todo] }
+        todos: { active: true, list: [...this.state.todos.list, todo] },
       });
     }
   }
@@ -333,8 +333,8 @@ test.cb('listener call sequence + unsubscibe', t => {
   const app = App.create({
     todos: {
       active: false,
-      list: []
-    }
+      list: [],
+    },
   });
 
   t.deepEqual(app.state, { todos: { list: [], active: false } });
@@ -344,18 +344,18 @@ test.cb('listener call sequence + unsubscibe', t => {
     {
       todos: {
         active: true,
-        list: [{ id: 0, text: 'write a todo' }]
-      }
+        list: [{ id: 0, text: 'write a todo' }],
+      },
     },
     {
       todos: {
         active: true,
         list: [
           { id: 0, text: 'write a todo' },
-          { id: 0, text: 'write another todo' }
-        ]
-      }
-    }
+          { id: 0, text: 'write another todo' },
+        ],
+      },
+    },
   ];
 
   app.onStateChange((state, action, target, currentTarget) => {
@@ -374,7 +374,7 @@ test.cb('listener call sequence + unsubscibe', t => {
     (state, action, target, currentTarget) => {
       t.deepEqual(state, {
         active: true,
-        list: [{ id: 0, text: 'write a todo' }]
+        list: [{ id: 0, text: 'write a todo' }],
       });
 
       t.is(state, app.todos.state);
@@ -412,7 +412,7 @@ test.cb('listener call sequence + unsubscibe', t => {
   t.end();
 });
 
-test('alternative syntax', t => {
+test('alternative syntax', (t) => {
   interface Message {
     id: number;
     text: string;
@@ -425,7 +425,7 @@ test('alternative syntax', t => {
   }
 
   const app = new App({
-    messages: [{ id: 0, text: 'hello' }]
+    messages: [{ id: 0, text: 'hello' }],
   });
 
   t.deepEqual(app.messages.state, [{ id: 0, text: 'hello' }]);

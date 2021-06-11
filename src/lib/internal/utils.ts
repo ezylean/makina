@@ -8,7 +8,7 @@ export function memoizeOne<I, O>(fn: (i: I) => O): (i: I) => O {
   let lastArg;
   let lastResult;
 
-  return arg => {
+  return (arg) => {
     if (initialized && lastArg === arg) {
       return lastResult;
     }

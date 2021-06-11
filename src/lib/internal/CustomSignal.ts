@@ -28,11 +28,11 @@ export class CustomSignal<A0 = void, A1 = void, A2 = void, A3 = void> {
 
   public subscribe(
     handler: (arg0: A0, arg1: A1, arg2: A2, arg3: A3) => void,
-    priority: number = 0
+    priority = 0
   ) {
     const listener = {
       handler,
-      priority
+      priority,
     };
 
     this.listeners.push(listener);

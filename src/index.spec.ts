@@ -2,11 +2,11 @@
 import test from 'ava';
 import { createBase } from './';
 
-test('state machine string enum', async t => {
+test('state machine string enum', async (t) => {
   enum CURRENT_USER {
     DISCONNECTED = 'DISCONNECTED',
     CONNECTING = 'CONNECTING',
-    CONNECTED = 'CONNECTED'
+    CONNECTED = 'CONNECTED',
   }
 
   interface UserProfile {
@@ -35,16 +35,16 @@ test('state machine string enum', async t => {
       [CURRENT_USER.CONNECTING]: (state: CurrentUserState) =>
         state.isConnecting,
       [CURRENT_USER.CONNECTED]: (state: CurrentUserState) => !!state.profile,
-      [CURRENT_USER.DISCONNECTED]: (state: CurrentUserState) => !state.profile
+      [CURRENT_USER.DISCONNECTED]: (state: CurrentUserState) => !state.profile,
     },
     transitions: {
       [CURRENT_USER.DISCONNECTED]: [CURRENT_USER.CONNECTING],
       [CURRENT_USER.CONNECTING]: [
         CURRENT_USER.CONNECTED,
-        CURRENT_USER.DISCONNECTED
+        CURRENT_USER.DISCONNECTED,
       ],
-      [CURRENT_USER.CONNECTED]: [CURRENT_USER.DISCONNECTED]
-    }
+      [CURRENT_USER.CONNECTED]: [CURRENT_USER.DISCONNECTED],
+    },
   });
 
   class CurrentUser extends Base<CurrentUserState, CurrentUserIO> {
@@ -59,12 +59,12 @@ test('state machine string enum', async t => {
           const profile = await this.IO.api.login(credentials);
           return this.commit(CURRENT_USER.CONNECTED, {
             isConnecting: false,
-            profile
+            profile,
           });
         } catch (e) {
           return this.commit(CURRENT_USER.DISCONNECTED, {
             error: e,
-            isConnecting: false
+            isConnecting: false,
           });
         }
       }
@@ -82,7 +82,7 @@ test('state machine string enum', async t => {
   const api = {
     login: (credentials: Credentials) => {
       return Promise.resolve({ email: credentials.email });
-    }
+    },
   };
 
   const currentUser = CurrentUser.create({}, { api });
@@ -104,11 +104,11 @@ test('state machine string enum', async t => {
   t.is(currentUser.is.DISCONNECTED, false);
 });
 
-test('state machine number enum', async t => {
+test('state machine number enum', async (t) => {
   enum CURRENT_USER {
     DISCONNECTED,
     CONNECTING,
-    CONNECTED
+    CONNECTED,
   }
 
   interface UserProfile {
@@ -137,16 +137,16 @@ test('state machine number enum', async t => {
       [CURRENT_USER.CONNECTING]: (state: CurrentUserState) =>
         state.isConnecting,
       [CURRENT_USER.CONNECTED]: (state: CurrentUserState) => !!state.profile,
-      [CURRENT_USER.DISCONNECTED]: (state: CurrentUserState) => !state.profile
+      [CURRENT_USER.DISCONNECTED]: (state: CurrentUserState) => !state.profile,
     },
     transitions: {
       [CURRENT_USER.DISCONNECTED]: [CURRENT_USER.CONNECTING],
       [CURRENT_USER.CONNECTING]: [
         CURRENT_USER.CONNECTED,
-        CURRENT_USER.DISCONNECTED
+        CURRENT_USER.DISCONNECTED,
       ],
-      [CURRENT_USER.CONNECTED]: [CURRENT_USER.DISCONNECTED]
-    }
+      [CURRENT_USER.CONNECTED]: [CURRENT_USER.DISCONNECTED],
+    },
   });
 
   class CurrentUser extends Base<CurrentUserState, CurrentUserIO> {
@@ -161,12 +161,12 @@ test('state machine number enum', async t => {
           const profile = await this.IO.api.login(credentials);
           return this.commit(CURRENT_USER.CONNECTED, {
             isConnecting: false,
-            profile
+            profile,
           });
         } catch (e) {
           return this.commit(CURRENT_USER.DISCONNECTED, {
             error: e,
-            isConnecting: false
+            isConnecting: false,
           });
         }
       }
@@ -184,14 +184,14 @@ test('state machine number enum', async t => {
   const api = {
     login: (credentials: Credentials) => {
       return Promise.resolve({ email: credentials.email });
-    }
+    },
   };
 
   const currentUser = CurrentUser.create(
     {
       profile: {
-        email: 'doe@mail.com'
-      }
+        email: 'doe@mail.com',
+      },
     },
     { api }
   );

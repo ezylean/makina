@@ -23,17 +23,20 @@ export interface SplitLens<S, A> {
 /**
  * @ignore
  */
-const Const = value => ({
+const Const = (value) => ({
   value,
   map() {
     return this;
-  }
+  },
 });
 
 /**
  * @ignore
  */
-const Identity = value => ({ value, map: setter => Identity(setter(value)) });
+const Identity = (value) => ({
+  value,
+  map: (setter) => Identity(setter(value)),
+});
 
 /**
  *
@@ -82,8 +85,8 @@ const sort = Array.prototype.sort.call.bind(Array.prototype.sort);
  * @param predicate
  */
 export function lensFind<A>(predicate: (a: A) => boolean): Lens<A[], A> {
-  return funcConst => {
-    return s => {
+  return (funcConst) => {
+    return (s) => {
       const index = findIndex(s, predicate);
       const f = funcConst(s[index]);
       const MAP =
@@ -91,7 +94,7 @@ export function lensFind<A>(predicate: (a: A) => boolean): Lens<A[], A> {
           ? 'fantasy-land/map'
           : 'map';
 
-      return f[MAP](a => {
+      return f[MAP]((a) => {
         if (index === -1) {
           return s;
         }
@@ -108,16 +111,16 @@ export function lensFind<A>(predicate: (a: A) => boolean): Lens<A[], A> {
  * @param predicate
  */
 export function lensFilter<A>(predicate: (a: A) => boolean): Lens<A[], A[]> {
-  return funcConst => {
-    return s => {
+  return (funcConst) => {
+    return (s) => {
       const indexes = findIndexes(s, predicate);
-      const f = funcConst(map(indexes, index => s[index]));
+      const f = funcConst(map(indexes, (index) => s[index]));
       const MAP =
         typeof f['fantasy-land/map'] === 'function'
           ? 'fantasy-land/map'
           : 'map';
 
-      return f[MAP](a =>
+      return f[MAP]((a) =>
         indexes.length === 0 ? s : setAtIndexes(s, indexes, a)
       );
     };
@@ -132,22 +135,22 @@ export function lensSort<A>(
   compareFunction: (a: A, b: A) => number = (a, b) =>
     a > b ? 1 : a < b ? -1 : 0
 ): Lens<A[], A[]> {
-  return funcConst => {
-    return s => {
+  return (funcConst) => {
+    return (s) => {
       const tmp = sort(
         map(s, (value, index) => ({ index, value })),
         (a, b) => compareFunction(a.value, b.value)
       );
-      const f = funcConst(map(tmp, el => el.value));
+      const f = funcConst(map(tmp, (el) => el.value));
       const MAP =
         typeof f['fantasy-land/map'] === 'function'
           ? 'fantasy-land/map'
           : 'map';
 
-      return f[MAP](a => {
+      return f[MAP]((a) => {
         return setAtIndexes(
           s,
-          map(tmp, el => el.index),
+          map(tmp, (el) => el.index),
           a
         );
       });
@@ -187,8 +190,8 @@ export function splitLensProp<S, K extends keyof S = keyof S>(
   name: K
 ): SplitLens<S, S[K]> {
   return {
-    get: s => s[name],
-    set: (a, s) => ({ ...s, [name]: a })
+    get: (s) => s[name],
+    set: (a, s) => ({ ...s, [name]: a }),
   };
 }
 
@@ -202,7 +205,7 @@ export function lensToSplitLens<S, A>(
   if (typeof lens === 'function') {
     return {
       get: (s: S) => view(lens, s),
-      set: (a: A, s: S) => set(lens, a, s)
+      set: (a: A, s: S) => set(lens, a, s),
     };
   }
   return lens as SplitLens<S, A>;
