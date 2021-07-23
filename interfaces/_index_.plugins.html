@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Options | @ezy/makina</title>
+	<title>Plugins | @ezy/makina</title>
 	<meta name="description" content="Documentation for @ezy/makina">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,28 +56,35 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="options.html">Options</a>
+					<a href="../modules/_index_.html">&quot;index&quot;</a>
+				</li>
+				<li>
+					<a href="_index_.plugins.html">Plugins</a>
 				</li>
 			</ul>
-			<h1>Interface Options</h1>
+			<h1>Interface Plugins&lt;S, S&gt;</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>options passed from a state machine to a sub state machine</p>
-					</div>
-				</div>
+			<section class="tsd-panel tsd-type-parameters">
+				<h3>Type parameters</h3>
+				<ul class="tsd-type-parameters">
+					<li>
+						<h4>S</h4>
+					</li>
+					<li>
+						<h4>S</h4>
+					</li>
+				</ul>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Options</span>
+						<span class="target">Plugins</span>
 					</li>
 				</ul>
 			</section>
@@ -88,8 +95,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="options.html#lens" class="tsd-kind-icon">lens</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="options.html#source" class="tsd-kind-icon">source</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_index_.plugins.html#modules" class="tsd-kind-icon">modules</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_index_.plugins.html#states" class="tsd-kind-icon">states</a></li>
 							</ul>
 						</section>
 					</div>
@@ -98,22 +105,22 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="lens" class="tsd-anchor"></a>
-					<h3>lens</h3>
-					<div class="tsd-signature tsd-kind-icon">lens<span class="tsd-signature-symbol">:</span> <a href="../globals.html#lens" class="tsd-signature-type">Lens</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><a href="splitlens.html" class="tsd-signature-type">SplitLens</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<a name="modules" class="tsd-anchor"></a>
+					<h3>modules</h3>
+					<div class="tsd-signature tsd-kind-icon">modules<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">S</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">modulesOptions</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-symbol">(</span>Base<span class="tsd-signature-symbol">: </span><a href="../globals.html#statecontainerclass" class="tsd-signature-type">StateContainerClass</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-symbol">{ </span>constructor<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">never</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/373a3b4/src/lib/types.ts#L18">lib/types.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/373a3b4/src/lib/plugins/modules.ts#L9">lib/plugins/modules.ts:9</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="source" class="tsd-anchor"></a>
-					<h3>source</h3>
-					<div class="tsd-signature tsd-kind-icon">source<span class="tsd-signature-symbol">:</span> <a href="../classes/statecontainer.html" class="tsd-signature-type">StateContainer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<a name="states" class="tsd-anchor"></a>
+					<h3>states</h3>
+					<div class="tsd-signature tsd-kind-icon">states<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">S</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">statesOptions</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-symbol">(</span>Base<span class="tsd-signature-symbol">: </span><a href="../globals.html#statecontainerclass" class="tsd-signature-type">StateContainerClass</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-symbol">{ </span>constructor<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">never</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ezylean/makina/blob/373a3b4/src/lib/types.ts#L17">lib/types.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/ezylean/makina/blob/373a3b4/src/lib/plugins/states.ts#L7">lib/plugins/states.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -125,91 +132,28 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
+					<li class="current tsd-kind-module">
+						<a href="../modules/_index_.html">&quot;index&quot;</a>
+					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="../classes/statecontainer.html" class="tsd-kind-icon">State<wbr>Container</a>
-					</li>
-					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="../classes/statemachine.html" class="tsd-kind-icon">State<wbr>Machine</a>
-					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface">
-						<a href="options.html" class="tsd-kind-icon">Options</a>
+					<li class="current tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="_index_.plugins.html" class="tsd-kind-icon">Plugins</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="options.html#lens" class="tsd-kind-icon">lens</a>
+								<a href="_index_.plugins.html#modules" class="tsd-kind-icon">modules</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="options.html#source" class="tsd-kind-icon">source</a>
+								<a href="_index_.plugins.html#states" class="tsd-kind-icon">states</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="plugins.html" class="tsd-kind-icon">Plugins</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="splitlens.html" class="tsd-kind-icon">Split<wbr>Lens</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="../globals.html#lens" class="tsd-kind-icon">Lens</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="../globals.html#statecontainerclass" class="tsd-kind-icon">State<wbr>Container<wbr>Class</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="../globals.html#statecontainertree" class="tsd-kind-icon">State<wbr>Container<wbr>Tree</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="../globals.html#statetree" class="tsd-kind-icon">State<wbr>Tree</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="../globals.html#modulesoptions" class="tsd-kind-icon">modules<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="../globals.html#statesoptions" class="tsd-kind-icon">states<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-variable">
-						<a href="../globals.html#plugins" class="tsd-kind-icon">plugins</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../globals.html#createbase" class="tsd-kind-icon">create<wbr>Base</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../globals.html#lensfilter" class="tsd-kind-icon">lens<wbr>Filter</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../globals.html#lensfind" class="tsd-kind-icon">lens<wbr>Find</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../globals.html#lenssort" class="tsd-kind-icon">lens<wbr>Sort</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../globals.html#lenstosplitlens" class="tsd-kind-icon">lens<wbr>ToSplit<wbr>Lens</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../globals.html#modules" class="tsd-kind-icon">modules</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../globals.html#set" class="tsd-kind-icon">set</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../globals.html#splitlensprop" class="tsd-kind-icon">split<wbr>Lens<wbr>Prop</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../globals.html#states" class="tsd-kind-icon">states</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../globals.html#view" class="tsd-kind-icon">view</a>
-					</li>
-					<li class=" tsd-kind-object-literal">
-						<a href="../globals.html#config" class="tsd-kind-icon">config</a>
-					</li>
 				</ul>
 			</nav>
 		</div>

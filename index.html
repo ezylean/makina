@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>@ezy/makina</title>
-	<meta name="description" content="">
+	<meta name="description" content="Documentation for @ezy/makina">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
@@ -13,7 +13,7 @@
 	<div class="tsd-page-toolbar">
 		<div class="container">
 			<div class="table-wrap">
-				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
 					<div class="field">
 						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
 						<input id="tsd-search-field" type="text" />
@@ -88,7 +88,8 @@
 				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
 					<h3>Installation</h3>
 				</a>
-				<pre><code class="language-shell">  npm i @ezy/makina</code></pre>
+				<pre><code class="language-shell">  npm i @ezy/makina
+</code></pre>
 				<a href="#main-concepts" id="main-concepts" style="color: inherit; text-decoration: none;">
 					<h3>Main Concepts</h3>
 				</a>
@@ -100,16 +101,10 @@
 					<h3>Example</h3>
 				</a>
 				<p>index.ts</p>
-				<pre><code class="language-ts"><span class="hljs-keyword">import</span> { createBase } <span class="hljs-keyword">from</span> <span class="hljs-string">'@ezy/makina'</span>;
-
-<span class="hljs-keyword">enum</span> CURRENT_USER {
-  DISCONNECTED = <span class="hljs-string">'DISCONNECTED'</span>,
-  CONNECTING = <span class="hljs-string">'CONNECTING'</span>,
-  CONNECTED = <span class="hljs-string">'CONNECTED'</span>
-}
+				<pre><code class="language-ts"><span class="hljs-keyword">import</span> { createBase } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@ezy/makina&#x27;</span>;
 
 <span class="hljs-keyword">interface</span> UserProfile {
-  email: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">email</span>: <span class="hljs-built_in">string</span>;
 }
 
 <span class="hljs-keyword">interface</span> CurrentUserState {
@@ -119,56 +114,51 @@
 }
 
 <span class="hljs-keyword">interface</span> Credentials {
-  email: <span class="hljs-built_in">string</span>;
+  <span class="hljs-attr">email</span>: <span class="hljs-built_in">string</span>;
   password: <span class="hljs-built_in">string</span>;
 }
 
 <span class="hljs-keyword">interface</span> CurrentUserIO {
-  api: {
-    login: <span class="hljs-function">(<span class="hljs-params">credentials: Credentials</span>) =&gt;</span> <span class="hljs-built_in">Promise</span>&lt;UserProfile&gt;;
+  <span class="hljs-attr">api</span>: {
+    <span class="hljs-attr">login</span>: <span class="hljs-function">(<span class="hljs-params">credentials: Credentials</span>) =&gt;</span> <span class="hljs-built_in">Promise</span>&lt;UserProfile&gt;;
   };
 }
 
 <span class="hljs-keyword">const</span> CurrentUserBase = createBase({
-  <span class="hljs-comment">// we declare every state with a match function </span>
-  states: {
-    [CURRENT_USER.CONNECTING]: <span class="hljs-function">(<span class="hljs-params">state: CurrentUserState</span>) =&gt;</span>
-      state.isConnecting,
-    [CURRENT_USER.CONNECTED]: <span class="hljs-function">(<span class="hljs-params">state: CurrentUserState</span>) =&gt;</span> !!state.profile,
-    [CURRENT_USER.DISCONNECTED]: <span class="hljs-function">(<span class="hljs-params">state: CurrentUserState</span>) =&gt;</span> !state.profile
-  },
-  <span class="hljs-comment">// and here all allowed transitions</span>
-  transitions: {
-    [CURRENT_USER.DISCONNECTED]: [CURRENT_USER.CONNECTING],
-    [CURRENT_USER.CONNECTING]: [
-      CURRENT_USER.CONNECTED,
-      CURRENT_USER.DISCONNECTED
-    ],
-    [CURRENT_USER.CONNECTED]: [CURRENT_USER.DISCONNECTED]
+  <span class="hljs-attr">states</span>: {
+    <span class="hljs-attr">CONNECTING</span>: {
+      <span class="hljs-attr">is</span>: <span class="hljs-function">(<span class="hljs-params">state: CurrentUserState</span>) =&gt;</span> state.isConnecting,
+      <span class="hljs-attr">set</span>: <span class="hljs-function">(<span class="hljs-params">_: CurrentUserState</span>) =&gt;</span> ({ <span class="hljs-attr">isConnecting</span>: <span class="hljs-literal">true</span> }),
+      <span class="hljs-attr">from</span>: [<span class="hljs-string">&#x27;DISCONNECTED&#x27;</span>],
+    },
+    <span class="hljs-attr">CONNECTED</span>: {
+      <span class="hljs-attr">is</span>: <span class="hljs-function">(<span class="hljs-params">state: CurrentUserState</span>) =&gt;</span> !!state.profile,
+      <span class="hljs-attr">set</span>: <span class="hljs-function">(<span class="hljs-params">_: CurrentUserState, profile: UserProfile</span>) =&gt;</span> ({ profile }),
+      <span class="hljs-attr">from</span>: [<span class="hljs-string">&#x27;CONNECTING&#x27;</span>],
+    },
+    <span class="hljs-attr">DISCONNECTED</span>: {
+      <span class="hljs-attr">is</span>: <span class="hljs-function">(<span class="hljs-params">state: CurrentUserState</span>) =&gt;</span> !state.profile,
+      <span class="hljs-attr">set</span>: <span class="hljs-function">(<span class="hljs-params">_: CurrentUserState, error?: <span class="hljs-built_in">string</span></span>) =&gt;</span> ({ error }),
+      <span class="hljs-attr">from</span>: [<span class="hljs-string">&#x27;CONNECTING&#x27;</span>, <span class="hljs-string">&#x27;CONNECTED&#x27;</span>],
+    },
   }
 });
 
-<span class="hljs-keyword">class</span> CurrentUser <span class="hljs-keyword">extends</span> CurrentUserBase&lt;CurrentUserState, CurrentUserIO&gt; {
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CurrentUser</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">CurrentUserBase</span>&lt;<span class="hljs-title">CurrentUserState</span>, <span class="hljs-title">CurrentUserIO</span>&gt; </span>{
   <span class="hljs-comment">/**
     * connect currrent user
     *
-    * @param credentials
+    * <span class="hljs-doctag">@param <span class="hljs-variable">credentials</span></span>
     */</span>
-  <span class="hljs-keyword">public</span> <span class="hljs-keyword">async</span> connect(credentials: Credentials) {
+  <span class="hljs-keyword">public</span> <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-title">connect</span>(<span class="hljs-params">credentials: Credentials</span>)</span> {
     <span class="hljs-comment">// transition to CONNECTING state</span>
     <span class="hljs-comment">// there is no transition from CONNECTING to CONNECTING so double clicks are handled for us</span>
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.commit(CURRENT_USER.CONNECTING, { isConnecting: <span class="hljs-literal">true</span> })) {
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.to.CONNECTING()) {
       <span class="hljs-keyword">try</span> {
-        <span class="hljs-keyword">const</span> profile = <span class="hljs-keyword">await</span> <span class="hljs-keyword">this</span>.IO.api.login(credentials);
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.commit(CURRENT_USER.CONNECTED, {
-          isConnecting: <span class="hljs-literal">false</span>,
-          profile
-        });
+        <span class="hljs-keyword">const</span> profile = <span class="hljs-keyword">await</span> <span class="hljs-built_in">this</span>.IO.api.login(credentials);
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.to.CONNECTED(profile);
       } <span class="hljs-keyword">catch</span> (e) {
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.commit(CURRENT_USER.DISCONNECTED, {
-          error: e,
-          isConnecting: <span class="hljs-literal">false</span>
-        });
+        <span class="hljs-built_in">this</span>.to.DISCONNECTED(e);
       }
     }
     <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
@@ -177,56 +167,56 @@
   <span class="hljs-comment">/**
     * disconnect currrent user
     */</span>
-  <span class="hljs-keyword">public</span> disconnect() {
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.commit(CURRENT_USER.DISCONNECTED, {});
+  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-title">disconnect</span>(<span class="hljs-params"></span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.to.DISCONNECTED();
   }
 }
 
 
 <span class="hljs-keyword">interface</span> Notification {
-  id: <span class="hljs-built_in">number</span>,
-  text: <span class="hljs-built_in">string</span>
+  <span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span>,
+  <span class="hljs-attr">text</span>: <span class="hljs-built_in">string</span>
 }
 
 <span class="hljs-keyword">interface</span> NotificationsState {
-  list: Notification[]
+  <span class="hljs-attr">list</span>: Notification[]
 }
 
 <span class="hljs-comment">// create a Notifications module</span>
-<span class="hljs-keyword">class</span> Notifications <span class="hljs-keyword">extends</span> createBase()&lt;NotificationsState&gt; {
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Notifications</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">createBase</span>()&lt;<span class="hljs-title">NotificationsState</span>&gt; </span>{
 
-  <span class="hljs-keyword">constructor</span>(<span class="hljs-params">initialState, IO, options</span>) {
+  <span class="hljs-function"><span class="hljs-title">constructor</span>(<span class="hljs-params">initialState, IO, options</span>)</span> {
     <span class="hljs-comment">// default state</span>
-    <span class="hljs-keyword">super</span>({ list: [], ...initialState }, IO, options)
+    <span class="hljs-built_in">super</span>({ <span class="hljs-attr">list</span>: [], ...initialState }, IO, options)
   }
 
-  add(notification) {
-    <span class="hljs-keyword">this</span>.commit(<span class="hljs-string">'notificationAdded'</span>, {
-      list: [...this.state.list, notification]
+  <span class="hljs-function"><span class="hljs-title">add</span>(<span class="hljs-params">notification</span>)</span> {
+    <span class="hljs-built_in">this</span>.commit(<span class="hljs-string">&#x27;notificationAdded&#x27;</span>, {
+      <span class="hljs-attr">list</span>: [...this.state.list, notification]
     });
   }
 }
 
 <span class="hljs-comment">// define our app</span>
 <span class="hljs-keyword">const</span> BaseApp = createBase({
-  modules: {
-    currentUser: CurrentUser,
-    notifications: Notifications
+  <span class="hljs-attr">modules</span>: {
+    <span class="hljs-attr">currentUser</span>: CurrentUser,
+    <span class="hljs-attr">notifications</span>: Notifications
   }
 });
 
-<span class="hljs-keyword">class</span> App <span class="hljs-keyword">extends</span> BaseApp {
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">BaseApp</span> </span>{
 
-  init() {
+  <span class="hljs-function"><span class="hljs-title">init</span>(<span class="hljs-params"></span>)</span> {
     <span class="hljs-comment">// add a filter to the CurrentUser module connect method</span>
     <span class="hljs-comment">// our filter will be triggered when the connect method is called</span>
     <span class="hljs-comment">// to automatically create notification in our Notification module if neccessary</span>
-    <span class="hljs-keyword">this</span>.currentUser.connect.applyFilter(<span class="hljs-keyword">async</span> (next, credentials) =&gt; {
+    <span class="hljs-built_in">this</span>.currentUser.connect.applyFilter(<span class="hljs-keyword">async</span> (next, credentials) =&gt; {
       <span class="hljs-keyword">if</span> (<span class="hljs-keyword">await</span> next(credentials)) {
 
-        <span class="hljs-keyword">this</span>.notifications.add({
-          id: <span class="hljs-number">0</span>,
-          text: <span class="hljs-string">`welcome back <span class="hljs-subst">${<span class="hljs-keyword">this</span>.currentUser.state.profile.email}</span>`</span>
+        <span class="hljs-built_in">this</span>.notifications.add({
+          <span class="hljs-attr">id</span>: <span class="hljs-number">0</span>,
+          <span class="hljs-attr">text</span>: <span class="hljs-string">`welcome back <span class="hljs-subst">${<span class="hljs-built_in">this</span>.currentUser.state.profile.email}</span>`</span>
         });
 
         <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
@@ -234,16 +224,16 @@
       <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
     });
   }
-
+  
 }
 
 <span class="hljs-comment">// create an instance of our App with initial state and IOs</span>
 <span class="hljs-keyword">const</span> app = App.create(
   {},
   {
-    api: {
-      login: <span class="hljs-function">(<span class="hljs-params">credentials: Credentials</span>) =&gt;</span> {
-        <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.resolve({ email: credentials.email });
+    <span class="hljs-attr">api</span>: {
+      <span class="hljs-attr">login</span>: <span class="hljs-function">(<span class="hljs-params">credentials: Credentials</span>) =&gt;</span> {
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">Promise</span>.resolve({ <span class="hljs-attr">email</span>: credentials.email });
       }
     }
   }
@@ -258,76 +248,82 @@
 
 <span class="hljs-comment">// UI bindings</span>
 <span class="hljs-built_in">document</span>
-  .getElementById(<span class="hljs-string">'submit'</span>)
-  .addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+  .getElementById(<span class="hljs-string">&#x27;submit&#x27;</span>)
+  .addEventListener(<span class="hljs-string">&#x27;click&#x27;</span>, <span class="hljs-function">() =&gt;</span> {
     app.currentUser.connect({ 
-      email: <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'email'</span>).value, 
-      password: <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'password'</span>).value 
+      <span class="hljs-attr">email</span>: <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&#x27;email&#x27;</span>).value, 
+      <span class="hljs-attr">password</span>: <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&#x27;password&#x27;</span>).value 
     })
   });
 
 <span class="hljs-built_in">document</span>
-  .getElementById(<span class="hljs-string">'logout'</span>)
-  .addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> app.currentUser.disconnect());
+  .getElementById(<span class="hljs-string">&#x27;logout&#x27;</span>)
+  .addEventListener(<span class="hljs-string">&#x27;click&#x27;</span>, <span class="hljs-function">() =&gt;</span> app.currentUser.disconnect());
 
-<span class="hljs-keyword">const</span> render = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
-  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'notifications'</span>).innerHTML = <span class="hljs-string">`
+<span class="hljs-keyword">const</span> render = <span class="hljs-function">() =&gt;</span> {
+  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&#x27;notifications&#x27;</span>).innerHTML = <span class="hljs-string">`
     &lt;ul&gt;<span class="hljs-subst">${
-      app.notifications.state.list.map(msg =&gt; <span class="hljs-string">`&lt;li&gt;<span class="hljs-subst">${msg.text}</span>&lt;/li&gt;`</span>).join(<span class="hljs-string">''</span>)
+      app.notifications.state.list.map(msg =&gt; <span class="hljs-string">`&lt;li&gt;<span class="hljs-subst">${msg.text}</span>&lt;/li&gt;`</span>).join(<span class="hljs-string">&#x27;&#x27;</span>)
     }</span>&lt;/ul&gt;
   `</span>;
 };
 
 app.onStateChange(render);
-render();</code></pre>
+render();
+</code></pre>
 				<p>index.html</p>
 				<pre><code class="language-html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"UTF-8"</span> /&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"viewport"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"width=device-width, initial-scale=1.0"</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;viewport&quot;</span> <span class="hljs-attr">content</span>=<span class="hljs-string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>App<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"app"</span>&gt;</span>
-      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"logout"</span>&gt;</span>X<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span> 
-      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"notifications"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;app&quot;</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;logout&quot;</span>&gt;</span>X<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span> 
+      <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;notifications&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
       <span class="hljs-tag">&lt;<span class="hljs-name">form</span>&gt;</span>  
         <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>Email : <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>   
-        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text"</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"Enter Email"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"email"</span> <span class="hljs-attr">required</span>&gt;</span>  
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;Enter Email&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;email&quot;</span> <span class="hljs-attr">required</span>&gt;</span>  
         <span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span>Password : <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span>   
-        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"password"</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">"Enter Password"</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"password"</span> <span class="hljs-attr">required</span>&gt;</span>  
-        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"submit"</span>&gt;</span>Login<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>  
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;password&quot;</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;Enter Password&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;password&quot;</span> <span class="hljs-attr">required</span>&gt;</span>  
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;submit&quot;</span>&gt;</span>Login<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>  
       <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span>
     <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"index.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;index.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
+</code></pre>
 				<a href="#advanced-usage" id="advanced-usage" style="color: inherit; text-decoration: none;">
 					<h3>Advanced usage</h3>
 				</a>
 				<p>Under the hood Makina keep your state in a single place and use lenses to update that state</p>
-				<pre><code class="language-ts"><span class="hljs-keyword">class</span> App <span class="hljs-keyword">extends</span> createBase({ modules: { messages: Messages } })</code></pre>
+				<pre><code class="language-ts"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">createBase</span>(</span>{ modules: { <span class="hljs-attr">messages</span>: Messages } })
+</code></pre>
 				<p>is equivalent to </p>
-				<pre><code class="language-ts"><span class="hljs-keyword">class</span> App <span class="hljs-keyword">extends</span> createBase()&lt;{ messages: MessagesState }&gt; {
-  <span class="hljs-keyword">public</span> messages: Filterables&lt;Messages&gt; = <span class="hljs-keyword">this</span>.create(lensProp(<span class="hljs-string">'messages'</span>), Messages);
+				<pre><code class="language-ts"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">createBase</span>()&lt;</span>{ messages: MessagesState }&gt; {
+  <span class="hljs-keyword">public</span> messages: Filterables&lt;Messages&gt; = <span class="hljs-built_in">this</span>.create(lensProp(<span class="hljs-string">&#x27;messages&#x27;</span>), Messages);
   <span class="hljs-comment">// or</span>
-  <span class="hljs-comment">// public messages: Filterables&lt;Messages&gt; = this.create('messages', Messages);</span>
-}</code></pre>
+  <span class="hljs-comment">// public messages: Filterables&lt;Messages&gt; = this.create(&#x27;messages&#x27;, Messages);</span>
+}
+</code></pre>
 				<p><code>create</code> can be used to create state machines targeting just a part of your state on demand.</p>
-				<pre><code class="language-ts"><span class="hljs-keyword">class</span> App <span class="hljs-keyword">extends</span> createBase({ modules: { messages: Messages } }) {
+				<pre><code class="language-ts"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">createBase</span>(</span>{ modules: { <span class="hljs-attr">messages</span>: Messages } }) {
 
-  <span class="hljs-keyword">public</span> getMessageByIndex(index) {
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.create(lensPath([<span class="hljs-string">'messages'</span>, <span class="hljs-string">'list'</span>, index]), Message);
+  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-title">getMessageByIndex</span>(<span class="hljs-params">index</span>)</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.create(lensPath([<span class="hljs-string">&#x27;messages&#x27;</span>, <span class="hljs-string">&#x27;list&#x27;</span>, index]), Message);
   }
-}</code></pre>
+}
+</code></pre>
 				<p>alternatively the static <code>create</code> method can be used to create detached state machines</p>
-				<pre><code class="language-ts"><span class="hljs-keyword">class</span> App <span class="hljs-keyword">extends</span> createBase({ modules: { messages: Messages } }) {
+				<pre><code class="language-ts"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">createBase</span>(</span>{ modules: { <span class="hljs-attr">messages</span>: Messages } }) {
 
-  <span class="hljs-keyword">public</span> getMessageByIndex(index) {
-    <span class="hljs-keyword">return</span> Message.create(<span class="hljs-keyword">this</span>.state.messages.list[index], <span class="hljs-keyword">this</span>.IO)
+  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-title">getMessageByIndex</span>(<span class="hljs-params">index</span>)</span> {
+    <span class="hljs-keyword">return</span> Message.create(<span class="hljs-built_in">this</span>.state.messages.list[index], <span class="hljs-built_in">this</span>.IO)
   }
-}</code></pre>
+}
+</code></pre>
 				<a href="#available-lenses-utils" id="available-lenses-utils" style="color: inherit; text-decoration: none;">
 					<h4>available lenses utils</h4>
 				</a>
@@ -341,7 +337,7 @@ render();</code></pre>
 					<li>lensToSplitLens</li>
 				</ul>
 				<p><a href="https://ramdajs.com/docs/#lens">read more on lenses</a></p>
-				<a href="#emon-split-lensesem" id="emon-split-lensesem" style="color: inherit; text-decoration: none;">
+				<a href="#on-split-lenses" id="on-split-lenses" style="color: inherit; text-decoration: none;">
 					<h5><em>on split lenses</em></h5>
 				</a>
 				<p>lenses being a composable pair of pure getter and setter functions,
@@ -352,7 +348,8 @@ render();</code></pre>
 				<pre><code class="language-js">  <span class="hljs-keyword">const</span> nameSplitLens = {
     <span class="hljs-attr">get</span>: <span class="hljs-function">(<span class="hljs-params">s</span>) =&gt;</span> s.name,
     <span class="hljs-attr">set</span>: <span class="hljs-function">(<span class="hljs-params">name, s</span>) =&gt;</span> ({ ...s, name })
-  }</code></pre>
+  }
+</code></pre>
 				<a href="#immutable-state-guarantee" id="immutable-state-guarantee" style="color: inherit; text-decoration: none;">
 					<h2>Immutable state guarantee</h2>
 				</a>
@@ -362,10 +359,67 @@ render();</code></pre>
 				<a href="#example-2" id="example-2" style="color: inherit; text-decoration: none;">
 					<h3>Example</h3>
 				</a>
-				<pre><code class="language-js"><span class="hljs-keyword">import</span> { config } <span class="hljs-keyword">from</span> <span class="hljs-string">'@ezy/makina'</span>;
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { config } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@ezy/makina&#x27;</span>;
 <span class="hljs-comment">// immutable state in all environnments except production</span>
 config.freeze =
-  process.env.NODE_ENV !== <span class="hljs-string">'production'</span> ? <span class="hljs-built_in">require</span>(<span class="hljs-string">'deep-freeze-strict'</span>) : <span class="hljs-literal">null</span>;</code></pre>
+  process.env.NODE_ENV !== <span class="hljs-string">&#x27;production&#x27;</span> ? <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;deep-freeze-strict&#x27;</span>) : <span class="hljs-literal">null</span>;
+</code></pre>
+				<a href="#plugin-system" id="plugin-system" style="color: inherit; text-decoration: none;">
+					<h2>Plugin system</h2>
+				</a>
+				<p>Every plugin is a decorator factory and can be used to extends Classes generated by <code>createBase</code>.</p>
+				<a href="#example-3" id="example-3" style="color: inherit; text-decoration: none;">
+					<h3>Example</h3>
+				</a>
+				<p><code>myPlugin.ts</code></p>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { config, StateContainer, StateContainerClass } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@ezy/makina&#x27;</span>;
+
+declare <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyPlugin</span>&lt;<span class="hljs-title">S</span>&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title">StateContainer</span>&lt;<span class="hljs-title">S</span>&gt; </span>{
+  public isPluginActive (): boolean;
+}
+
+declare <span class="hljs-built_in">module</span> <span class="hljs-string">&#x27;@ezy/makina&#x27;</span> {
+  interface Plugins&lt;S&gt; {
+    <span class="hljs-attr">myPlugin</span>: <span class="hljs-function">(<span class="hljs-params">options: { option1: boolean; }</span>) =&gt;</span> <span class="hljs-function">(<span class="hljs-params">Base: StateContainerClass</span>) =&gt;</span> <span class="hljs-keyword">typeof</span> MyPlugin;
+  }
+}
+
+config.plugins.myPlugin =
+  <span class="hljs-function">(<span class="hljs-params">options: { option1: boolean; }</span>) =&gt;</span>
+  <span class="hljs-function">(<span class="hljs-params">Base: StateContainerClass</span>) =&gt;</span> {
+    <span class="hljs-keyword">return</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Base</span> </span>{
+
+      public isPluginActive () {
+        <span class="hljs-keyword">return</span> options.option1
+      }
+
+    } <span class="hljs-keyword">as</span> any;
+  };
+</code></pre>
+				<p><code>app.ts</code></p>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { createBase } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@ezy/makina&#x27;</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;./myPlugin&#x27;</span>
+
+<span class="hljs-keyword">const</span> Base = createBase({ 
+  <span class="hljs-attr">myPlugin</span>: { 
+    <span class="hljs-attr">option1</span>: <span class="hljs-literal">true</span> 
+  } 
+})
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Customized</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Base</span>&lt;</span>{ somedata: boolean }&gt; {
+}
+  
+<span class="hljs-keyword">const</span> custom = <span class="hljs-keyword">new</span> Customized({ <span class="hljs-attr">somedata</span>: <span class="hljs-literal">true</span> })
+
+<span class="hljs-comment">// =&gt; true</span>
+custom.isPluginActive
+</code></pre>
+				<a href="#on-plugins-type" id="on-plugins-type" style="color: inherit; text-decoration: none;">
+					<h3>on plugins type</h3>
+				</a>
+				<p>the plugin type is determined based on if the <code>options</code> argument is required</p>
+				<p><code>(options: { option1: boolean; }) =&gt; ...</code> will only activate the plugin when the <code>options</code> argument is provided to createBase. </p>
+				<p><code>(options: { option1: boolean; } = { option1: false }) =&gt; ...</code> will activate the plugin regardless if the <code>options</code> argument is provided to createBase or not. </p>
 				<a href="#links" id="links" style="color: inherit; text-decoration: none;">
 					<h2>Links</h2>
 				</a>
@@ -380,12 +434,24 @@ config.freeze =
 					<li class="globals  ">
 						<a href="globals.html"><em>Globals</em></a>
 					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_index_.html">&quot;index&quot;</a>
+					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/statecontainer.html" class="tsd-kind-icon">State<wbr>Container</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/statemachine.html" class="tsd-kind-icon">State<wbr>Machine</a>
+					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/options.html" class="tsd-kind-icon">Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/plugins.html" class="tsd-kind-icon">Plugins</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
 						<a href="interfaces/splitlens.html" class="tsd-kind-icon">Split<wbr>Lens</a>
@@ -393,14 +459,23 @@ config.freeze =
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 						<a href="globals.html#lens" class="tsd-kind-icon">Lens</a>
 					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="globals.html#statemachine" class="tsd-kind-icon">State<wbr>Machine</a>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#statecontainerclass" class="tsd-kind-icon">State<wbr>Container<wbr>Class</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="globals.html#statemachinector" class="tsd-kind-icon">State<wbr>Machine<wbr>Ctor</a>
+						<a href="globals.html#statecontainertree" class="tsd-kind-icon">State<wbr>Container<wbr>Tree</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#statetree" class="tsd-kind-icon">State<wbr>Tree</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#modulesoptions" class="tsd-kind-icon">modules<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#statesoptions" class="tsd-kind-icon">states<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-variable">
-						<a href="globals.html#config" class="tsd-kind-icon">config</a>
+						<a href="globals.html#plugins" class="tsd-kind-icon">plugins</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#createbase" class="tsd-kind-icon">create<wbr>Base</a>
@@ -418,13 +493,22 @@ config.freeze =
 						<a href="globals.html#lenstosplitlens" class="tsd-kind-icon">lens<wbr>ToSplit<wbr>Lens</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#modules" class="tsd-kind-icon">modules</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#set" class="tsd-kind-icon">set</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#splitlensprop" class="tsd-kind-icon">split<wbr>Lens<wbr>Prop</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#states" class="tsd-kind-icon">states</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#view" class="tsd-kind-icon">view</a>
+					</li>
+					<li class=" tsd-kind-object-literal">
+						<a href="globals.html#config" class="tsd-kind-icon">config</a>
 					</li>
 				</ul>
 			</nav>
@@ -436,57 +520,27 @@ config.freeze =
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
-				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
-				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
-				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
-				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
-				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
-				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
-				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
-				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
-				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
-				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
-				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
-				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
-				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
-				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
 			</ul>
 		</div>
 	</div>
@@ -496,6 +550,5 @@ config.freeze =
 </div>
 <div class="overlay"></div>
 <script src="assets/js/main.js"></script>
-<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
 </body>
 </html>
