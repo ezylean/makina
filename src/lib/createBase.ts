@@ -1,136 +1,104 @@
-// tslint:disable:no-shadowed-variable max-classes-per-file
-import { Base } from './Base';
-import {
-  hashGrid,
-  memoizeOne,
-  taskRunner,
-  valuesEqual,
-} from './internal/utils';
-import { splitLensProp } from './lenses';
-import {
-  Constructor,
-  Mapping,
-  StateMachineBase,
-  StateMachineCtor,
-} from './types';
+import { HKT, $keys } from './types';
+import { StateContainer } from './StateContainer';
+import { Constructor, WithoutConstructor } from './types';
+import { plugins, Plugins } from './plugins';
+
+/**
+ * @ignore
+ */
+type Spec = {
+  [K in keyof Plugins<any>]?: Parameters<HKT<K, any>>[0];
+};
+
+/**
+ * @ignore
+ */
+type SpecBasedPlugins<S extends Spec> = {
+  [K in keyof S]: ReturnType<ReturnType<HKT<K & $keys, S[K]>>>;
+};
+
+/**
+ * @ignore
+ */
+type GlobalPlugins<S extends Spec> = {
+  [K in Exclude<keyof Plugins<any>, keyof S>]: Parameters<
+    Plugins<S>[K]
+  >['length'] extends 1
+    ? never
+    : ReturnType<ReturnType<HKT<K & $keys, S[K]>>>;
+};
+
+/**
+ * @ignore
+ */
+type Values<T extends Record<string, any>> = Exclude<
+  T[keyof T],
+  typeof StateContainer
+>;
+
+/**
+ * @ignore
+ */
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+  k: infer I
+) => void
+  ? I
+  : never;
+
+/**
+ * @ignore
+ */
+type RequiredKeys<T> = {
+  [K in keyof T]-?: {} extends Pick<T, K> ? never : K;
+}[keyof T];
+
+/**
+ * @ignore
+ */
+type NoCommon<T> = T extends object
+  ? RequiredKeys<T> extends never
+    ? object & T
+    : T
+  : T;
+
+/**
+ * @ignore
+ */
+type Merge<C extends Constructor> = WithoutConstructor<
+  typeof StateContainer
+> & {
+  new <
+    S extends NoCommon<
+      UnionToIntersection<ConstructorParameters<C>[0]>
+    > = NoCommon<UnionToIntersection<ConstructorParameters<C>[0]>>,
+    IO extends NoCommon<
+      UnionToIntersection<ConstructorParameters<C>[1]>
+    > = NoCommon<UnionToIntersection<ConstructorParameters<C>[1]>>
+  >(
+    initialState: S,
+    IO?: IO,
+    options?: UnionToIntersection<ConstructorParameters<C>[2]>
+  ): StateContainer<S, IO> & UnionToIntersection<InstanceType<C>>;
+};
 
 /**
  * create a state machine base class to be extended
  *
- * @param modules
+ * @param spec
  */
-export function createBase<M extends Mapping<StateMachineCtor> = {}>(spec?: {
-  modules?: M;
-}): StateMachineBase<M, string>;
-export function createBase<
-  M extends Mapping<StateMachineCtor> = {},
-  BaseState = {},
-  S extends Mapping<(state: BaseState) => boolean> = {}
->(spec?: {
-  modules?: M;
-  states: S;
-  transitions: { [K in keyof S]: Array<keyof S> };
-}): StateMachineBase<M, keyof S> &
-  Constructor<{
-    is: { [K in keyof S]: boolean };
-  }>;
-export function createBase<
-  M extends Mapping<StateMachineCtor> = {},
-  BaseState = {},
-  S extends Mapping<(state: BaseState) => boolean> = {}
->(
-  spec:
-    | {
-        modules?: M;
-        states: S;
-        transitions: { [K in keyof S]: Array<keyof S> };
-      }
-    | { modules?: M } = {}
-) {
-  // modules
-  let Extended = class extends Base<any, any, any> {
-    constructor(initialState, IO = {}, options) {
-      super(initialState, IO, options);
+export function createBase<S extends Spec = {}>(
+  spec: S = {} as any
+): keyof S extends never
+  ? Merge<Values<GlobalPlugins<S>>>
+  : Merge<Values<GlobalPlugins<S> & SpecBasedPlugins<S>>> {
+  const globalPlugins = Object.keys(plugins).filter(
+    (prop) => plugins[prop].length === 0 && !(prop in spec)
+  );
+  const specBasedPlugins = Object.keys(spec);
 
-      const modules = spec?.modules;
-
-      Object.keys(modules || {}).forEach((name) => {
-        this[name] = this.create(
-          splitLensProp<any>(name),
-          modules[name] as any,
-          IO[name]
-        );
-      });
-
-      this.ready = taskRunner.then(() => {
-        return Promise.resolve(this.init()).then(() => this);
-      });
-    }
-  } as any;
-
-  // state machines
-  if ('states' in spec && 'transitions' in spec) {
-    const states = spec.states;
-    const transitionGrid = hashGrid(spec.transitions);
-
-    const stateNames = Object.keys(states).map((name) =>
-      isNaN(+name) ? name : +name
-    );
-
-    function match(state: BaseState): Array<keyof S> {
-      return stateNames.filter((name) => states[name](state)) as any;
-    }
-
-    const memoizedMatch = memoizeOne(match);
-
-    function isAllowed(froms: Array<keyof S>, tos: Array<keyof S>) {
-      return tos.every((to) => froms.some((from) => transitionGrid[from][to]));
-    }
-
-    const baseIs = stateNames.reduce((result, name) => {
-      result[name] = false;
-      return result;
-    }, {});
-
-    const memoizedIs = memoizeOne((state: BaseState) => {
-      return memoizedMatch(state).reduce(
-        (result, name) => {
-          result[name] = true;
-          return result;
-        },
-        { ...baseIs } as any
-      );
-    });
-
-    Extended = class extends Extended {
-      public get is() {
-        return memoizedIs(this.state);
-      }
-
-      protected commit(action: keyof S | keyof S[], newState) {
-        const froms = memoizedMatch(this.state);
-
-        const actuals = match(newState).filter(
-          (state) => froms.indexOf(state) === -1
-        );
-
-        const expecteds = (Array.isArray(action) ? action : [action]).filter(
-          (state) => froms.indexOf(state) === -1
-        );
-
-        if (!valuesEqual(expecteds, actuals)) {
-          throw new Error(
-            `transition from "${froms}" is declared to "${expecteds}" but got "${actuals}"`
-          );
-        }
-
-        if (isAllowed(froms, actuals)) {
-          return super.commit(action, newState);
-        }
-        return false;
-      }
-    };
-  }
-
-  return Extended as any;
+  return [...globalPlugins, ...specBasedPlugins].reduce((base, prop, idx) => {
+    return idx < globalPlugins.length
+      ? plugins[prop]()(base)
+      : plugins[prop](spec[prop])(base);
+  }, StateContainer);
 }

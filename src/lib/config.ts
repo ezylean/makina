@@ -1,3 +1,5 @@
+import { plugins, Plugins } from './plugins';
+
 /**
  * global configuration
  *
@@ -15,4 +17,11 @@ export const config: {
    * ```
    */
   freeze?: <S>(state: S) => Readonly<S>;
-} = {};
+
+  /**
+   *
+   */
+  plugins: Plugins<any>;
+} = {
+  plugins,
+};

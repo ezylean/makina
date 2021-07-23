@@ -1,5 +1,3 @@
-// tslint:disable:variable-name no-shadowed-variable
-
 import { all as filterableAll, Filterables } from '@umoja/filterable';
 import { config } from './config';
 import { CustomSignal } from './internal/CustomSignal';
@@ -9,14 +7,10 @@ import {
   LeafOptions,
   Options,
   RootOptions,
-  StateMachine,
-  StateMachineCtor,
+  StateContainerClass,
 } from './types';
 
-/**
- * @ignore
- */
-export class Base<State, IO, S> {
+export class StateContainer<State, IO extends {} = {}> {
   /**
    * state machine factory
    *
@@ -24,7 +18,7 @@ export class Base<State, IO, S> {
    * @param IO
    * @param options
    */
-  public static create<T extends StateMachineCtor>(
+  public static create<T extends StateContainerClass>(
     this: T,
     ...[initialState, IO, options]: ConstructorParameters<T>
   ) {
@@ -48,12 +42,12 @@ export class Base<State, IO, S> {
    */
   public ready: Promise<this>;
   private _state?: State;
-  private _options: RootOptions<S> | LeafOptions<State, S>;
+  private _options: RootOptions | LeafOptions<State>;
   private _stateChanged = new CustomSignal<
     State,
-    S | S[],
-    StateMachine,
-    StateMachine
+    string,
+    StateContainer<any, any>,
+    StateContainer<any, any>
   >();
   private _unsubscribe?: () => void;
 
@@ -107,9 +101,9 @@ export class Base<State, IO, S> {
   public onStateChange(
     listener: (
       state: State,
-      action: S | S[],
-      target: StateMachine,
-      source: StateMachine
+      action: string,
+      target: StateContainer<any, any>,
+      source: StateContainer<any, any>
     ) => void
   ) {
     if ('source' in this._options) {
@@ -155,7 +149,7 @@ export class Base<State, IO, S> {
    * @param action
    * @param newState
    */
-  protected commit(action: S | S[], newState: State) {
+  protected commit(action: string, newState: State) {
     if (newState !== this.state) {
       this._updateState(newState, action, this);
       return true;
@@ -170,9 +164,7 @@ export class Base<State, IO, S> {
    * @param ModuleClass
    * @param IO
    */
-  protected create<
-    T extends { create: typeof Base['create'] } & StateMachineCtor
-  >(
+  protected create<T extends StateContainerClass>(
     lens:
       | keyof this['state']
       | Lens<this['state'], InstanceType<T>['state']>
@@ -193,7 +185,7 @@ export class Base<State, IO, S> {
       { source: this, lens: splitLens }
     );
 
-    if (!(instance._options as LeafOptions<any, any>).source) {
+    if (!(instance._options as LeafOptions<any>).source) {
       throw new Error(
         `
         missing "options" parameter in constructor of "${ModuleClass.name}"
@@ -209,7 +201,11 @@ export class Base<State, IO, S> {
     return instance;
   }
 
-  private _updateState(newState: State, action: S | S[], target: StateMachine) {
+  private _updateState(
+    newState: State,
+    action: string,
+    target: StateContainer<any, any>
+  ) {
     if ('source' in this._options) {
       this._options.source._updateState(
         this._options.setter(newState, this._options.source.state),
@@ -217,11 +213,7 @@ export class Base<State, IO, S> {
         target
       );
     } else {
-      this._state = newState;
-
-      if (config.freeze) {
-        this._state = config.freeze(this._state);
-      }
+      this._state = !config.freeze ? newState : config.freeze(newState);
 
       if (this._options.broadcaster.hasListeners()) {
         this._options.broadcaster.dispatch(action, target);
