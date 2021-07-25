@@ -372,7 +372,7 @@ config.freeze =
 					<h3>Example</h3>
 				</a>
 				<p><code>myPlugin.ts</code></p>
-				<pre><code class="language-js"><span class="hljs-keyword">import</span> { config, StateContainer, StateContainerClass } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@ezy/makina&#x27;</span>;
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { StateContainer, StateContainerClass } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@ezy/makina&#x27;</span>;
 
 declare <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyPlugin</span>&lt;<span class="hljs-title">S</span>&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title">StateContainer</span>&lt;<span class="hljs-title">S</span>&gt; </span>{
   public isPluginActive (): boolean;
@@ -380,12 +380,15 @@ declare <span class="hljs-class"><span class="hljs-keyword">class</span> <span c
 
 declare <span class="hljs-built_in">module</span> <span class="hljs-string">&#x27;@ezy/makina&#x27;</span> {
   interface Plugins&lt;S&gt; {
-    <span class="hljs-attr">myPlugin</span>: <span class="hljs-function">(<span class="hljs-params">options: { option1: boolean; }</span>) =&gt;</span> <span class="hljs-function">(<span class="hljs-params">Base: StateContainerClass</span>) =&gt;</span> <span class="hljs-keyword">typeof</span> MyPlugin;
+    <span class="hljs-attr">myPlugin</span>: S <span class="hljs-keyword">extends</span> { <span class="hljs-attr">option1</span>: boolean; } 
+      ? <span class="hljs-function">(<span class="hljs-params">options: { option1: boolean; }</span>) =&gt;</span> <span class="hljs-function">(<span class="hljs-params">Base: StateContainerClass</span>) =&gt;</span> <span class="hljs-keyword">typeof</span> MyPlugin
+      : never;
   }
 }
 
-config.plugins.myPlugin =
-  <span class="hljs-function">(<span class="hljs-params">options: { option1: boolean; }</span>) =&gt;</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;myPlugin&#x27;</span>,
+  <span class="hljs-attr">decoratorFactory</span>: <span class="hljs-function">(<span class="hljs-params">options: { option1: boolean; }</span>) =&gt;</span>
   <span class="hljs-function">(<span class="hljs-params">Base: StateContainerClass</span>) =&gt;</span> {
     <span class="hljs-keyword">return</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Base</span> </span>{
 
@@ -394,11 +397,14 @@ config.plugins.myPlugin =
       }
 
     } <span class="hljs-keyword">as</span> any;
-  };
+  }
+};
 </code></pre>
 				<p><code>app.ts</code></p>
-				<pre><code class="language-js"><span class="hljs-keyword">import</span> { createBase } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@ezy/makina&#x27;</span>;
-<span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;./myPlugin&#x27;</span>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> { install, createBase } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@ezy/makina&#x27;</span>;
+<span class="hljs-keyword">import</span> plugin <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./myPlugin&#x27;</span>
+
+install(plugin)
 
 <span class="hljs-keyword">const</span> Base = createBase({ 
   <span class="hljs-attr">myPlugin</span>: { 
@@ -412,7 +418,7 @@ config.plugins.myPlugin =
 <span class="hljs-keyword">const</span> custom = <span class="hljs-keyword">new</span> Customized({ <span class="hljs-attr">somedata</span>: <span class="hljs-literal">true</span> })
 
 <span class="hljs-comment">// =&gt; true</span>
-custom.isPluginActive
+custom.isPluginActive()
 </code></pre>
 				<a href="#on-plugins-type" id="on-plugins-type" style="color: inherit; text-decoration: none;">
 					<h3>on plugins type</h3>
@@ -475,10 +481,13 @@ custom.isPluginActive
 						<a href="globals.html#statesoptions" class="tsd-kind-icon">states<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-variable">
-						<a href="globals.html#plugins" class="tsd-kind-icon">plugins</a>
+						<a href="globals.html#config" class="tsd-kind-icon">config</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#createbase" class="tsd-kind-icon">create<wbr>Base</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#install" class="tsd-kind-icon">install</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#lensfilter" class="tsd-kind-icon">lens<wbr>Filter</a>
@@ -493,22 +502,13 @@ custom.isPluginActive
 						<a href="globals.html#lenstosplitlens" class="tsd-kind-icon">lens<wbr>ToSplit<wbr>Lens</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="globals.html#modules" class="tsd-kind-icon">modules</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#set" class="tsd-kind-icon">set</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#splitlensprop" class="tsd-kind-icon">split<wbr>Lens<wbr>Prop</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="globals.html#states" class="tsd-kind-icon">states</a>
-					</li>
-					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="globals.html#view" class="tsd-kind-icon">view</a>
-					</li>
-					<li class=" tsd-kind-object-literal">
-						<a href="globals.html#config" class="tsd-kind-icon">config</a>
 					</li>
 				</ul>
 			</nav>
