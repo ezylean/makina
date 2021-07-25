@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.0.1](https://github.com/ezylean/makina/compare/v7.0.0...v7.0.1) (2021-07-25)
+
+
+### Bug Fixes
+
+* **general:** hotfixes ([151f19b](https://github.com/ezylean/makina/commit/151f19b5b618afa8ad57fff78716ac93cf9cc7ef))
+
 ## [7.0.0](https://github.com/ezylean/makina/compare/v6.0.3...v7.0.0) (2021-07-23)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@ezy/makina",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "description": "create a backend in your frontend",
   "main": "build/main/index.js",
   "types": "build/main/index.d.ts",
