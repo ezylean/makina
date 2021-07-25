@@ -1,6 +1,7 @@
 import { Options, StateContainerClass } from '../types';
 import { StateContainer } from '../StateContainer';
 import { Constructor } from '../types';
+import { install } from './installer';
 
 declare module './index' {
   interface Plugins<S> {
@@ -13,7 +14,7 @@ declare module './index' {
           };
         }) => (Base: StateContainerClass) => {
           new (
-            initialState: StateMachineState<S>,
+            initialState: NoCommon<StateMachineState<S>>,
             IO?: {},
             options?: Options
           ): StateMachine<S>;
@@ -21,6 +22,22 @@ declare module './index' {
       : never;
   }
 }
+
+/**
+ * @ignore
+ */
+type RequiredKeys<T> = {
+  [K in keyof T]-?: {} extends Pick<T, K> ? never : K;
+}[keyof T];
+
+/**
+ * @ignore
+ */
+type NoCommon<T> = T extends object
+  ? RequiredKeys<T> extends never
+    ? object & T
+    : T
+  : T;
 
 type statesOptions = {
   [key: string]: {
@@ -117,20 +134,23 @@ function generateStateTransitions<S extends statesOptions>(
   }, {} as any);
 }
 
-export function states<
-  S extends {
-    [key: string]: {
-      is: (state: any) => boolean;
-      set: (state: any, ...args) => any;
-      from: Array<keyof S>;
-    };
-  }
->(options: S) {
-  return (Base: StateContainerClass): Constructor<StateMachine<S>> => {
-    return class extends Base {
-      public readonly is = generateStateGetters(options, this);
+install({
+  name: 'states',
+  decoratorFactory: function states<
+    S extends {
+      [key: string]: {
+        is: (state: any) => boolean;
+        set: (state: any, ...args) => any;
+        from: Array<keyof S>;
+      };
+    }
+  >(options: S) {
+    return (Base: StateContainerClass): Constructor => {
+      return class extends Base {
+        public readonly is = generateStateGetters(options, this);
 
-      protected readonly to = generateStateTransitions(options, this);
-    } as any;
-  };
-}
+        protected readonly to = generateStateTransitions(options, this);
+      } as any;
+    };
+  },
+});

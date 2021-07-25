@@ -98,7 +98,14 @@ test('state machine', async (t) => {
   t.is(currentUser.is.CONNECTING, false);
   t.is(currentUser.is.CONNECTED, false);
 
-  await currentUser.connect({ email: 'doe@mail.com', password: 'password' });
+  t.is(
+    await currentUser.connect({ email: 'doe@mail.com', password: 'password' }),
+    true
+  );
+  t.is(
+    await currentUser.connect({ email: 'doe@mail.com', password: 'password' }),
+    false
+  );
 
   t.is(currentUser.is.CONNECTED, true);
   t.is(currentUser.is.CONNECTING, false);

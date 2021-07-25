@@ -3,6 +3,7 @@ import { Options, StateContainerClass } from '../types';
 import { taskRunner } from '../internal/utils';
 import { splitLensProp } from '../lenses';
 import { StateContainer } from '../StateContainer';
+import { install } from './installer';
 
 declare module './index' {
   interface Plugins<S> {
@@ -11,12 +12,21 @@ declare module './index' {
           Base: StateContainerClass
         ) => {
           new (
-            initialState: OptionalEmptyObjectProperties<
-              { [K in keyof S]: ConstructorParameters<S[K]>[0] }
-            >,
-            IO?: AllowFlatten<
+            initialState: NoCommon<
               OptionalEmptyObjectProperties<
-                { [K in keyof S]: ConstructorParameters<S[K]>[1] }
+                { [K in keyof S]: ConstructorParameters<S[K]>[0] }
+              >
+            >,
+            IO?: NoCommon<
+              OptionalEmptyObjectProperties<
+                AllowFlatten<
+                  {
+                    [K in keyof S]: Exclude<
+                      ConstructorParameters<S[K]>[1],
+                      undefined
+                    >;
+                  }
+                >
               >
             >,
             options?: Options
@@ -31,6 +41,15 @@ declare module './index' {
       : never;
   }
 }
+
+/**
+ * @ignore
+ */
+type NoCommon<T> = T extends object
+  ? RequiredKeys<T> extends never
+    ? object & T
+    : T
+  : T;
 
 /**
  * @ignore
@@ -91,26 +110,29 @@ type StateContainerTree<S extends modulesOptions> = {
   [K in keyof S]: Filterables<InstanceType<S[K]>>;
 };
 
-export function modules<S extends modulesOptions>(options: S) {
-  return (Base: StateContainerClass) => {
-    return class extends Base {
-      constructor(...args: any[]) {
-        super(...args);
+install({
+  name: 'modules',
+  decoratorFactory: function modules<S extends modulesOptions>(options: S) {
+    return (Base: StateContainerClass) => {
+      return class extends Base {
+        constructor(...args: any[]) {
+          super(...args);
 
-        const IO = args[1] || {};
+          const IO = args[1] || {};
 
-        Object.keys(options || {}).forEach((name) => {
-          this[name] = this.create(
-            splitLensProp<any>(name),
-            options[name] as any,
-            IO[name]
-          );
-        });
+          Object.keys(options || {}).forEach((name) => {
+            this[name] = this.create(
+              splitLensProp<any>(name),
+              options[name] as any,
+              IO[name]
+            );
+          });
 
-        this.ready = taskRunner.then(() => {
-          return Promise.resolve(this.init()).then(() => this);
-        });
-      }
-    } as any;
-  };
-}
+          this.ready = taskRunner.then(() => {
+            return Promise.resolve(this.init()).then(() => this);
+          });
+        }
+      } as any;
+    };
+  },
+});

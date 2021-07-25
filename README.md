@@ -325,7 +325,7 @@ Every plugin is a decorator factory and can be used to extends Classes generated
 
 `myPlugin.ts`
 ```js
-import { config, StateContainer, StateContainerClass } from '@ezy/makina';
+import { StateContainer, StateContainerClass } from '@ezy/makina';
 
 declare class MyPlugin<S> extends StateContainer<S> {
   public isPluginActive (): boolean;
@@ -333,12 +333,15 @@ declare class MyPlugin<S> extends StateContainer<S> {
 
 declare module '@ezy/makina' {
   interface Plugins<S> {
-    myPlugin: (options: { option1: boolean; }) => (Base: StateContainerClass) => typeof MyPlugin;
+    myPlugin: S extends { option1: boolean; } 
+      ? (options: { option1: boolean; }) => (Base: StateContainerClass) => typeof MyPlugin
+      : never;
   }
 }
 
-config.plugins.myPlugin =
-  (options: { option1: boolean; }) =>
+export default {
+  name: 'myPlugin',
+  decoratorFactory: (options: { option1: boolean; }) =>
   (Base: StateContainerClass) => {
     return class extends Base {
 
@@ -347,13 +350,16 @@ config.plugins.myPlugin =
       }
 
     } as any;
-  };
+  }
+};
 ```
 
 `app.ts`
 ```js
-import { createBase } from '@ezy/makina';
-import './myPlugin'
+import { install, createBase } from '@ezy/makina';
+import plugin from './myPlugin'
+
+install(plugin)
 
 const Base = createBase({ 
   myPlugin: { 
@@ -367,7 +373,7 @@ class Customized extends Base<{ somedata: boolean }> {
 const custom = new Customized({ somedata: true })
 
 // => true
-custom.isPluginActive
+custom.isPluginActive()
 
 ```
 

@@ -1,4 +1,4 @@
-import { HKT, $keys } from './types';
+import { HKT, $keys, Options } from './types';
 import { StateContainer } from './StateContainer';
 import { Constructor, WithoutConstructor } from './types';
 import { plugins, Plugins } from './plugins';
@@ -48,18 +48,7 @@ type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
 /**
  * @ignore
  */
-type RequiredKeys<T> = {
-  [K in keyof T]-?: {} extends Pick<T, K> ? never : K;
-}[keyof T];
-
-/**
- * @ignore
- */
-type NoCommon<T> = T extends object
-  ? RequiredKeys<T> extends never
-    ? object & T
-    : T
-  : T;
+type NoUndefined<T, A = {}> = T extends undefined ? A : T;
 
 /**
  * @ignore
@@ -68,16 +57,18 @@ type Merge<C extends Constructor> = WithoutConstructor<
   typeof StateContainer
 > & {
   new <
-    S extends NoCommon<
-      UnionToIntersection<ConstructorParameters<C>[0]>
-    > = NoCommon<UnionToIntersection<ConstructorParameters<C>[0]>>,
-    IO extends NoCommon<
-      UnionToIntersection<ConstructorParameters<C>[1]>
-    > = NoCommon<UnionToIntersection<ConstructorParameters<C>[1]>>
+    S extends UnionToIntersection<
+      ConstructorParameters<C>[0]
+    > = UnionToIntersection<ConstructorParameters<C>[0]>,
+    IO extends UnionToIntersection<
+      NoUndefined<ConstructorParameters<C>[1]>
+    > = UnionToIntersection<NoUndefined<ConstructorParameters<C>[1]>>
   >(
     initialState: S,
     IO?: IO,
-    options?: UnionToIntersection<ConstructorParameters<C>[2]>
+    options?: UnionToIntersection<
+      NoUndefined<ConstructorParameters<C>[2], Options>
+    >
   ): StateContainer<S, IO> & UnionToIntersection<InstanceType<C>>;
 };
 

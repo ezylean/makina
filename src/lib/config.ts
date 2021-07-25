@@ -1,5 +1,3 @@
-import { plugins, Plugins } from './plugins';
-
 /**
  * global configuration
  *
@@ -16,12 +14,5 @@ export const config: {
    * config.freeze = process.env.NODE_ENV !== 'production'? require('deep-freeze-strict') : null;
    * ```
    */
-  freeze?: <S>(state: S) => Readonly<S>;
-
-  /**
-   *
-   */
-  plugins: Plugins<any>;
-} = {
-  plugins,
-};
+  freeze?: <S>(state: S) => Readonly<S> | S;
+} = {};
