@@ -191,7 +191,11 @@ export function splitLensProp<S, K extends keyof S = keyof S>(
 ): SplitLens<S, S[K]> {
   return {
     get: (s) => s[name],
-    set: (a, s) => ({ ...s, [name]: a }),
+    set: (a, s) => {
+      const clone: any = Array.isArray(s) ? s.slice() : { ...s };
+      clone[name] = a;
+      return clone;
+    },
   };
 }
 

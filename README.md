@@ -64,7 +64,7 @@ interface CurrentUserIO {
 const CurrentUserBase = createBase({
   states: {
     CONNECTING: {
-      is: (state: CurrentUserState) => state.isConnecting,
+      is: (state: CurrentUserState) => !!state.isConnecting,
       set: (_: CurrentUserState) => ({ isConnecting: true }),
       from: ['DISCONNECTED'],
     },
@@ -314,7 +314,7 @@ Deep freezing objects can be costly from a performance standpoint, it's recommen
 import { config } from '@ezy/makina';
 // immutable state in all environnments except production
 config.freeze =
-  process.env.NODE_ENV !== 'production' ? require('deep-freeze-strict') : null;
+  process.env.NODE_ENV !== 'production' ? require('deep-freeze-strict') : undefined;
 ```
 
 ## Plugin system
