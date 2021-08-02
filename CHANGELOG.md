@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.0.2](https://github.com/ezylean/makina/compare/v7.0.1...v7.0.2) (2021-08-02)
+
+
+### Bug Fixes
+
+* **lenses:** fix splitLensProp on arrays ([ccf9aa7](https://github.com/ezylean/makina/commit/ccf9aa7cc17458b4d82e7507c566eae9c543c595))
+
 ### [7.0.1](https://github.com/ezylean/makina/compare/v7.0.0...v7.0.1) (2021-07-25)
 
 
