@@ -127,7 +127,7 @@
 <span class="hljs-keyword">const</span> CurrentUserBase = createBase({
   <span class="hljs-attr">states</span>: {
     <span class="hljs-attr">CONNECTING</span>: {
-      <span class="hljs-attr">is</span>: <span class="hljs-function">(<span class="hljs-params">state: CurrentUserState</span>) =&gt;</span> state.isConnecting,
+      <span class="hljs-attr">is</span>: <span class="hljs-function">(<span class="hljs-params">state: CurrentUserState</span>) =&gt;</span> !!state.isConnecting,
       <span class="hljs-attr">set</span>: <span class="hljs-function">(<span class="hljs-params">_: CurrentUserState</span>) =&gt;</span> ({ <span class="hljs-attr">isConnecting</span>: <span class="hljs-literal">true</span> }),
       <span class="hljs-attr">from</span>: [<span class="hljs-string">&#x27;DISCONNECTED&#x27;</span>],
     },
@@ -362,7 +362,7 @@ render();
 				<pre><code class="language-js"><span class="hljs-keyword">import</span> { config } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@ezy/makina&#x27;</span>;
 <span class="hljs-comment">// immutable state in all environnments except production</span>
 config.freeze =
-  process.env.NODE_ENV !== <span class="hljs-string">&#x27;production&#x27;</span> ? <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;deep-freeze-strict&#x27;</span>) : <span class="hljs-literal">null</span>;
+  process.env.NODE_ENV !== <span class="hljs-string">&#x27;production&#x27;</span> ? <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;deep-freeze-strict&#x27;</span>) : <span class="hljs-literal">undefined</span>;
 </code></pre>
 				<a href="#plugin-system" id="plugin-system" style="color: inherit; text-decoration: none;">
 					<h2>Plugin system</h2>
